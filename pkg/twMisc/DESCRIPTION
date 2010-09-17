@@ -1,0 +1,12 @@
+Package: twMisc
+Title: tw utility functions  
+Version: 0.5-1
+Date: 2010-04-15
+Author: Thomas Wutzler
+Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
+Description: utilities used across several other packages of tw
+Depends: RUnit, R.methodsS3, abind
+Suggests: inlinedocs,debug
+License: GPL-2
+LazyLoad: yes
+

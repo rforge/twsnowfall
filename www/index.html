@@ -1,0 +1,96 @@
+<!-- This is the project specific website template -->
+<!-- It can be changed as liked or replaced by other content -->
+
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en   ">
+
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>twsnowfall</title>
+	<link href="http://r-forge.r-project.org/themes/rforge/styles/estilo1.css" rel="stylesheet" type="text/css" />
+	<link href="preBox.css" rel="stylesheet" type="text/css" />
+  </head>
+
+<body>
+
+<h2>Welcome to twSnowfall project!</h2>
+
+<p>Extended functionality and usability for distributed code that is based on the snowfall package.</p>
+
+
+<h3>Extended load balancing</h3>
+In the following example there are two arguments of the remote function that receive
+different values per node.
+
+<pre>
+#sfInit(parallel=TRUE,cpus=2)
+
+X &lt;- matrix(0:9,nrow=5,ncol=2)
+dimnames(X) &lt;- list( rows=paste("r",1:nrow(X),sep=""), cols=paste("c",1:ncol(X),sep="")  )
+Y &lt;- X*10
+# delivering row i of X and row i of Y as arguments to F_Apply
+F_ARGS &lt;- function(i){list(arg1=X[i,],arg2=Y[i,])}
+F_APPLY &lt;- paste
+.res &lt;- sfFArgsApplyLB( nrow(X), F_ARGS, F_APPLY, sep="-")
+</pre>
+
+
+
+
+<h3>Allowing dependencies of arguments to remote function on former results.</h3>
+
+In the following example, the evaluation of a remote function for entries in one column of a matrix depends on the result
+of the former column.
+
+<pre>
+#sfInit(parallel=TRUE,cpus=2)
+
+# using as many cpus as rows in Z
+(Z&lt;-matrix(letters[1:12],nrow=3))
+F_APPLY &lt;- function(x,z) paste(x,z,sep="");
+F_ARGS &lt;- function(i,prevRes){list(x=prevRes,z=Z[i])}	
+.res0 &lt;- rep("_",nrow(Z))	# dependStep will be length of .res0
+resSeq &lt;- sfFArgsApplyDep( length(Z), F_ARGS, F_APPLY, .res0)
+(res &lt;- matrix(sfSimplifyLBResult(resSeq),nrow=nrow(Z)))
+</pre>
+
+This gives the same results as having one parallel call per column.
+However, in this implementation, the finished nodes do not need to 
+wait for possibly slower finishing of other rows, and can tackle
+already further columns.
+
+
+
+<h3>Simplifying debugging of remote errors.</h3>
+
+In the following example we use a wrapper function in the remote process that catches
+errors and creates a dump file. This dump file then can be inspected in an interactive
+R-session for debugging. 
+ 
+<pre>
+#sfInit(parallel=TRUE,cpus=2)
+sfExport("sfRemoteWrapper",namespace="twSnowfall")
+
+suppressWarnings(dir.create("tmp"))	# will store to tmp subdirectory
+.remoteDumpfileBasename=file.path("tmp","testDump2")
+.remoteDumpfile &lt;- paste(.remoteDumpfileBasename,".rda",sep="")
+unlink(.remoteDumpfile)
+# throwing an error on remote process 
+fTestStop &lt;- function(){ stop("test throwing an error") }
+tmp &lt;- try( sfClusterCall( sfRemoteWrapper, remoteFun=fTestStop, remoteDumpfileBasename=.remoteDumpfileBasename ) )
+# inspecting what was wrong in interactive R-session
+load(.remoteDumpfile)
+#debugger(get(.remoteDumpfileBasename))
+</pre>
+
+<h3>miscellaneous functions</h3>
+Several functions of general usability have been factored out into a separate package twMisc for usage by 
+other packages.
+
+<p> The <strong>project summary page</strong> you can find <a href="http://r-forge.r-project.org/projects/twsnowfall/"><strong>here</strong></a>. </p>
+
+</body>
+
+</html>

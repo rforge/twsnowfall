@@ -1,0 +1,12 @@
+Package: twSnowfall
+Title: tw snowfall extension
+Version: 0.5-1
+Date: 2010-04-15
+Author: Thomas Wutzler
+Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
+Description: snowfall extension for 1) extended load balancing and 2) dependencies of arguments to remote function on former results, and 3) Simplifying debugging of remote errors.
+Depends: twMisc, snowfall
+Suggests: inlinedocs,debug
+License: GPL-2
+LazyLoad: yes
+
