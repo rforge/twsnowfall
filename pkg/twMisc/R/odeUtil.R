@@ -173,3 +173,14 @@ twSmoothSwitch <- function(
 	### 1 for b - r/2 <= x \cr
 }
 
+twSaveZero <- function(
+	### Function going to zero for small x over several orders of magnitude
+	x			##<< numeric vector
+	,kM=1e-10	##<< order of magnitude where decrease happens
+){
+	##details<< 
+	## f(x)->1 for x >> kM; f(x)=0 for x << kM 
+	ifelse( x<=0,0,	exp(1-((x+kM)/x)) )
+}
+
+

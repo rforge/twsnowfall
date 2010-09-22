@@ -16,6 +16,7 @@ seqRange(range, ...)
 \item{ debugging: \code{\link{traceback.curr}} }
 \item{ working with constants: \code{\link{twEnumNames}} }
 \item{ support for working with ODEs: \code{\link{twIntegrateTS}} }
+\item{ Optimizing a function where first argument is an index.: \code{\link{twBinOptimize.numeric}} }
 \item{ collection of misc }
 }
 }}}
