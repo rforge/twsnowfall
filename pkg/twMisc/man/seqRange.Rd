@@ -17,7 +17,7 @@ seqRange(range, ...)
 \item{ working with constants: \code{\link{twEnumNames}} }
 \item{ support for working with ODEs: \code{\link{twIntegrateTS}} }
 \item{ Optimizing a function where first argument is an index.: \code{\link{twBinOptimize.numeric}} }
-\item{ collection of misc }
+\item{ collection of misc : \code{\link{copy2clip}}}
 }
 }}}
 

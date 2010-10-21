@@ -21,7 +21,7 @@ seqRange <- function(
 	## \item{ working with constants: \code{\link{twEnumNames}} }
 	## \item{ support for working with ODEs: \code{\link{twIntegrateTS}} }
 	## \item{ Optimizing a function where first argument is an index.: \code{\link{twBinOptimize.numeric}} }
-	## \item{ collection of misc }
+	## \item{ collection of misc : \code{\link{copy2clip}}}
 	## }
 	##}}
 	if( 0==length(list(...)))
@@ -29,6 +29,25 @@ seqRange <- function(
 	else
 		seq( range[1],range[2], ...)
 }
+
+copy2clip <- function(
+	### copies argument to the clipboard
+	x, col.names=NA, row.names=FALSE, quote=FALSE, ... 
+){	
+	##seealso<< \link{twMisc}
+
+	##details<< \describe{\item{Further mics Functionality of package twMisc}{
+	## \itemize{
+	## \item{ easy copying to clipboard: this method }
+	## \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }
+	## \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
+	## }
+	##}}
+	
+	##<<seealso \code{\link{write.table}}
+	write.table(x,"clipboard",sep="\t", row.names=row.names, col.names=row.names, quote=quote, ...)
+}  
+
 
 
 library(grDevices)
@@ -126,14 +145,6 @@ evalCommandArgs <- function(
 		eval.parent(parse(text=args[[i]]))
 	}
 }
-
-copy2clip <- function(
-	### copies argument to the clipboard
-		x, col.names=NA, row.names=FALSE, quote=FALSE, ... 
-){	
-	##<<seealso \code{\link{write.table}}
-	write.table(x,"clipboard",sep="\t", row.names=row.names, col.names=row.names, quote=quote, ...)
-}  
 
 
 
@@ -282,5 +293,23 @@ twCloseDevs <- function(
 ){
 	for( dev in dev.list()[ !(dev.list() %in% omit)] ) 
 		dev.off(dev)
+}
+
+twDf2wikiTable <- function(
+	### Mediawiki-Code for table of given data.frame. 
+	ds		##<< data.frame
+	,tableProps='style="float: right;"'	##<< additional text inlcuded in the header
+){
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	
+	rows <- paste(by(ds, 1:nrow(ds), function(row){ paste("|-\n|",paste(row[1,],collapse=" || ")) }),collapse="\n")
+	heading <-  paste("!",paste(colnames(ds),collapse=" !! "))
+	tableProps <- 'style="float: right;"'
+	#library(R.utils)
+	#tmp <- as.character(GString('{| class="wikitable" frame="hsides" ${tableProps} \n${heading}\n${rows}\n|}'))
+	tmp <- paste('{| class="wikitable" frame="hsides" ',tableProps,' \n',heading,'\n',rows,'\n|}',sep="")
+	copy2clip(tmp)
+	tmp
+	### String, Side-effect: copied to clipboard
 }
 
