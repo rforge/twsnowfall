@@ -17,7 +17,7 @@ copy2clip(x, col.names = NA, row.names = FALSE, quote = FALSE, ...)
   \item{\dots}{
 }
 }
-\details{\describe{\item{Further mics Functionality of package twMisc}{
+\details{\describe{\item{Further misc functionality of package twMisc}{
 \itemize{
 \item{ easy copying to clipboard: this method }
 \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }

@@ -21,7 +21,8 @@ seqRange <- function(
 	## \item{ working with constants: \code{\link{twEnumNames}} }
 	## \item{ support for working with ODEs: \code{\link{twIntegrateTS}} }
 	## \item{ Optimizing a function where first argument is an index.: \code{\link{twBinOptimize.numeric}} }
-	## \item{ collection of misc : \code{\link{copy2clip}}}
+	## \item{ plotting routines: \code{\link{twPairs}}}
+	## \item{ collection of misc: \code{\link{copy2clip}}}
 	## }
 	##}}
 	if( 0==length(list(...)))
@@ -36,7 +37,7 @@ copy2clip <- function(
 ){	
 	##seealso<< \link{twMisc}
 
-	##details<< \describe{\item{Further mics Functionality of package twMisc}{
+	##details<< \describe{\item{Further misc functionality of package twMisc}{
 	## \itemize{
 	## \item{ easy copying to clipboard: this method }
 	## \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }
