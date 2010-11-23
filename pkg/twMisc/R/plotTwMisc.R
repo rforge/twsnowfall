@@ -93,7 +93,7 @@ twPlot2DFun <- function(
 	mydf$zz <- if( is.numeric(FUN) ) as.vector(FUN) else do.call(FUN, c(list(mydf$xx,mydf$yy),argsFUN) )
 	res <- matrix(mydf$zz,nrow=length(xs), dimnames={tmp<-list(xs=xs,ys=ys); names(tmp)<-c(xy$xlab,xy$ylab);tmp})
 	if( contour ){
-		filled.contour( xs, ys, res, xlab=xlab, ylab=ylab, ... )
+		filled.contour( xs, ys, res, xlab=xlab, ylab=ylab, key.title=key.title,... )
 	}else{
 		zlim <- range(res, na.rm=TRUE)
 		levels <- seq( zlim[1], zlim[2], length.out=length(col)+1 )
