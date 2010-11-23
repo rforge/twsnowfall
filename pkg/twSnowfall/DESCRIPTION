@@ -9,4 +9,3 @@ Depends: twMisc, snowfall
 Suggests: inlinedocs,debug
 License: GPL-2
 LazyLoad: yes
-

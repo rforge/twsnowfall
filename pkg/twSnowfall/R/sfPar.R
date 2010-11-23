@@ -18,7 +18,7 @@
 	} 
 	traceback.curr()
 	str(sfParArgsList)
-	stop("sfParInt: evaluated argsList must be a list")
+	stop(".sfParInternal: evaluated argsList must be a list")
 }
 
 sfPar <- function(
