@@ -1,5 +1,7 @@
 \name{twMisc-internal}
 \title{Internal twMisc objects}
+\alias{.calcKnots}
+\alias{.inside}
 \alias{.panel.cor}
 \alias{.panel.hist}
 \alias{.tmp.f}

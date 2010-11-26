@@ -314,3 +314,188 @@ twDf2wikiTable <- function(
 	### String, Side-effect: copied to clipboard
 }
 
+cutQuantiles <- function (
+	### Cut a Numeric Variable into Intervals of about same number of observations.
+	x			##<< numeric vector to classify into intervals 
+	, cuts		##<< cut points 
+	, m = 150	##<< desired minimum number of observations in a group 
+	, g			##<< number of quantile groups 
+	, levels.mean = FALSE	##<< set to TRUE to make the new categorical vector have levels attribute that is the group means of x instead of interval endpoint labels 
+	, digits	##<< number of significant digits to use in constructing levels. Default is 3 (5 if levels.mean=TRUE) 
+	, minmax = TRUE	##<< if cuts is specified but min(x)<min(cuts) or max(x)>max(cuts), augments cuts to include min and max x
+	, oneval = TRUE	##<< if an interval contains only one unique value, the interval will be labeled with the formatted version of that value instead of the interval endpoints, unless oneval=FALSE
+	, onlycuts = FALSE	##<< set to TRUE to only return the vector of computed cuts. This consists of the interior values plus outer ranges. 
+){
+	##details<< 
+	## copied from Hmisc:cutQuantiles to reduce package dependencies.
+	
+	##seealso<< \code{\link{cut}},\code{\link{quantile}}
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	
+	method <- 1
+	x.unique <- sort(unique(c(x[!is.na(x)], if (!missing(cuts)) cuts)))
+	min.dif <- min(diff(x.unique))/2
+	min.dif.factor <- 1
+	if (missing(digits)) 
+		digits <- if (levels.mean) 
+				5
+			else 3
+	oldopt <- options(digits = digits)
+	on.exit(options(oldopt))
+	xlab <- attr(x, "label")
+	if (missing(cuts)) {
+		nnm <- sum(!is.na(x))
+		if (missing(g)) 
+			g <- max(1, floor(nnm/m))
+		if (g < 1) 
+			stop("g must be >=1, m must be positive")
+		options(digits = 15)
+		n <- table(x)
+		xx <- as.double(names(n))
+		options(digits = digits)
+		cum <- cumsum(n)
+		m <- length(xx)
+		y <- as.integer(ifelse(is.na(x), NA, 1))
+		labs <- character(g)
+		cuts <- approx(cum, xx, xout = (1:g) * nnm/g, method = "constant", 
+			rule = 2, f = 1)$y
+		cuts[length(cuts)] <- max(xx)
+		lower <- xx[1]
+		upper <- 1e+45
+		up <- low <- double(g)
+		i <- 0
+		for (j in 1:g) {
+			cj <- if (method == 1 || j == 1) 
+					cuts[j]
+				else {
+					if (i == 0) 
+						stop("program logic error")
+					s <- if (is.na(lower)) 
+							FALSE
+						else xx >= lower
+					cum.used <- if (all(s)) 
+							0
+						else max(cum[!s])
+					if (j == m) 
+						max(xx)
+					else if (sum(s) < 2) 
+						max(xx)
+					else approx(cum[s] - cum.used, xx[s], xout = (nnm - 
+									cum.used)/(g - j + 1), method = "constant", 
+							rule = 2, f = 1)$y
+				}
+			if (cj == upper) 
+				next
+			i <- i + 1
+			upper <- cj
+			y[x >= (lower - min.dif.factor * min.dif)] <- i
+			low[i] <- lower
+			lower <- if (j == g) 
+					upper
+				else min(xx[xx > upper])
+			if (is.na(lower)) 
+				lower <- upper
+			up[i] <- lower
+		}
+		low <- low[1:i]
+		up <- up[1:i]
+		variation <- logical(i)
+		for (ii in 1:i) {
+			r <- range(x[y == ii], na.rm = TRUE)
+			variation[ii] <- diff(r) > 0
+		}
+		if (onlycuts) 
+			return(unique(c(low, max(xx))))
+		flow <- format(low)
+		fup <- format(up)
+		bb <- c(rep(")", i - 1), "]")
+		labs <- ifelse(low == up | (oneval & !variation), flow, 
+			paste("[", flow, ",", fup, bb, sep = ""))
+		ss <- y == 0 & !is.na(y)
+		if (any(ss)) 
+			stop(paste("categorization error in cutQuantiles.  Values of x not appearing in any interval:\n", 
+					paste(format(x[ss], digits = 12), collapse = " "), 
+					"\nLower endpoints:", paste(format(low, digits = 12), 
+						collapse = " "), "\nUpper endpoints:", paste(format(up, 
+							digits = 12), collapse = " ")))
+		y <- structure(y, class = "factor", levels = labs)
+	}
+	else {
+		if (minmax) {
+			r <- range(x, na.rm = TRUE)
+			if (r[1] < cuts[1]) 
+				cuts <- c(r[1], cuts)
+			if (r[2] > max(cuts)) 
+				cuts <- c(cuts, r[2])
+		}
+		l <- length(cuts)
+		k2 <- cuts - min.dif
+		k2[l] <- cuts[l]
+		y <- cut(x, k2)
+		if (!levels.mean) {
+			brack <- rep(")", l - 1)
+			brack[l - 1] <- "]"
+			fmt <- format(cuts)
+			labs <- paste("[", fmt[1:(l - 1)], ",", fmt[2:l], 
+				brack, sep = "")
+			if (oneval) {
+				nu <- table(cut(x.unique, k2))
+				if (length(nu) != length(levels(y))) 
+					stop("program logic error")
+				levels(y) <- ifelse(nu == 1, c(fmt[1:(l - 2)], 
+						fmt[l]), labs)
+			}
+			else levels(y) <- labs
+		}
+	}
+	if (levels.mean) {
+		means <- tapply(x, y, function(w) mean(w, na.rm = TRUE))
+		levels(y) <- format(means)
+	}
+	attr(y, "class") <- "factor"
+	if (length(xlab)) 
+		attr(y, "label") <- xlab #label(y) <- xlab
+	y
+	### a factor variable with levels of the form [a,b) or formatted means (character strings) unless onlycuts is TRUE in which case a numeric vector is returned
+}
+attr(cutQuantiles,"ex") <- function(){
+	set.seed(1)
+	x <- runif(1000, 0, 100)
+	z <- cutQuantiles(x, c(10,20,30))
+	table(z)
+	table(cutQuantiles(x, g=10))      # quantile groups
+	table(cutQuantiles(x, m=50))      # group x into intevals with at least 50 obs.
+}
+
+.inside <- function (x, interval){	x >= interval[1] & x <= interval[2] }
+
+twRescale <- function (
+	### Rescale numeric vector to have specified minimum and maximum. 
+	x,								##<< data to rescale
+	to = c(0, 1),					##<< range to scale to
+	from = range(x, na.rm = TRUE),	##<< range to scale from, defaults to range of data
+	clip = TRUE						##<< should values be clipped to specified range?
+){
+	##details<<
+	## copied from package ggplot2 to avoid package redundancies
+	##author<< Hadley Wickham <h.wickham@gmail.com>
+	if (length(from) == 1 || length(to) == 1 || from[1] == from[2] || 
+		to[1] == to[2]) 
+		return(x)
+	if (is.factor(x)) {
+		warning("Categorical variable automatically converted to continuous", 
+			call. = FALSE)
+		x <- as.numeric(x)
+	}
+	scaled <- (x - from[1])/diff(from) * diff(to) + to[1]
+	if (clip) {
+		ifelse(!is.finite(scaled) | .inside(scaled,to), scaled, 
+			NA)
+	}
+	else {
+		scaled
+	}
+}
+
+
+
