@@ -3,7 +3,7 @@
 \title{cutQuantiles}
 \description{Cut a Numeric Variable into Intervals of about same number of observations.}
 \usage{
-cutQuantiles(x, cuts, m = 150, g, levels.mean = FALSE, digits, minmax = TRUE, oneval = TRUE, onlycuts = FALSE, onlymeans = TRUE)
+cutQuantiles(x, cuts, m = 150, g, levels.mean = FALSE, digits, minmax = TRUE, oneval = TRUE, onlycuts = FALSE, onlymeans = FALSE)
 }
 \arguments{
   \item{x}{numeric vector to classify into intervals}

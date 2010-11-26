@@ -325,7 +325,7 @@ cutQuantiles <- function (
 	, minmax = TRUE	##<< if cuts is specified but min(x)<min(cuts) or max(x)>max(cuts), augments cuts to include min and max x
 	, oneval = TRUE	##<< if an interval contains only one unique value, the interval will be labeled with the formatted version of that value instead of the interval endpoints, unless oneval=FALSE
 	, onlycuts = FALSE	##<< set to TRUE to only return the vector of computed cuts. This consists of the interior values plus outer ranges. 
-	, onlymeans = TRUE	##<< set to TRUE to only return the means of x within each group 
+	, onlymeans = FALSE	##<< set to TRUE to only return the means of x within each group 
 ){
 	##details<< 
 	## copied from Hmisc:cutQuantiles to reduce package dependencies.
