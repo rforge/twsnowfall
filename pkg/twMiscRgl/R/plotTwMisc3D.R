@@ -96,10 +96,11 @@ attr(plot.twApply3DMesh,"ex") <- function(){
 	plot( tmp, levels=seq(0.05, 0.14, len=3) )	# specifying contour levels directly at function value scale 
 	plot( tmp, probs=seq(0.5, 0.95, len=4), nDrawPoints=0)		# specifying quantiles of FUN results
 }
+
 .tmp.f <- function(){
 	# generate a movie
 	# make sure command convert from ImageMagick can be found
-	open3d(windowRect=c(0,0,200,200)+20)	# make a bigger window
+	open3d(windowRect=c(0,0,200,200)+20)	# adjust window widht
 	plot3d( cube3d(col="green") )
 	# remember that z axis goes into depth of the screen with rotationMatrix and to top with rotate3d
 	#par3d(userMatrix = rotationMatrix(-90*pi/180, 1,0,0))	# rotate so that z points up
@@ -124,6 +125,7 @@ twApply3DMesh <- function(
 		##end<<
 	,nSample=0			##<< number of points to sample from xyz in addition to grid
 		## Results will be provided in dataframe of four coloumns with attribute "sample".
+	,label=deparse(substitute(FUN))	##<< label of the z-variable, stored in attribute label
 	,...				##<< further arguments passed to FUN
 ){
 	##seealso<< \code{\link{plot.twApply3DMesh}}
@@ -149,6 +151,7 @@ twApply3DMesh <- function(
 		dsSub$h <- do.call(FUN, c(list(dsSub$x,dsSub$y,dsSub$z),argsFUN,list(...)) )
 		attr(res,"sample") <- dsSub
 	}
+	attr(res,"label") <- label
 	res
 	### three dimensional array of class twApply3DMesh with results of calling FUN. Attribute dimnames holds the mesh of respective arguments.
 }
