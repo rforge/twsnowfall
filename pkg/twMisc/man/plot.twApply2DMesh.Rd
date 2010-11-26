@@ -3,28 +3,11 @@
 \title{plot twApply2DMesh}
 \description{Creating an image or contour plot of a three-dimensional array.}
 \usage{
-plot.twApply2DMesh(x, xlab = NULL, ylab = NULL, zlab = NULL, key.title, key.axes, axes = TRUE, las = 1, contour = FALSE, col = rev(heat.colors(20)), color.palette = function(n) {
-    rev(heat.colors(n))
-}, ...)
+plot.twApply2DMesh(x, ...)
 }
 \arguments{
   \item{x}{object of class twApply2DMesh, a result of \code{\link{twApply2DMesh}}}
-  \item{xlab}{labels, default to variable names or column names in x}
-  \item{ylab}{
-}
-  \item{zlab}{
-}
-  \item{key.title}{see \code{\link{filled.contour}}}
-  \item{key.axes}{
-}
-  \item{axes}{
-}
-  \item{las}{
-}
-  \item{contour}{if TRUE then \code{\link{filled.contour}} is used for plotting. Otherwisee \code{\link{image}}}
-  \item{col}{colors for using image}
-  \item{color.palette}{colors for using filled.contour}
-  \item{\dots}{further arguments passed to \code{\link{filled.contour}} or \code{\link{image}}}
+  \item{\dots}{further arguments passed to \code{\link{twPlot2D}}}
 }
 
 

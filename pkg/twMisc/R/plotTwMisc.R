@@ -101,6 +101,7 @@ twApply2DMesh <- function(
 		all="all",				##<< take all the provided xyz coordinates (overwrites nKnots)
 		equidistant="equidistant")	##<< cover the range of dimension i by \code{dims[i]} equidistant points
 		##end<<
+	,label=deparse(substitute(FUN))
 	,...				##<< further arguments passed to FUN
 ){
 	##seealso<< \code{\link{plot.twApply2DMesh}}
@@ -110,6 +111,9 @@ twApply2DMesh <- function(
 	if( 0==length(xy$xlab) ) xy$xlab=deparse(substitute(x))
 	if( 0==length(xy$ylab) ) xy$ylab=deparse(substitute(y))
 	dr <- lapply(xy[1:2],range)
+	knotSpacing <- match.arg(knotSpacing)
+	if( knotSpacing=="all" )
+		dims=rep( length(xy$x),2 )
 	grid <- lapply(1:2, function(i){ .calcKnots(xy[[i]], nKnots=dims[i], knotSpacing=knotSpacing) })
 	names(grid) <- names(xy)[1:2]
 	mydf <- do.call( expand.grid, grid )
@@ -117,6 +121,7 @@ twApply2DMesh <- function(
 	res <- array(h, dim=dims, dimnames=grid)
 	names(dimnames(res)) <- c(xy$xlab,xy$ylab)
 	class(res) <- "twApply2DMesh"
+	attr(res,"label") <- label
 	res
 	### two dimensional array of class twApply2DMesh with results of calling FUN. Attribute dimnames holds the arguments.
 }
@@ -124,6 +129,37 @@ twApply2DMesh <- function(
 setMethodS3("plot","twApply2DMesh", function( 
 	### Creating an image or contour plot of a three-dimensional array.
 	x							##<< object of class twApply2DMesh, a result of \code{\link{twApply2DMesh}}
+	,zlab=NULL					##<< label of the color key 				
+	, ...						##<< further arguments passed to \code{\link{twPlot2D}} 
+){
+	# plot.twApply2DMesh
+	##seealso<< \code{\link{twPairs}}, \link{twMisc}
+	dn <- sapply( dimnames(x), as.numeric )
+	if( 0==length(zlab)) zlab=attr(x,"label")
+	twPlot2D(dn,z=x,zlab=zlab,...)
+})
+attr(plot.twApply2DMesh,"ex") <- function(){
+	#Example: Nested contours of mixture of three tri-variate normal densities
+	nmix3 <- function(x, y, m, s) {
+		0.4 * dnorm(x, m, s) * dnorm(y, m, s)  +
+			0.3 * dnorm(x, -m, s) * dnorm(y, -m, s)  +
+			0.3 * dnorm(x, m, s) * dnorm(y, -1.5 * m, s) 
+	}
+	f <- function(x,y) nmix3(x,y,.5,.5)
+	
+	n <- 50
+	x <- rnorm(n,.5,.7)
+	y <- rnorm(n,.5,.8)
+	#mtrace(twApply2DMesh)
+	#mtrace(twPlot2DFun)
+	plot( tmp <- twApply2DMesh(x,y,f,dims=30,label="density"))
+	plot( tmp, contour=TRUE)
+}
+		
+twPlot2D <- function(
+	### Creating an image or contour plot of a three-dimensional array.
+	x,y=NULL		##<< locations of grid lines at which the values in z are measured. These must be in ascending order. By default, equally spaced values from 0 to 1 are used. If x is a list, its components x$x and x$y are used for x and y, respectively. If the list has component z this is used for z.
+	,z=NULL			##<< a matrix containing the values to be plotted (NAs are allowed). Note that x can be used instead of z for convenience.						
 	, xlab=NULL, ylab=NULL, zlab=NULL	##<< labels, default to variable names or column names in x
 	, key.title, key.axes, axes=TRUE, las = 1	##<< see \code{\link{filled.contour}}
 	, contour=FALSE				##<< if TRUE then \code{\link{filled.contour}} is used for plotting. Otherwisee \code{\link{image}}
@@ -135,22 +171,24 @@ setMethodS3("plot","twApply2DMesh", function(
 ){
 	# plot.twApply2DMesh
 	##seealso<< \code{\link{twPairs}}, \link{twMisc}
-	dn <- sapply( dimnames(x), as.numeric )
-	xy <- xy.coords(dn)
+	xy <- xy.coords(x,y)
+	if( 0==length(xy$xlab) ) xy$xlab=deparse(substitute(x))
+	if( 0==length(xy$ylab) ) xy$ylab=deparse(substitute(y))
 	if( 0==length(xlab) ) xlab=xy$xlab
 	if( 0==length(ylab) ) ylab=xy$ylab
-
+	if( (0==length(zlab)) & (0<length(z)) )  zlab=deparse(substitute(z))
+	
 	par.orig <- par(c("mar", "las", "mfrow"))
 	on.exit(par(par.orig))
 	
 	if( contour ){
 		if (missing(key.title)) 
-			filled.contour( xy$x, xy$y, x, xlab=xlab, ylab=ylab, key.title=title(sub=zlab,line=1), color.palette=color.palette, ... )
+			filled.contour( xy$x, xy$y, z, xlab=xlab, ylab=ylab, key.title=title(sub=zlab,line=1), color.palette=color.palette, ... )
 		else
-			filled.contour( xy$x, xy$y, x, xlab=xlab, ylab=ylab, color.palette=color.palette, ... )
+			filled.contour( xy$x, xy$y, z, xlab=xlab, ylab=ylab, color.palette=color.palette, ... )
 	}else{
 		mar.orig <- par.orig$mar
-		zlim <- range(x, na.rm=TRUE)
+		zlim <- range(z, na.rm=TRUE)
 		levels <- seq( zlim[1], zlim[2], length.out=length(col)+1 )
 		
 		w <- (3 + mar.orig[2L]) * par("csi") * 2.54
@@ -174,12 +212,11 @@ setMethodS3("plot","twApply2DMesh", function(
 		par(mar = mar)
 		
 		#image(xs,ys,res, xlab=xlab, ylab=ylab, breaks=levels, col=col )
-		image(xy$x, xy$y,x, xlab=xlab, ylab=ylab, breaks=levels, col=col, ... )
+		image(xy$x, xy$y,z, xlab=xlab, ylab=ylab, breaks=levels, col=col, ... )
 		box()
 	}
-})
-attr(plot.twApply2DMesh,"ex") <- function(){
-	#Example: Nested contours of mixture of three tri-variate normal densities
+}
+attr(twPlot2D,"ex") <- function(){
 	nmix3 <- function(x, y, m, s) {
 		0.4 * dnorm(x, m, s) * dnorm(y, m, s)  +
 			0.3 * dnorm(x, -m, s) * dnorm(y, -m, s)  +
@@ -187,12 +224,14 @@ attr(plot.twApply2DMesh,"ex") <- function(){
 	}
 	f <- function(x,y) nmix3(x,y,.5,.5)
 	
-	n <- 50
-	x <- rnorm(n,.5,.7)
-	y <- rnorm(n,.5,.8)
-	#mtrace(twApply2DMesh)
-	#mtrace(twPlot2DFun)
-	plot( tmp <- twApply2DMesh(x,y,f,dims=30))
-	plot( tmp, contour=TRUE, zlab="density")
+	n <- 30
+	x <- sort(rnorm(n,.5,.7))
+	y <- sort(rnorm(n,.5,.8))
+#mtrace(twApply2DMesh)
+#mtrace(twPlot2DFun)
+	tmp <- twApply2DMesh(x,y,f,knotSpacing="all")
+	twPlot2D( x,y,tmp,zlab="density")
+	
 }
+
 

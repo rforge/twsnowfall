@@ -28,7 +28,7 @@ pkg<-"twMisc"
 	library(inlinedocs)
 	unlink( file.path("man","*.Rd") )	
 	package.skeleton.dx(".")
-	try(file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" ))	# copy descriptions of data
+	try(file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" ), silent=TRUE)	# copy descriptions of data
 	
 	# generate the HTML  files
 	prevWd <- setwd("..")
