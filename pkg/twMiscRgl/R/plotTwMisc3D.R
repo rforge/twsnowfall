@@ -149,6 +149,7 @@ twApply3DMesh <- function(
 		ds <- as.data.frame(xyz[1:3])
 		dsSub <- if( nSample < nrow(ds)) ds[ sample.int(nrow(ds),nSample),] else ds
 		dsSub$h <- do.call(FUN, c(list(dsSub$x,dsSub$y,dsSub$z),argsFUN,list(...)) )
+		names(dsSub) <- c(names(dimnames(res)), label)
 		attr(res,"sample") <- dsSub
 	}
 	attr(res,"label") <- label
