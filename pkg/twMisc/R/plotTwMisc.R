@@ -79,9 +79,15 @@ twPairs <- function (
 	res <- switch(knotSpacing,
 		all = x,
 		equidistant = seq(r[1], r[2], length.out=nKnots),
-		quantile = cutQuantiles(x,g=nKnots,levels.mean=TRUE,onlycuts=TRUE),
+		quantile = cutQuantiles(x,g=nKnots,onlymeans=TRUE),
 		stop(".calcKnots: unknown method of spacing knots."))
 	### numeric vector of positions across the range of x 
+}
+attr(.calcKnots,"ex") <- function(){
+	x <- rnorm(100)
+	tmp <- .calcKnots(x,10)
+	plot(density(x))
+	abline(v=tmp, col="grey")
 }
 
 twApply2DMesh <- function(

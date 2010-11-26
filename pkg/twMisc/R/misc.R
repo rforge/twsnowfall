@@ -325,6 +325,7 @@ cutQuantiles <- function (
 	, minmax = TRUE	##<< if cuts is specified but min(x)<min(cuts) or max(x)>max(cuts), augments cuts to include min and max x
 	, oneval = TRUE	##<< if an interval contains only one unique value, the interval will be labeled with the formatted version of that value instead of the interval endpoints, unless oneval=FALSE
 	, onlycuts = FALSE	##<< set to TRUE to only return the vector of computed cuts. This consists of the interior values plus outer ranges. 
+	, onlymeans = TRUE	##<< set to TRUE to only return the means of x within each group 
 ){
 	##details<< 
 	## copied from Hmisc:cutQuantiles to reduce package dependencies.
@@ -406,6 +407,9 @@ cutQuantiles <- function (
 		}
 		if (onlycuts) 
 			return(unique(c(low, max(xx))))
+		if( onlymeans){
+			return(tapply(x, y, function(w) mean(w, na.rm = TRUE)))
+		}
 		flow <- format(low)
 		fup <- format(up)
 		bb <- c(rep(")", i - 1), "]")
@@ -464,6 +468,7 @@ attr(cutQuantiles,"ex") <- function(){
 	z <- cutQuantiles(x, c(10,20,30))
 	table(z)
 	table(cutQuantiles(x, g=10))      # quantile groups
+	cutQuantiles(x, g=10, onlymeans=TRUE)	  # get only the means of each group
 	table(cutQuantiles(x, m=50))      # group x into intevals with at least 50 obs.
 }
 
