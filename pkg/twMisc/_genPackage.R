@@ -28,7 +28,7 @@ pkg<-"twMisc"
 	library(inlinedocs)
 	unlink( file.path("man","*.Rd") )	
 	package.skeleton.dx(".")
-	file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" )	# copy descriptions of data
+	try(file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" ))	# copy descriptions of data
 	
 	# generate the HTML  files
 	prevWd <- setwd("..")
@@ -61,11 +61,8 @@ pkg<-"twMisc"
 	(res <- twUtestF())
 	
 	# let R check package consistency
-	prevWd <- setwd("..")
-	system(	cmd <- paste("R CMD check --no-latex ",pkg, sep="") )
-	copy2clip(cmd)
-	setwd(prevWd)
-	
+	copy2clip( cmd <- paste("R CMD check --no-latex ",pkg, sep="") )
+	prevWd <- setwd("..");	system(cmd);  setwd(prevWd)
 }
 
 

@@ -14,7 +14,7 @@ twPairs(x, nsample = 200, ...)
 \itemize{
 \item Pairs-plot with scatterplots in upper part and histogram in diagonal: this method 
 \item 2D image and contour plots: \code{\link{plot.twApply2DMesh}}
-\item 3D scatter and contour plots: \code{\link{plot.twApply3DMesh}} 
+\item 3D scatter and contour plots: \code{plot.twApply3DMesh} has been moved to package twMiscRgl because of package dependencies. 
 \item TODO: link functions: \code{\link{twDf2wikiTable}} 
 }
 }}
