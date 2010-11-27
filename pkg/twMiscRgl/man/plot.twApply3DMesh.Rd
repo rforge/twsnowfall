@@ -4,7 +4,7 @@
 \title{plot twApply3DMesh}
 \description{Creates an rgl scene with contours from calculated mesh.}
 \usage{
-plot.twApply3DMesh(x, probs = NULL, levels = NULL, xlab = NULL, ylab = NULL, zlab = NULL, sample = attr(x, "sample"), nDrawPoints = if (0 < length(sample)) nrow(sample) else 200, col = rev(heat.colors(100)), alo = 0.1, ahi = 0.5, cmap = heat.colors, box = TRUE, axes = TRUE, ...)
+plot.twApply3DMesh(x, probs = NULL, levels = NULL, xlab = NULL, ylab = NULL, zlab = NULL, sample = x$sample, nDrawPoints = if (0 < length(sample)) nrow(sample) else 200, col = rev(heat.colors(100)), alo = 0.1, ahi = 0.5, cmap = heat.colors, box = TRUE, axes = TRUE, xlim = NULL, ylim = NULL, zlim = NULL, ...)
 }
 \arguments{
   \item{x}{results of \code{\link{twApply3DMesh}}}
@@ -25,6 +25,12 @@ plot.twApply3DMesh(x, probs = NULL, levels = NULL, xlab = NULL, ylab = NULL, zla
 }
   \item{box}{whether to draw box and axes}
   \item{axes}{
+}
+  \item{xlim}{
+}
+  \item{ylim}{
+}
+  \item{zlim}{
 }
   \item{\dots}{further arguments to \code{\link{plot3d}}}
 }

@@ -3,7 +3,7 @@
 \title{twApply3DMesh}
 \description{Applying FUN over cube-grid of x,y,z values}
 \usage{
-twApply3DMesh(x, y = NULL, z = NULL, FUN = "+", argsFUN = list(), dims = 5, knotSpacing = c(quantile = "quantile", all = "all", equidistant = "equidistant"), nSample = 0, ...)
+twApply3DMesh(x, y = NULL, z = NULL, FUN = "+", argsFUN = list(), dims = 5, knotSpacing = c(quantile = "quantile", all = "all", equidistant = "equidistant"), nSample = 0, label = deparse(substitute(FUN)), ...)
 }
 \arguments{
   \item{x}{range of x,y and z ordinate see \code{\link{xyz.coords}}}
@@ -23,10 +23,17 @@ twApply3DMesh(x, y = NULL, z = NULL, FUN = "+", argsFUN = list(), dims = 5, knot
 }}
   \item{nSample}{number of points to sample from xyz in addition to grid
 Results will be provided in dataframe of four coloumns with attribute "sample".}
+  \item{label}{label of the z-variable, stored in attribute label}
   \item{\dots}{further arguments passed to FUN}
 }
 
-\value{three dimensional array of class twApply3DMesh with results of calling FUN. Attribute dimnames holds the mesh of respective arguments.}
+\value{list of class twApply2DMesh with itmes \itemize{
+\item mesh:matrix with each row one coordinate and two columns corresponding to x and y 
+\item fval: the two dimensional array of evaluated function values
+\item sample: data frame with four columns corresponding to points additional to the grid
+\item label: argument label describing fval
+\item rangeOrig: list with items x, and y with the range of the original sample
+}}
 
 \author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
 
