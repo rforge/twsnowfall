@@ -94,7 +94,7 @@ twApply2DMesh <- function(
 	### Applying FUN over cube-grid of x,y,z values
 	x,y=NULL					##<< range of x and y ordinate see \code{\link{xy.coords}}
 	,FUN="+", argsFUN=list()	
-	,dims=20					##<< integer vector of length 1 or 3: number of points
+	,dims=20					##<< integer vector of length 1 or 2: number of points
 	,knotSpacing=c(				##<< method of calculating knot positions
 		##describe<<
 		quantile="quantile",	##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points (default) 
@@ -118,25 +118,34 @@ twApply2DMesh <- function(
 	names(grid) <- names(xy)[1:2]
 	mydf <- do.call( expand.grid, grid )
 	h <- do.call(FUN, c(list(mydf$x,mydf$y),argsFUN,list(...)) )
-	res <- array(h, dim=dims, dimnames=grid)
-	names(dimnames(res)) <- c(xy$xlab,xy$ylab)
-	class(res) <- "twApply2DMesh"
-	attr(res,"label") <- label
-	res
-	### two dimensional array of class twApply2DMesh with results of calling FUN. Attribute dimnames holds the arguments.
+	#res <- array(h, dim=dims, dimnames=grid)
+	res <- array(h, dim=dims, dimnames=list(x=NULL,y=NULL))
+	names(dimnames(res)) <- names(grid) <- c(xy$xlab,xy$ylab)
+	resList <- list( mesh=do.call(cbind,grid), fval=res, label=label, rangeOrig=lapply(xy[1:2],range))
+	class(resList) <- "twApply2DMesh"
+	resList
+	### list of class twApply2DMesh with itmes \itemize{
+	### \item mesh:matrix with each row one coordinate and two columns corresponding to x and y 
+	### \item fval: the two dimensional array of evaluated function values
+	### \item label: argument label describing fval
+	### \item rangeOrig: list with items x, and y with the range of the original sample
+	### }
 }
 
 setMethodS3("plot","twApply2DMesh", function( 
 	### Creating an image or contour plot of a three-dimensional array.
 	x							##<< object of class twApply2DMesh, a result of \code{\link{twApply2DMesh}}
-	,zlab=NULL					##<< label of the color key 				
+	,zlab=NULL					##<< label of the color key
+	,xlim=NULL,ylim=NULL		
 	, ...						##<< further arguments passed to \code{\link{twPlot2D}} 
 ){
 	# plot.twApply2DMesh
 	##seealso<< \code{\link{twPairs}}, \link{twMisc}
-	dn <- sapply( dimnames(x), as.numeric )
-	if( 0==length(zlab)) zlab=attr(x,"label")
-	twPlot2D(dn,z=x,zlab=zlab,...)
+	#dn <- sapply( dimnames(x), as.numeric )
+	if( 0==length(zlab)) zlab=x$label
+	if( 0==length(xlim)) xlim=x$rangeOrig$x
+	if( 0==length(ylim)) ylim=x$rangeOrig$y
+	twPlot2D(x$mesh,z=x$fval,zlab=zlab,xlim=xlim,ylim=ylim,...)
 })
 attr(plot.twApply2DMesh,"ex") <- function(){
 	#Example: Nested contours of mixture of three tri-variate normal densities
@@ -149,10 +158,10 @@ attr(plot.twApply2DMesh,"ex") <- function(){
 	
 	n <- 50
 	x <- rnorm(n,.5,.7)
-	y <- rnorm(n,.5,.8)
+	yy <- rnorm(n,.5,.8)
 	#mtrace(twApply2DMesh)
 	#mtrace(twPlot2DFun)
-	plot( tmp <- twApply2DMesh(x,y,f,dims=30,label="density"))
+	plot( tmp <- twApply2DMesh(x,yy,f,dims=30,label="density"))
 	plot( tmp, contour=TRUE)
 }
 		

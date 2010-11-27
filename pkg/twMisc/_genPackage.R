@@ -46,7 +46,7 @@ pkg<-"twMisc"
 	html_viewer(file.path(htmlRoot,"00Index.html"))
 	
 	# copy to the generated html into working directory
-	file.copy( htmlRoot, ".", recursive=TRUE)
+	#file.copy( htmlRoot, ".", recursive=TRUE)
 }
 
 .tmp.UnitTests <- function(){

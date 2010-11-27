@@ -3,10 +3,15 @@
 \title{plot twApply2DMesh}
 \description{Creating an image or contour plot of a three-dimensional array.}
 \usage{
-plot.twApply2DMesh(x, ...)
+plot.twApply2DMesh(x, zlab = NULL, xlim = NULL, ylim = NULL, ...)
 }
 \arguments{
   \item{x}{object of class twApply2DMesh, a result of \code{\link{twApply2DMesh}}}
+  \item{zlab}{label of the color key}
+  \item{xlim}{
+}
+  \item{ylim}{
+}
   \item{\dots}{further arguments passed to \code{\link{twPlot2D}}}
 }
 
@@ -28,9 +33,9 @@ f <- function(x,y) nmix3(x,y,.5,.5)
 
 n <- 50
 x <- rnorm(n,.5,.7)
-y <- rnorm(n,.5,.8)
+yy <- rnorm(n,.5,.8)
 #mtrace(twApply2DMesh)
 #mtrace(twPlot2DFun)
-plot( tmp <- twApply2DMesh(x,y,f,dims=30))
-plot( tmp, contour=TRUE, zlab="density")
+plot( tmp <- twApply2DMesh(x,yy,f,dims=30,label="density"))
+plot( tmp, contour=TRUE)
 }

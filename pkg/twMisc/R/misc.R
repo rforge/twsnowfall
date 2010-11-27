@@ -408,7 +408,7 @@ cutQuantiles <- function (
 		if (onlycuts) 
 			return(unique(c(low, max(xx))))
 		if( onlymeans){
-			return(tapply(x, y, function(w) mean(w, na.rm = TRUE)))
+			return( as.vector(tapply(x, y, function(w) mean(w, na.rm = TRUE))) )
 		}
 		flow <- format(low)
 		fup <- format(up)
