@@ -21,10 +21,16 @@ pkg<-"twMisc"
 	#data( list=twStripFileExt(basename(Sys.glob(file.path("data","*.RData")))))
 }
 
+.tmp.installInlineDocs <- function(){
+	prevWd <- setwd("..")
+	system(	paste("R CMD INSTALL --html inlinedocs/pkg/inlinedocs", sep="") )
+	setwd(prevWd)
+}
 .tmp.inlinedocs <- function(){
 	# generate documentation
 	
 	# generate RD Files
+	pkg<-"twMisc"
 	library(inlinedocs)
 	unlink( file.path("man","*.Rd") )	
 	package.skeleton.dx(".")

@@ -68,18 +68,19 @@ twPairs <- function (
 	,knotSpacing=c(					
 		### method for calulating the knots 
 		##describe<<
-		quantile="quantile"		##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points (default) 
-		,all="all"				##<< take all the provided xyz coordinates (overwrites nKnots)
-		,equidistant="equidistant"	##<< cover the range of dimension i by \code{nKnots} equidistant points
+		quantile="quantile"		##<< \code{\link{cutQuantiles}} for breaks of intervals holding about equal number of points, includes edges (default) 
+		,midquantile="midquantile"	##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points, by excluding the edges the sample is represented better  
+		,all="all"					##<< take all the provided xyz coordinates (overwrites nKnots)
+		,equidistant="equidistant")	##<< cover the range of dimension i by \code{nKnots} equidistant points
 		##end<<
-	)	
 ){
 	r <- range(x)
 	knotSpacing <- match.arg(knotSpacing)
 	res <- switch(knotSpacing,
 		all = x,
 		equidistant = seq(r[1], r[2], length.out=nKnots),
-		quantile = cutQuantiles(x,g=nKnots,onlymeans=TRUE),
+		quantile = cutQuantiles(x,g=nKnots-1,onlycuts=TRUE),	# 1 more cuts than intervals
+		midquantile = cutQuantiles(x,g=nKnots,onlymeans=TRUE),
 		stop(".calcKnots: unknown method of spacing knots."))
 	### numeric vector of positions across the range of x 
 }
@@ -95,17 +96,23 @@ twApply2DMesh <- function(
 	x,y=NULL					##<< range of x and y ordinate see \code{\link{xy.coords}}
 	,FUN="+", argsFUN=list()	
 	,dims=20					##<< integer vector of length 1 or 2: number of points
-	,knotSpacing=c(				##<< method of calculating knot positions
+	,knotSpacing=c(				##<< method for calulating the knots 
 		##describe<<
-		quantile="quantile",	##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points (default) 
-		all="all",				##<< take all the provided xyz coordinates (overwrites nKnots)
-		equidistant="equidistant")	##<< cover the range of dimension i by \code{dims[i]} equidistant points
+		midquantile="midquantile"	##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points, by excluding the edges the sample is represented better (default)  
+		,quantile="quantile"		##<< \code{\link{cutQuantiles}} for breaks of intervals holding about equal number of points, includes edges
+		,all="all"					##<< take all the provided xyz coordinates (overwrites nKnots)
+		,equidistant="equidistant"	##<< cover the range of dimension i by \code{nKnots} equidistant points
 		##end<<
+		)
 	,label=deparse(substitute(FUN))
 	,...				##<< further arguments passed to FUN
 ){
 	##seealso<< \code{\link{plot.twApply2DMesh}}
 	##seealso<< \code{\link{twPairs}}, \link{twMisc}
+	
+	##details<< 
+	## note that knotSpacing default is "midquantile", so the grid does not cover the full range
+	## but the grid spacing is representative of the marginal distributions
 	if( length(dims)<2 ) dims <- rep(dims[1],2)
 	xy <- xy.coords(x,y)
 	if( 0==length(xy$xlab) ) xy$xlab=deparse(substitute(x))
