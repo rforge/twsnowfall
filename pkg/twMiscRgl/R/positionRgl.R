@@ -12,7 +12,25 @@ attr(view3dTiltSpin,"ex") <- function(){
 	plot3d( cube3d(col="green") )
 	view3dTiltSpin()
 	view3dTiltSpin(70)	#spinning70 degress
+	
 }
+
+play3dRound <- function(
+	### Set Standard position and spin one round.
+	duration= Inf	##<< duration of one round in seconds
+	,...			##<< arguments to \code{\link{view3dTiltSpin}}
+	,fov=10,zoom=0.8 ##<< see  \code{\link{view3d}}
+){
+	view3d(fov = fov, zoom = zoom)	
+	view3dTiltSpin(...)
+	plot3d( cube3d(col="green") )
+	play3d( spin3d(rpm=60/duration), duration=duration )
+}
+attr(play3dRound,"ex") <- function(){
+	plot3d( cube3d(col="green") )
+	play3dRound(12)
+}
+
 
 movie3dRound <- function(
 	### Generating a movie of a full round
@@ -24,6 +42,10 @@ movie3dRound <- function(
 ){
 	##details<<
 	## The default parameterization provides 12 views, in analogy of the clock
+	
+	##details<<
+	## In contrast to play3dRound this methods does not set standard position. 
+	## See examples how to do this.
 	movie3d(spin3d(rpm=60/duration), fps=1/frameTime, duration=duration, movie = movie, dir=dir, ...)	#full round in 12 seconds
 	dir
 	### The directory where the movie was generated 	

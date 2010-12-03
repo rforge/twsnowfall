@@ -25,6 +25,7 @@
 	# generate documentation
 	
 	# generate RD Files
+	pkg<-"twMiscRgl"
 	library(inlinedocs)
 	unlink( file.path("man","*.Rd") )	
 	package.skeleton.dx(".")

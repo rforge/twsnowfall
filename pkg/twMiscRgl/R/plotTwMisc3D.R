@@ -3,12 +3,13 @@ twApply3DMesh <- function(
 	x,y=NULL,z=NULL				##<< range of x,y and z ordinate see \code{\link{xyz.coords}}
 	,FUN="+", argsFUN=list()	
 	,dims=5						##<< integer vector of length 1 or 3: number of points
-	,knotSpacing=c(				##<< method for calulating the knots. 
+	,knotSpacing=c(				##<< method for calulating the knots 
 		##describe<<
-		quantile="quantile"		##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points (default) 
-		,all="all"				##<< take all the provided xyz coordinates (overwrites nKnots)
-		,equidistant="equidistant")	##<< cover the range of dimension i by \code{dims[i]} equidistant points
-	##end<<
+		quantile="quantile"			##<< \code{\link{cutQuantiles}} for breaks of intervals holding about equal number of points, includes edges (default) 
+		,midquantile="midquantile"	##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points, by excluding the edges the sample is represented better  
+		,all="all"					##<< take all the provided xyz coordinates (overwrites nKnots)
+		,equidistant="equidistant")	##<< cover the range of dimension i by \code{nKnots} equidistant points
+		##end<<
 	,nSample=0			##<< number of points to sample from xyz in addition to grid
 	## Results will be provided in dataframe of four coloumns with attribute "sample".
 	,label=deparse(substitute(FUN))	##<< label of the z-variable, stored in attribute label
@@ -16,14 +17,20 @@ twApply3DMesh <- function(
 ){
 	##seealso<< \code{\link{plot.twApply3DMesh}}
 	##seealso<< \code{\link{twPairs}}, \link{twMisc}
+
+	##details<< 
+	## note that knotSpacing default is "quantile", which differs from the 2D version
+	## the edges are not representative of the sample, but the grid spans the full space of the sample
+	
 	if( length(dims)<3 ) dims <- rep(dims[1],3)
 	xyz <- xyz.coords(x,y,z)
 	if( 0==length(xyz$xlab) ) xyz$xlab=deparse(substitute(x))
 	if( 0==length(xyz$ylab) ) xyz$ylab=deparse(substitute(y))
 	if( 0==length(xyz$zlab) ) xyz$zlab=deparse(substitute(z))
 	dr <- lapply(xyz[1:3],range)
-	#i<-1;mtrace(.calcKnots);.calcKnots(xyz[[i]], nKnots=dims[i], knotSpacing=knotSpacing) 
-	grid <- lapply(1:3, function(i){ twMisc:::.calcKnots(xyz[[i]], nKnots=dims[i], knotSpacing=knotSpacing) })
+	#i<-1;mtrace(.calcKnots);.calcKnots(xyz[[i]], nKnots=dims[i], knotSpacing=knotSpacing)
+	fCalcKnots <- if( exists(".calcKnots")) .calcKnots else twMisc:::.calcKnots
+	grid <- lapply(1:3, function(i){ fCalcKnots(xyz[[i]], nKnots=dims[i], knotSpacing=knotSpacing) })
 	names(grid) <- names(xyz)[1:3]
 	mydf <- do.call( expand.grid, grid )
 	h <- do.call(FUN, c(list(mydf$x,mydf$y,mydf$z),argsFUN,list(...)) )
