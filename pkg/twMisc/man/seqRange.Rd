@@ -12,13 +12,15 @@ seqRange(range, ...)
 }
 \details{\describe{\item{Functionality of package twMisc}{
 \itemize{
-\item{ enhanced support for Unit-Tests: \code{\link{twUtestF}} }
-\item{ debugging: \code{\link{traceback.curr}} }
-\item{ working with constants: \code{\link{twEnumNames}} }
-\item{ support for working with ODEs: \code{\link{twIntegrateTS}} }
-\item{ Optimizing a function where first argument is an index.: \code{\link{twBinOptimize.numeric}} }
-\item{ plotting routines: \code{\link{twPairs}}}
-\item{ collection of misc: \code{\link{copy2clip}}}
+\item enhanced support for Unit-Tests: \code{\link{twUtestF}} 
+\item debugging: \code{\link{traceback.curr}} 
+\item working with constants: \code{\link{twEnumNames}} 
+\item support for working with ODEs: \code{\link{twIntegrateTS}} 
+\item Optimizing a function where first argument is an index.: \code{\link{twBinOptimize.numeric}} 
+\item plotting routines: \code{\link{twPairs}}
+\item matching by closest value: \code{\link{matchClosest}}
+\item dealing with summer/winter time: \code{\link{strptimeNoSummer}}
+\item collection of misc: \code{\link{copy2clip}}
 }
 }}}
 
