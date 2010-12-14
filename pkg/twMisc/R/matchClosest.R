@@ -35,7 +35,7 @@ matchClosest <- function(
 		orderB <- order(b)
 		b <- b[orderB]
 	} 
-	c <- a; c[] <- NA	# initialize the the result to NA
+	c <- rep(NA_integer_, length(a))	# initialize the the result to NA
 	j <- 1
 	b <- c(b,b[length(b)])
 	for( i in which(is.finite(a)) ){
@@ -46,14 +46,14 @@ matchClosest <- function(
 		js <- j:min(length(b),j+chunkSize-1)
 		absd <- abs(b[js]-a[i])
 		jstep <- which.min(absd)
-		# if jstep is the last element, look further else use the step			
-		while( jstep == length(js) ){
-			j=j+jstep-1
+		j=j+jstep-1
+		# if jstep is the last element in absd, look further			
+		while( (j < length(b)) && (jstep == length(js)) ){
 			js <- j:min(length(b),j+chunkSize-1)
 			absd <- abs(b[js]-a[i])
 			jstep <- which.min(absd)
+			j=j+jstep-1
 		}
-		j=j+jstep-1
 		c[i] <- j
 		if( absd[jstep] > maxAbsDiff ) c[i] = NA	#indicate non-found value
 	}
