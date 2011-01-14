@@ -43,7 +43,7 @@ twApply3DMesh <- function(
 		dsSub$h <- do.call(FUN, c(list(dsSub$x,dsSub$y,dsSub$z),argsFUN,list(...)) )
 		names(dsSub) <- c(names(dimnames(res)), label)
 	}
-	resList <- list( mesh=do.call(cbind, grid), fval=res, sample=dsSub, label=label, origRange=lapply(xyz[1:3],range))
+	resList <- list( mesh=do.call(cbind, grid), fval=res, sample=dsSub, label=label, rangeOrig=lapply(xyz[1:3],range))
 	class(resList) <- "twApply3DMesh"
 	resList
 	### list of class twApply2DMesh with itmes \itemize{
@@ -90,7 +90,7 @@ setMethodS3("plot","twApply3DMesh", function(
 		
 		if( 0==length(xlim)) xlim=x$rangeOrig$x
 		if( 0==length(ylim)) ylim=x$rangeOrig$y
-		if( 0==length(zlim)) ylim=x$rangeOrig$z
+		if( 0==length(zlim)) zlim=x$rangeOrig$z
 		
 		##details<<
 		## If argument \code{level} is supplied, the argument \code{probs} is ignored. 
@@ -112,12 +112,11 @@ setMethodS3("plot","twApply3DMesh", function(
 			##detaily<<
 			## If \code{nDrawPoints > 0} and no sample was provided, 
 			## then the points are sampled from mesh x.
-			if( 0 == length(sample) ){
-				sample <- if( (nDrawPoints < length(x))  ) 
-						ds[sample.int( n=nrow(ds), size=nDrawPoints ),] else ds
-			}
-			plot3d(sample
-				, col = col[ round(twRescale(sample[,4],c(1,length(col)))) ]
+			if( 0 == length(sample) ) sample <- ds
+			drawSample <- if( nrow(sample) > nDrawPoints)
+				sample[sample.int( n=nrow(ds), size=nDrawPoints ),] else sample
+			plot3d(drawSample
+				, col = col[ round(twRescale(drawSample[,4],c(1,length(col)))) ]
 				, box = FALSE, axes = FALSE
 				, xlim=xlim, ylim=ylim, zlim=zlim
 				, ...
@@ -130,15 +129,10 @@ setMethodS3("plot","twApply3DMesh", function(
 			col <- rev(cmap(length(levels)))
 			al <- seq(alo, ahi, len = length(levels))
 			contour3d(x$fval,levels,xyz$x,xyz$y,xyz$z,color=col,alpha=al, add=( nDrawPoints > 0 ), box = FALSE, axes = FALSE
-				, xlim=xlim, ylim=ylim, zlim=zlim
 				, ...
 			)
 		}
-		title3d( xlab = xlab, ylab = ylab, zlab = zlab )
-		if (box) 
-			box3d()
-		if (axes) 
-			axes3d()	
+		decorate3d( xlim,ylim,zlim,xlab = xlab, ylab = ylab, zlab = zlab, box=box, axes=axes )
 		### If contourLevles was given then the 3D array of function evaluations 
 	})
 attr(plot.twApply3DMesh,"ex") <- function(){
@@ -165,7 +159,7 @@ attr(plot.twApply3DMesh,"ex") <- function(){
 .tmp.f <- function(){
 	# generate a movie
 	# make sure command convert from ImageMagick can be found
-	open3d(windowRect=c(0,0,200,200)+20)	# adjust window widht
+	open3d(windowRect=c(0,0,400,400)+20)	# adjust window widht
 	plot3d( cube3d(col="green") )
 	# remember that z axis goes into depth of the screen with rotationMatrix and to top with rotate3d
 	#par3d(userMatrix = rotationMatrix(-90*pi/180, 1,0,0))	# rotate so that z points up

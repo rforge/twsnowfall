@@ -1,16 +1,13 @@
 \name{play3dRound}
 \alias{play3dRound}
 \title{play3dRound}
-\description{Set Standard position and spin one round.}
+\description{Spin one round.}
 \usage{
-play3dRound(duration = Inf, ..., fov = 10, zoom = 0.8)
+play3dRound(duration = Inf, ...)
 }
 \arguments{
   \item{duration}{duration of one round in seconds}
   \item{\dots}{arguments to \code{\link{view3dTiltSpin}}}
-  \item{fov}{see  \code{\link{view3d}}}
-  \item{zoom}{
-}
 }
 
 
@@ -21,6 +18,7 @@ play3dRound(duration = Inf, ..., fov = 10, zoom = 0.8)
 
 
 \examples{
+view3dTiltSpin()	#default is -20 degress spin
 plot3d( cube3d(col="green") )
 play3dRound(12)
 }

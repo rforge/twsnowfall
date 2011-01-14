@@ -3,7 +3,7 @@
 \title{movie3dRound}
 \description{Generating a movie of a full round}
 \usage{
-movie3dRound(movie = "movie", frameTime = 1, duration = frameTime * 12, dir = tempdir(), ...)
+movie3dRound(movie = "movie", frameTime = 1, duration = frameTime * 16, dir = tempdir(), convert = "convert -delay 1x\%f \%s*.png \%s.\%s", ...)
 }
 \arguments{
   \item{movie}{
@@ -11,9 +11,11 @@ movie3dRound(movie = "movie", frameTime = 1, duration = frameTime * 12, dir = te
   \item{frameTime}{number of seconds for displying a frame}
   \item{duration}{number of seconds for the full rotation}
   \item{dir}{A directory in which to create temporary files for each frame of the movie}
+  \item{convert}{
+}
   \item{\dots}{further arguments to \code{\link{movie3d}}}
 }
-\details{The default parameterization provides 12 views, in analogy of the clock
+\details{The default parameterization provides 16 views, in analogy of the clock
 
 In contrast to play3dRound this methods does not set standard position. 
 See examples how to do this.}

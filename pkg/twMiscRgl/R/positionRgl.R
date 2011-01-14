@@ -10,23 +10,21 @@ view3dTiltSpin <- function(
 }
 attr(view3dTiltSpin,"ex") <- function(){
 	plot3d( cube3d(col="green") )
-	view3dTiltSpin()
+	view3dTiltSpin()	#default is -20 degress spin
 	view3dTiltSpin(70)	#spinning70 degress
 	
 }
 
 play3dRound <- function(
-	### Set Standard position and spin one round.
+	### Spin one round.
 	duration= Inf	##<< duration of one round in seconds
 	,...			##<< arguments to \code{\link{view3dTiltSpin}}
-	,fov=10,zoom=0.8 ##<< see  \code{\link{view3d}}
 ){
-	view3d(fov = fov, zoom = zoom)	
-	view3dTiltSpin(...)
-	plot3d( cube3d(col="green") )
-	play3d( spin3d(rpm=60/duration), duration=duration )
+	rpm <- if( is.infinite(duration)) 60/12 else 60/duration  
+	play3d( spin3d(rpm=rpm), duration=duration )
 }
 attr(play3dRound,"ex") <- function(){
+	view3dTiltSpin()	#default is -20 degress spin
 	plot3d( cube3d(col="green") )
 	play3dRound(12)
 }
@@ -35,18 +33,19 @@ attr(play3dRound,"ex") <- function(){
 movie3dRound <- function(
 	### Generating a movie of a full round
 	movie="movie"
-	,frameTime=1	##<< number of seconds for displying a frame
-	,duration=frameTime*12	##<< number of seconds for the full rotation
-	,dir = tempdir()		##<< A directory in which to create temporary files for each frame of the movie 
+	,frameTime=1 #0.75	##<< number of seconds for displying a frame
+	,duration=frameTime*16	##<< number of seconds for the full rotation
+	,dir = tempdir()		##<< A directory in which to create temporary files for each frame of the movie
+	,convert="convert -delay 1x%f %s*.png %s.%s" ##see \code{\link{movie3d}}
 	,...			##<< further arguments to \code{\link{movie3d}}
 ){
 	##details<<
-	## The default parameterization provides 12 views, in analogy of the clock
+	## The default parameterization provides 16 views, in analogy of the clock
 	
 	##details<<
 	## In contrast to play3dRound this methods does not set standard position. 
 	## See examples how to do this.
-	movie3d(spin3d(rpm=60/duration), fps=1/frameTime, duration=duration, movie = movie, dir=dir, ...)	#full round in 12 seconds
+	movie3d(spin3d(rpm=60/duration), fps=1/frameTime, duration=duration, movie = movie, dir=dir, convert=convert, ...)	#full round in 12 seconds
 	dir
 	### The directory where the movie was generated 	
 }
@@ -59,5 +58,11 @@ attr(view3dTiltSpin,"ex") <- function(){
 		#avi does not work dir <- movie3dRound("testCube",type="avi")	#doees not work	
 		#dir <- movie3dRound("testCube",1/22,type="mpeg", duration=12)	
 		copy2clip(dir)			# the directory where the movie was generated
+	}
+	.tmp.f.small <- function(){
+		open3d(windowRect=c(0,0,200,200)+20)	# adjust window widht
+		plot3d( cube3d(col="green"), axes=FALSE )
+		view3dTiltSpin(spin=60)	# and adjust zoom
+		copy2clip( movie3dRound("testCubeSmooth", 1/24, 6))		# 1/24 seems a real movement
 	}
 }
