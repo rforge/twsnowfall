@@ -33,6 +33,8 @@ seqRange <- function(
 		seq( range[1],range[2], ...)
 }
 
+
+
 copy2clip <- function(
 	### copies argument to the clipboard
 	x, col.names=NA, row.names=FALSE, quote=FALSE, ... 
@@ -43,6 +45,8 @@ copy2clip <- function(
 	## \itemize{
 	## \item{ easy copying to clipboard: this method }
 	## \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }
+	## \item{ assign first variable of RData-file into a variable: \code{\link{loadAssign}} }
+	## \item{ reorder factor levels: \code{\link{reorderFactor}} }
 	## \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 	## }
 	##}}
@@ -507,12 +511,14 @@ twRescale <- function (
 loadAssign <- function(
 	### Load a RData file and return the value of the first entry
 	...	##<< arguments to \code{\link{load}}
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
 ){
 	##details<<
 	## The load function is evaluated in a local environment.
 	## Then the value of the first entry of ls in that environment is returned.
 	local({load(...); get(ls()[1])})
 	### Value of the first variable the loaded file
+	
 }
 attr(loadAssign,"ex") <- function(){
 	# save the filename character into a temporary file 
@@ -521,6 +527,26 @@ attr(loadAssign,"ex") <- function(){
 	fout <- "changed"
 	(x <- loadAssign(file=fout2))	
 	fout				# note that is has not been overwritten with load
+}
+
+reorderFactor <- function(
+	### reorder the factor levels in a factor
+	x			##<< factor to reorder
+	, newLevels	##<< character vector: levels in new order
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+){
+	levelMap <- match(levels(x), as.factor(newLevels))
+	factor( newLevels[levelMap[x]], level=newLevels)	
+	### factor with levels corresponding to newLevels
+}
+attr(reorderFactor,"ex") <- function(){
+	x <- as.factor(sample(c("low","medium","high"),10,replace=TRUE) )
+	x
+	as.integer(x)
+	y <- reorderFactor(x,c("low","medium","high"))
+	y
+	as.integer(y)
+	all(x == y)
 }
 
 
