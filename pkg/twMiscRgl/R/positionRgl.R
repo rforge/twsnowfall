@@ -18,9 +18,9 @@ attr(view3dTiltSpin,"ex") <- function(){
 play3dRound <- function(
 	### Spin one round.
 	duration= Inf	##<< duration of one round in seconds
+	,rpm=if( is.infinite(duration)) 60/secRound else 60/duration	##<< rotations per minute
 	,...			##<< arguments to \code{\link{view3dTiltSpin}}
 ){
-	rpm <- if( is.infinite(duration)) 60/12 else 60/duration  
 	play3d( spin3d(rpm=rpm), duration=duration )
 }
 attr(play3dRound,"ex") <- function(){

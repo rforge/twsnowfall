@@ -3,10 +3,11 @@
 \title{play3dRound}
 \description{Spin one round.}
 \usage{
-play3dRound(duration = Inf, ...)
+play3dRound(duration = Inf, rpm = if (is.infinite(duration)) 60/secRound else 60/duration, ...)
 }
 \arguments{
   \item{duration}{duration of one round in seconds}
+  \item{rpm}{rotations per minute}
   \item{\dots}{arguments to \code{\link{view3dTiltSpin}}}
 }
 

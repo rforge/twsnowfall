@@ -27,4 +27,10 @@ view3dTiltSpin(spin = -20, tilt = 20)
 	#dir <- movie3dRound("testCube",1/22,type="mpeg", duration=12)	
 	copy2clip(dir)			# the directory where the movie was generated
 }
+.tmp.f.small <- function(){
+	open3d(windowRect=c(0,0,200,200)+20)	# adjust window widht
+	plot3d( cube3d(col="green"), axes=FALSE )
+	view3dTiltSpin(spin=60)	# and adjust zoom
+	copy2clip( movie3dRound("testCubeSmooth", 1/24, 6))		# 1/24 seems a real movement
+}
 }
