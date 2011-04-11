@@ -21,6 +21,8 @@ copy2clip(x, col.names = NA, row.names = FALSE, quote = FALSE, ...)
 \itemize{
 \item{ easy copying to clipboard: this method }
 \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }
+\item{ assign first variable of RData-file into a variable: \code{\link{loadAssign}} }
+\item{ reorder factor levels: \code{\link{reorderFactor}} }
 \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 }
 }}}

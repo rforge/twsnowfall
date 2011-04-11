@@ -250,4 +250,14 @@ attr(twPlot2D,"ex") <- function(){
 	
 }
 
+setAlpha <- function(
+	### Setting a new alpha value (0..1 transparency) for color
+	cols		##<< vector of colors
+	,alpha=0.8	##<< new alpha-Value	
+){
+	tmp <- col2rgb(cols)
+	rgb( tmp[1,], tmp[2,], tmp[3,], alpha=alpha, maxColorValue = 255)
+	### vector of colors
+}
+
 
