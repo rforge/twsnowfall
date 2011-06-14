@@ -21,7 +21,7 @@ cooksDistance.loess(formula, data, ...)
 
 
 
-
+\seealso{\code{\link{copy2clip}}, \link{twMisc}}
 \examples{
 tmp <- seq(1,350,length.out=9)
 nPar <-  

@@ -47,6 +47,7 @@ copy2clip <- function(
 	## \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }
 	## \item{ assign first variable of RData-file into a variable: \code{\link{loadAssign}} }
 	## \item{ reorder factor levels: \code{\link{reorderFactor}} }
+	## \item{ format to significant number of digits including trailing zeros: \code{\link{formatSig}} }
 	## \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 	## }
 	##}}
@@ -72,6 +73,15 @@ fColConv <- function(
 
 ### A list of colours corresponding to Excel, that are well distinguishable
 twXlscol <- fColConv( list( blue="#000080", red="#800000", green="#008000", violet="#660066", brown="#666600", turquise="#006666", blueviolet="#330099", redviolet="#990033", greenbrown="#339900", redbrown="#993300", blueturquise="#003399", greenturquise="#009933" ))
+
+### 10 Colours from Excel2007 are quite colour-blind safe
+twXlscol07 <- list( blue="#4572A7", red="#AA4643", green="#89A54E", violet="#71588F"
+	, seablue="#4198AF", orange="#DB843D", lightblue="#93A9CF", pink="#D19392"
+	, lightgreen="#B9CD96", lightviolet="#A99BBD" )
+#barplot(structure(rep(1,10),names=names(twXlscol07)),col=unlist(twXlscol07), horiz=TRUE, las=1 )
+#twBlindCol <- list(blue="#0072B2",orange="#D55E00",yellow="#F0E442",lightblue="#56B4E9",lightorange="#E69F00"
+	#,pink="#CC79A7",green="#2B9F78",black="#000000")
+#barplot(structure(rep(1,8),names=names(twBlindCol)),col=unlist(twBlindCol), horiz=TRUE, las=1 )
 
 ### A list of line types, that are well distinguishable.
 twLtys <- c("22", "44", "13", "1343", "73", "2262", "12223242", "F282", "F4448444", "224282F2", "F1")
@@ -211,6 +221,10 @@ twExtractDim <- function(
 	,iDim=length(dim(A))	##<< the dimension to extract from 
 ){
 	# see http://tolstoy.newcastle.edu.au/R/help/01c/2197.html
+	##details<< 
+	## If the size of the array is unknown, then the A[,i,] notation 
+	## is not applicable. One way would construct and parse the R-code.
+	## This function calculates the indices to extract by using \code{\link{outer}}.
 	if( length(i) != 1 ) stop("i must be and integer of length 1")
 	if( length(iDim) != 1 ) stop("iDim must be and integer of length 1")
 	dims<-dim(A)
@@ -239,6 +253,7 @@ twListArrDim <- function(
 	x						##<< the array to split
 	,iDim=length(dim(x))	##<< the dimension to split along, defautls to last dimension
 ){
+	#lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
 	lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
 }
 
@@ -554,6 +569,7 @@ cooksDistance.loess <- function(
 	formula		##<< parameters for \code{\link{loess}}
 	,data
 	,...
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
 ){
 	mf <- model.frame(formula,data, na.action=NULL)
 	i <- which( !apply(mf, 1, function(row) any(is.na(row)) ))
@@ -584,5 +600,24 @@ attr(cooksDistance.loess,"ex") <- function(){
 	plot(fluo ~ time, data)
 	res <- cooksDistance.loess( fluo ~ time, data, span=0.9)
 	plot( res ~ time, dss)
+}
+
+
+formatSig <- function(
+	### format real values to significant number of digits
+	x, digits=3
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+){
+	#l10x <- log10(x)
+	ifelse( x < 10^(digits-1) #l10x < digits-1
+		, formatC(x,digits=digits,format="fg",flag="#")
+		, as.character( signif(x,digits) ) 
+	)
+	### character vector with number rounded to significant digits and output including trailing zeros
+}
+attr(formatSig,"ex") <- function(){
+	x <- c(0.0654,0.06,6,65,99.1,100,100.8,125,1024,2000)
+	formatSig(x,3)
+	formatSig(x,2)
 }
 
