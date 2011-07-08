@@ -34,9 +34,10 @@ movie3dRound <- function(
 	### Generating a movie of a full round
 	movie="movie"
 	,frameTime=1 #0.75	##<< number of seconds for displying a frame
-	,duration=frameTime*16	##<< number of seconds for the full rotation
+	,duration=16		##<< number of seconds for the full rotation
 	,dir = tempdir()		##<< A directory in which to create temporary files for each frame of the movie
 	,convert="convert -delay 1x%f %s*.png %s.%s" ##see \code{\link{movie3d}}
+	,top=TRUE		##<< bring rgl window to top before creating snapshots
 	,...			##<< further arguments to \code{\link{movie3d}}
 ){
 	##details<<
@@ -45,7 +46,8 @@ movie3dRound <- function(
 	##details<<
 	## In contrast to play3dRound this methods does not set standard position. 
 	## See examples how to do this.
-	movie3d(spin3d(rpm=60/duration), fps=1/frameTime, duration=duration, movie = movie, dir=dir, convert=convert, ...)	#full round in 12 seconds
+	if( top ) rgl.bringtotop()
+	movie3d(spin3d(rpm=60/duration), fps=1/frameTime, duration=duration, movie = movie, dir=dir, convert=convert, top=FALSE)	#full round in 16 seconds
 	dir
 	### The directory where the movie was generated 	
 }
