@@ -22,13 +22,29 @@
 	
 }
 
+
 .tmp.f <- function(){
-	# generate documentation	
+	pkg<-"twSnowfall"
 	library(inlinedocs)
 	unlink( file.path("man","*.Rd") )	
 	package.skeleton.dx(".")
-	#file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" )	# copy descriptions of data
-	#unlink(file.path("man","twDEMC.Rd"))   # else overwrites alias twDEMC to twDEMCInt 
+	try(file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" ), silent=TRUE)	# copy descriptions of data
+	
+	# generate the HTML  files
+	prevWd <- setwd("..")
+	system(	paste("R CMD INSTALL --html ",pkg, sep="") )
+	setwd(prevWd)
+	
+	# show in Browser
+	htmlRoot <- file.path( system.file(package = pkg), "html" )
+	html_viewer <- function(path) {
+		browser <- getOption("browser")
+		if(is.null(browser) && .Platform$OS.type == "windows")
+			shell.exec(chartr("/", "\\", path))
+		else browseURL(paste("file://", URLencode(path), sep=""))
+	}
+	html_viewer(file.path(htmlRoot,"00Index.html"))
+	
 }
 
 
