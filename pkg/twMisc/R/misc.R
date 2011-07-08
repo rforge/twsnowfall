@@ -37,7 +37,7 @@ seqRange <- function(
 
 copy2clip <- function(
 	### copies argument to the clipboard
-	x, col.names=NA, row.names=FALSE, quote=FALSE, ... 
+	x, col.names=NA, row.names=FALSE, quote=FALSE, sep="\t", ... 
 ){	
 	##seealso<< \link{twMisc}
 
@@ -53,7 +53,7 @@ copy2clip <- function(
 	##}}
 	
 	##<<seealso \code{\link{write.table}}
-	write.table(x,"clipboard",sep="\t", row.names=row.names, col.names=row.names, quote=quote, ...)
+	write.table(x,"clipboard",sep=sep, row.names=row.names, col.names=row.names, quote=quote, ...)
 }  
 
 
