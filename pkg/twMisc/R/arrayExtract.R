@@ -43,6 +43,7 @@ twExtractDim <- function(
 		}
 	slice <- A[sliceJ]
 	dim(slice)<-dims[-iDim]
+	dimnames(slice) <- dimnames(A)[-iDim]
 	return(slice)
 	### vector representing the 
 } 
@@ -76,7 +77,8 @@ twListArrDim <- function(
 ){
 	##seealso<< \link{twExtractDim}, \link{twMisc}
 	#lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
-	lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
+	#i <- 1 
+	res <- lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
 }
 
 twExtractFromLastDims <- function(
