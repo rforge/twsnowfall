@@ -269,14 +269,13 @@ checkInterval <- function(
 	current,
 	targetMin=0.025,
 	targetMax=0.975,
-	...
-		### further arguments passed to checkTrue
+	...		##<< further arguments passed to checkTrue
 ){
 	##seealso<< \code{\link{twUtestF}}
 	##details<< 
 	## all parameters will be recycled int the comparison
 	## targetMin and targetMax default to two p of sided 95% confidence interval 
-	checkTrue( all((current >= targetMin) && (current <= targetMax)) )
+	checkTrue( all((current >= targetMin) && (current <= targetMax)), ... )
 }
 
 
