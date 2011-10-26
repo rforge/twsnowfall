@@ -26,15 +26,20 @@ test.one <- function(){
 }
 
 ztest.extractLastDims <- function(){
-	# example of extractinv from a matrix 
-	A <- matrix(1:6, ncol=2)
-	Aext <- abind( lapply(1:4, function(i){(i)/10+A}), along=0 )
-	i <- which(A %% 2 == 0)
-	A[i]
+	# example of extracting from a matrix 
+	(A <- matrix(1:6, ncol=2))
+	(Aext <- abind( lapply(1:4, function(i){(i)/10+A}), along=0 ))
+	# Note that the second and third dimension of Aext correspond to A 
+	
+	# Now we whish to extract from Aext based on 
+	# a criterion for the second and third dimension 
+	(B <- diag(3)[,1:2])
+	i <- which(B != 0)
+	(A[i])
 	# how to index Aext to obtain those indices?
 	resExp <- matrix(0,nrow=nrow(Aext),ncol=length(i) )
 	for( ii in seq(along.with=i) )
 		resExp[,ii] <- Aext[,(i[ii]-1) %% 3+1,(i[ii]-1) %/% 3+1]
-	res <- twExtractFromLastDims(Aext,i)
-	checkEquals( resExp, res)
+	(res <- twExtractFromLastDims(Aext,i))
+	checkEquals( resExp, structure(res, dimnames=NULL) )
 }

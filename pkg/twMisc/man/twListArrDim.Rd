@@ -16,5 +16,5 @@ twListArrDim(x, iDim = length(dim(x)))
 
 
 
-
+\seealso{\link{twExtractDim}, \link{twMisc}}
 

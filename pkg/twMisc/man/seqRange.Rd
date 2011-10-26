@@ -21,6 +21,7 @@ seqRange(range, ...)
 \item matching by closest value: \code{\link{matchClosest}}
 \item dealing with summer/winter time: \code{\link{strptimeNoSummer}}
 \item collection of misc: \code{\link{copy2clip}}
+\item extracting from arrays: \code{\link{twExtractDim}}
 }
 }}}
 
