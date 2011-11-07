@@ -239,13 +239,22 @@ twLastN22 <- function(
 twLogSumExp <- function(
 	### calculates the log(sum(exp(x))) in numerically safer way
 	x	##<< vector to be summed
+	,shiftUpperBound=FALSE ##<< use this if x has a clear upper bound
+	,shiftLowerBound=FALSE ##<< use this if x has a clear lower bound
 ){
 	#sum(e^xi) = sum(e^(xi+a-a)) = sum(e^(xi-a) e^a) ) = e^a sum(e^(xi-a))
 	#twUtestF(twLogSumExp)
+	##details<< 
+	## Before taking the exponent, all x are shifted towards zero.
+	## By default the median of x is subtracted. 
+	## If shiftUpperBound then max(x) is subtracted.
+	## This is useful if the distribution of x has a strong left tail but a defined upper bound.
+	## If shiftLowerBound then min(x) is subtracted.
+	## This is useful if the distribution of x has a strong right tail but a defined lower bound.
 	x <- na.omit(x)
-	xmin <- min(x)
-	xexp <- exp(x-xmin)
-	xmin+log(sum(xexp))
+	xShift <- if( shiftUpperBound ) max(x) else 	if( shiftLowerBound ) min(x) else median(x)
+	xexp <- exp(x-xShift)
+	xShift + log(sum(xexp))
 }
 
 twLogMeanExp <- function(
