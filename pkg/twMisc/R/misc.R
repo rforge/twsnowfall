@@ -171,7 +171,7 @@ evalCommandArgs <- function(
 
 
 twWhichColsEqual <- function(
-	### compares each column of X to column of Z and returns indices of columns   
+	### compares each column of X to column of Z and returns indices of equal columns   
 	X,	##<< matrix
 	Z=matrix(rep(z,ncol(X)),nrow=length(z)),	
 	### Matrix with same numer of rows. 
@@ -183,14 +183,16 @@ twWhichColsEqual <- function(
 	##details<< 
 	## If both vectors contain NA's at the same position the vectors are regarded equal.
 	## This is different from which with ==, where any NA leeds to a FALSE 
-	iComp <- which(X == Z | (is.na(X) & is.na(Z)), arr.ind=TRUE )[,2]	 
+	iComp <- which(X == Z | (is.na(X) & is.na(Z)), arr.ind=TRUE )[,2]
 	# when all components in a row are the same, they will occure nrow(X) times in iComp
 	nrX1 <- nrow(X)-1
 	if( length(iComp) > nrX1){
-		# compare each index ii of iComp with index ii+nrX1
-		# vectorized version by comparing vector with last and first part removed
-		ii <- which( iComp[1:(length(iComp)-nrX1)] == iComp[-(1:nrX1)] )
-		iComp[ii]
+		if( nrX1 != 0){
+			# compare each index ii of iComp with index ii+nrX1
+			# vectorized version by comparing vector with last and first part removed
+			ii <- which( iComp[1:(length(iComp)-nrX1)] == iComp[-(1:nrX1)] )
+			iComp[ii]
+		}else iComp	# if there is just one row iComp is already the index
 	}else
 		integer(0)
 } 
