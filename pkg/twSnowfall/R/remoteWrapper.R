@@ -63,7 +63,7 @@ sfRemoteWrapper <- function(
 }
 attr(sfRemoteWrapper,"ex") <- function(){
 	#sfInit(parallel=TRUE,cpus=2)
-	sfExport("sfRemoteWrapper",namespace="twSnowfall")
+	#sfExport("sfRemoteWrapper",namespace="twSnowfall")
 	
 	#--------- inspecting what went wrong in the remote process
 	suppressWarnings(dir.create("tmp"))	# will store to tmp subdirectory
@@ -73,9 +73,15 @@ attr(sfRemoteWrapper,"ex") <- function(){
 	# throwing an error on remote process 
 	fTestStop <- function(){ stop("test throwing an error") }
 	tmp <- try( sfClusterCall( sfRemoteWrapper, remoteFun=fTestStop, remoteDumpfileBasename=.remoteDumpfileBasename ) )
-	# inspecting what was wrong in interactive R-session
-	load(.remoteDumpfile)
-	#debugger(get(.remoteDumpfileBasename))
+	.tmp.f <- function(){	
+		# inspecting what was wrong in interactive R-session
+		load(.remoteDumpfile)
+		debugger(get(.remoteDumpfileBasename))
+		# choose last step (18)
+		require(debug)
+		mtrace(remoteFun)
+		do.call(remoteFun, c(remoteFunArgs, list(...)))
+	}
 	
 	#--------- exporting variables and passing arguments by name
 	fReturnArgs <- function(...){ list(...) } #returns the calling arguments
