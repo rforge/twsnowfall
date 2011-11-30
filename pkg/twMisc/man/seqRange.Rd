@@ -22,6 +22,7 @@ seqRange(range, ...)
 \item dealing with summer/winter time: \code{\link{strptimeNoSummer}}
 \item collection of misc: \code{\link{copy2clip}}
 \item extracting from arrays: \code{\link{twExtractDim}}
+\item updating the version and the date of the description file: \code{\link{updateVersionAndDate}}
 }
 }}}
 

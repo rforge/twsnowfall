@@ -1,7 +1,7 @@
 \name{twWhichColsEqual}
 \alias{twWhichColsEqual}
 \title{twWhichColsEqual}
-\description{compares each column of X to column of Z and returns indices of columns   }
+\description{compares each column of X to column of Z and returns indices of equal columns   }
 \usage{
 twWhichColsEqual(X, Z = matrix(rep(z, ncol(X)), nrow = length(z)), z = NA)
 }

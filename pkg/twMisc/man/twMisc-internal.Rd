@@ -2,6 +2,8 @@
 \title{Internal twMisc objects}
 \alias{.back.matchClosest}
 \alias{.calcKnots}
+\alias{.getHeadSvnRevision}
+\alias{.getTopSvnRevision}
 \alias{.inside}
 \alias{.panel.cor}
 \alias{.panel.hist}
