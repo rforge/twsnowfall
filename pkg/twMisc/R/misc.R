@@ -263,9 +263,10 @@ twLogSumExp <- function(
 twLogMeanExp <- function(
 	### calculates the log(mean(exp(x))) in numerically safer way
 	x	##<< vector for whose mean is to be caluclated
+	,...	##<< futher arguments to twLogSumExp 
 ){
 	#log(sum / n)
-	twLogSumExp(x) - log(length(x))
+	twLogSumExp(x,...) - log(length(x))
 }
 
 twCloseDevs <- function(
