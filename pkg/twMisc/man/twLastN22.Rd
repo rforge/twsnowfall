@@ -3,7 +3,8 @@
 \title{twLastN22}
 \description{last n columns of matrix x}
 \usage{
-twLastN22(x, n = 1)
+twLastN22(x,
+n = 1)
 }
 \arguments{
   \item{x}{matrix}
@@ -12,7 +13,7 @@ twLastN22(x, n = 1)
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

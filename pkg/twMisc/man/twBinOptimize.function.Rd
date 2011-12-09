@@ -3,7 +3,14 @@
 \title{twBinOptimize function}
 \description{Optimizing a function where first argument is an index. }
 \usage{
-\method{twBinOptimize}{function}(x, target = 0, ..., interval, lower = ceiling(min(interval)), upper = floor(max(interval)), maxiter = 100, showiter = FALSE)
+\method{twBinOptimize}{function}(x,
+target = 0,
+...,
+interval,
+lower = ceiling(min(interval)),
+upper = floor(max(interval)),
+maxiter = 100,
+showiter = FALSE)
 }
 \arguments{
   \item{x}{the monotonic vectorized function to be optimized. The term abs(x(i,...)-target) is minimized.}
@@ -22,16 +29,9 @@ A binary search over the index is performed.
 index (\code{$where}) can be any of the indices with equal values. 
 \cr The code is based on binsearch of the gtools package. In difference to the original code, 
 it returns always only one best estimate.}
-\value{A list containing:
-\item{call}{How the function was called.}
-\item{numiter}{The number of iterations performed}
-\item{flag }{One of the strings,  "Found", "Between Elements",
-"Maximum number of iterations reached", "Reached lower boundary", or
-"Reached upper boundary."}
-\item{where}{One or two values indicating where the search terminated.}
-\item{value}{Value of the function \code{x} at the values of \code{where}.}}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+
+\author{Thomas Wutzler}
 
 
 

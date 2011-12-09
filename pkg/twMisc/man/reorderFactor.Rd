@@ -3,7 +3,8 @@
 \title{reorderFactor}
 \description{reorder the factor levels in a factor}
 \usage{
-reorderFactor(x, newLevels)
+reorderFactor(x,
+newLevels)
 }
 \arguments{
   \item{x}{factor to reorder}
@@ -12,7 +13,7 @@ reorderFactor(x, newLevels)
 
 \value{factor with levels corresponding to newLevels}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

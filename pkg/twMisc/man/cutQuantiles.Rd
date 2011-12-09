@@ -3,7 +3,16 @@
 \title{cutQuantiles}
 \description{Cut a Numeric Variable into Intervals of about same number of observations.}
 \usage{
-cutQuantiles(x, cuts, m = 150, g, levels.mean = FALSE, digits, minmax = TRUE, oneval = TRUE, onlycuts = FALSE, onlymeans = FALSE)
+cutQuantiles(x,
+cuts,
+m = 150,
+g,
+levels.mean = FALSE,
+digits,
+minmax = TRUE,
+oneval = TRUE,
+onlycuts = FALSE,
+onlymeans = FALSE)
 }
 \arguments{
   \item{x}{numeric vector to classify into intervals}
@@ -20,7 +29,7 @@ cutQuantiles(x, cuts, m = 150, g, levels.mean = FALSE, digits, minmax = TRUE, on
 \details{copied from Hmisc:cutQuantiles to reduce package dependencies.}
 \value{a factor variable with levels of the form [a,b) or formatted means (character strings) unless onlycuts is TRUE in which case a numeric vector is returned}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

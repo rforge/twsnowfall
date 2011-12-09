@@ -12,7 +12,7 @@ loadAssign(...)
 Then the value of the first entry of ls in that environment is returned.}
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

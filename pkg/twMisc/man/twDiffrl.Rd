@@ -3,7 +3,8 @@
 \title{twDiffrl}
 \description{Approximation of dx by (x_+1 - x_-1). }
 \usage{
-twDiffrl(x, na.rm = TRUE)
+twDiffrl(x,
+na.rm = TRUE)
 }
 \arguments{
   \item{x}{
@@ -14,7 +15,7 @@ twDiffrl(x, na.rm = TRUE)
 \value{(x_+1 - x_-1)
 with single sided intervals at the right and left side}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

@@ -3,7 +3,9 @@
 \title{updateVersionAndDate}
 \description{update the version and the date in the DESCRIPTION file }
 \usage{
-updateVersionAndDate(versionUpdate = c(svnHead = "svnHead", svnCur = "svnCur", inc = "inc"))
+updateVersionAndDate(versionUpdate = c(svnHead = "svnHead",
+svnCur = "svnCur",
+inc = "inc"))
 }
 \arguments{
   \item{versionUpdate}{method of updating the version\describe{
@@ -15,7 +17,7 @@ updateVersionAndDate(versionUpdate = c(svnHead = "svnHead", svnCur = "svnCur", i
 \details{Replaces the part after last dot with top revision of current working copy}
 \value{character vector: the version and the revisions }
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

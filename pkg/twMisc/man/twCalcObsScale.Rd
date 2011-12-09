@@ -3,7 +3,11 @@
 \title{twCalcObsScale}
 \description{Calculate mean slopes, i.e. rates, between within time intervals.}
 \usage{
-twCalcObsScale(dx, times1 = NULL, times2 = NULL, na.rm = TRUE, doSort = TRUE)
+twCalcObsScale(dx,
+times1 = NULL,
+times2 = NULL,
+na.rm = TRUE,
+doSort = TRUE)
 }
 \arguments{
   \item{dx}{numeric vector: slopes at time points times}
@@ -21,7 +25,7 @@ At the end of times1 it corresponds to the slope at last  time point.}
 \item{int}{same for intervals times2 (NULL if either times1 or times2 was NULL)}
 }}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

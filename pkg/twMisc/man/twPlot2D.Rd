@@ -3,7 +3,19 @@
 \title{twPlot2D}
 \description{Creating an image or contour plot of a three-dimensional array.}
 \usage{
-twPlot2D(x, y = NULL, z = NULL, xlab = NULL, ylab = NULL, zlab = NULL, key.title, key.axes, axes = TRUE, las = 1, contour = FALSE, col = rev(heat.colors(20)), color.palette = function(n) {
+twPlot2D(x,
+y = NULL,
+z = NULL,
+xlab = NULL,
+ylab = NULL,
+zlab = NULL,
+key.title,
+key.axes,
+axes = TRUE,
+las = 1,
+contour = FALSE,
+col = rev(heat.colors(20)),
+color.palette = function(n) {
     rev(heat.colors(n))
 }, ...)
 }
@@ -32,7 +44,7 @@ twPlot2D(x, y = NULL, z = NULL, xlab = NULL, ylab = NULL, zlab = NULL, key.title
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

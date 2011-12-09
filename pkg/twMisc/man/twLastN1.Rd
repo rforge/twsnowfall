@@ -3,7 +3,8 @@
 \title{twLastN1}
 \description{last n components of vector x}
 \usage{
-twLastN1(x, n = 1)
+twLastN1(x,
+n = 1)
 }
 \arguments{
   \item{x}{vector}
@@ -12,7 +13,7 @@ twLastN1(x, n = 1)
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

@@ -14,7 +14,7 @@ twUtestF(...)
 }}
 \value{data.frame as returned by \code{\link{as.data.frame.RUnitTestData}}}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

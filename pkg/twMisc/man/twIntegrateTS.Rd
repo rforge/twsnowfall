@@ -3,7 +3,14 @@
 \title{twIntegrateTS}
 \description{Integrate dy between xl and xr.}
 \usage{
-twIntegrateTS(dy, x, xl = min(x, na.rm = TRUE), xr = max(x, na.rm = TRUE), na.rm = TRUE, doSort = TRUE)
+twIntegrateTS(dy,
+x,
+xl = min(x,
+na.rm = TRUE),
+xr = max(x,
+na.rm = TRUE),
+na.rm = TRUE,
+doSort = TRUE)
 }
 \arguments{
   \item{dy}{rate}
@@ -17,7 +24,7 @@ twIntegrateTS(dy, x, xl = min(x, na.rm = TRUE), xr = max(x, na.rm = TRUE), na.rm
 \value{Each dy_i is giving the slope for succeeding time interval x_i to x_i+1
 result vector is of length( sum(is.na(x)) )-1}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

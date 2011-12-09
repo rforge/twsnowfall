@@ -3,7 +3,8 @@
 \title{twLastN21}
 \description{last n rows of matrix x}
 \usage{
-twLastN21(x, n = 1)
+twLastN21(x,
+n = 1)
 }
 \arguments{
   \item{x}{matrix}
@@ -12,7 +13,7 @@ twLastN21(x, n = 1)
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

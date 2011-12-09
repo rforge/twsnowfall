@@ -3,7 +3,8 @@
 \title{convertToWinterGMT}
 \description{convert series to winter time, i.e. expressed as GMT}
 \usage{
-convertToWinterGMT(x, hourOffset = -1)
+convertToWinterGMT(x,
+hourOffset = -1)
 }
 \arguments{
   \item{x}{POSIXct vector using summer time}
@@ -16,7 +17,7 @@ Note, however, that the time not comparable acress time zones any more and you
 must compare only against times with time zone GMT. }
 \value{POSIXct vector in winter time (expressed as GMT, so actually offset to absolute world time)}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

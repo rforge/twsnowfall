@@ -3,7 +3,9 @@
 \title{twEnumNames}
 \description{Creates integer variables with positions from colnames or names of x.}
 \usage{
-twEnumNames(x, inherits = TRUE, prefix = "i_")
+twEnumNames(x,
+inherits = TRUE,
+prefix = "i_")
 }
 \arguments{
   \item{x}{
@@ -14,7 +16,7 @@ twEnumNames(x, inherits = TRUE, prefix = "i_")
 \details{Use with care: new variables are defined in }
 \value{Names of the variables assigned in parent frame.}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

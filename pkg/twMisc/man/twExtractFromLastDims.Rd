@@ -3,7 +3,9 @@
 \title{twExtractFromLastDims}
 \description{Extract slices i from array Aext keeping the all first dimensions.}
 \usage{
-twExtractFromLastDims(Aext, i, dPrev = c(1))
+twExtractFromLastDims(Aext,
+i,
+dPrev = c(1))
 }
 \arguments{
   \item{Aext}{array to extract from}
@@ -13,7 +15,7 @@ twExtractFromLastDims(Aext, i, dPrev = c(1))
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

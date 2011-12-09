@@ -4,7 +4,8 @@
 \title{seqRange}
 \description{Create a sequence based on a range c(min,max)}
 \usage{
-seqRange(range, ...)
+seqRange(range,
+...)
 }
 \arguments{
   \item{range}{the range for the sequence}
@@ -27,7 +28,7 @@ seqRange(range, ...)
 }}}
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

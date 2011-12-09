@@ -3,7 +3,11 @@
 \title{twWhichColsEqual}
 \description{compares each column of X to column of Z and returns indices of equal columns   }
 \usage{
-twWhichColsEqual(X, Z = matrix(rep(z, ncol(X)), nrow = length(z)), z = NA)
+twWhichColsEqual(X,
+Z = matrix(rep(z,
+ncol(X)),
+nrow = length(z)),
+z = NA)
 }
 \arguments{
   \item{X}{matrix}
@@ -14,7 +18,7 @@ twWhichColsEqual(X, Z = matrix(rep(z, ncol(X)), nrow = length(z)), z = NA)
 This is different from which with ==, where any NA leeds to a FALSE }
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

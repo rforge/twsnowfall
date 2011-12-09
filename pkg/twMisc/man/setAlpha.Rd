@@ -3,7 +3,8 @@
 \title{setAlpha}
 \description{Setting a new alpha value (0..1 transparency) for color}
 \usage{
-setAlpha(cols, alpha = 0.8)
+setAlpha(cols,
+alpha = 0.8)
 }
 \arguments{
   \item{cols}{vector of colors}
@@ -12,7 +13,7 @@ setAlpha(cols, alpha = 0.8)
 
 \value{vector of colors}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

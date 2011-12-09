@@ -3,7 +3,10 @@
 \title{checkInterval}
 \description{checkTrue( all((current >= targetMin) && (current <= targetMax)) )}
 \usage{
-checkInterval(current, targetMin = 0.025, targetMax = 0.975, ...)
+checkInterval(current,
+targetMin = 0.025,
+targetMax = 0.975,
+...)
 }
 \arguments{
   \item{current}{
@@ -18,7 +21,7 @@ checkInterval(current, targetMin = 0.025, targetMax = 0.975, ...)
 targetMin and targetMax default to two p of sided 95\% confidence interval }
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

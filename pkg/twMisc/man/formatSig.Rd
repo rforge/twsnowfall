@@ -3,7 +3,8 @@
 \title{formatSig}
 \description{format real values to significant number of digits}
 \usage{
-formatSig(x, digits = 3)
+formatSig(x,
+digits = 3)
 }
 \arguments{
   \item{x}{
@@ -14,7 +15,7 @@ formatSig(x, digits = 3)
 
 \value{character vector with number rounded to significant digits and output including trailing zeros}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

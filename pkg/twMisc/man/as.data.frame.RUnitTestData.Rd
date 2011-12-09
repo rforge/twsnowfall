@@ -3,7 +3,10 @@
 \title{as data frame RUnitTestData}
 \description{extract information from RUnit Testresult return value}
 \usage{
-\method{as.data.frame}{RUnitTestData}(x, row.names, optional, ...)
+\method{as.data.frame}{RUnitTestData}(x,
+row.names,
+optional,
+...)
 }
 \arguments{
   \item{x}{
@@ -18,7 +21,7 @@
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

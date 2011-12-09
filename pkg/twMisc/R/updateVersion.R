@@ -75,3 +75,4 @@ attr(updateVersionAndDate,"ex") <- function(){
 	updateVersionAndDate(versionUpdate="inc")
 	{tmp <- scan('DESCRIPTION', what = character(), sep = '\n'); tmp[ grep("Version:",tmp)]}
 }
+

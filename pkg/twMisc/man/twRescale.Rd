@@ -3,7 +3,12 @@
 \title{twRescale}
 \description{Rescale numeric vector to have specified minimum and maximum. }
 \usage{
-twRescale(x, to = c(0, 1), from = range(x, na.rm = TRUE), clip = TRUE)
+twRescale(x,
+to = c(0,
+1),
+from = range(x,
+na.rm = TRUE),
+clip = TRUE)
 }
 \arguments{
   \item{x}{data to rescale}
@@ -15,7 +20,7 @@ twRescale(x, to = c(0, 1), from = range(x, na.rm = TRUE), clip = TRUE)
 
 
 \author{Hadley Wickham <h.wickham@gmail.com>
-Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+Thomas Wutzler}
 
 
 

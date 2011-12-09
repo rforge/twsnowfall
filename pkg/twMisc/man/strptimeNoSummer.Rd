@@ -3,7 +3,11 @@
 \title{strptimeNoSummer}
 \description{Parse time given as character with ignoring daylight savings.}
 \usage{
-strptimeNoSummer(x, format = "\%Y-\%m-\%d \%H:\%M:\%S", hourOffset = -1, tz = "CET", ...)
+strptimeNoSummer(x,
+format = "\%Y-\%m-\%d \%H:\%M:\%S",
+hourOffset = -1,
+tz = "CET",
+...)
 }
 \arguments{
   \item{x}{character vector holing the times}
@@ -23,7 +27,7 @@ The String is parsed using time zone GMT, where not daylight shifts occur.
 Next the hour offset is added, and the tzone attribute is changed.}
 \value{POSIXct vector, printing in summer time during summer. }
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

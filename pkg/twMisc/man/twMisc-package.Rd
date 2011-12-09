@@ -3,7 +3,7 @@
 \title{tw utility functions}
 \description{utilities used across several other packages of tw}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 \keyword{ package }
 

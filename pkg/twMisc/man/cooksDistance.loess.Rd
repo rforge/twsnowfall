@@ -3,7 +3,9 @@
 \title{cooksDistance loess}
 \description{calculate cooksDistance for loess models}
 \usage{
-cooksDistance.loess(formula, data, ...)
+cooksDistance.loess(formula,
+data,
+...)
 }
 \arguments{
   \item{formula}{parameters for \code{\link{loess}}}
@@ -17,7 +19,7 @@ cooksDistance.loess(formula, data, ...)
 \item{mod}{the fitted loess model}
 \item{cdist}{numeric vector of cooks distance}}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

@@ -3,7 +3,9 @@
 \title{twLogSumExp}
 \description{calculates the log(sum(exp(x))) in numerically safer way}
 \usage{
-twLogSumExp(x, shiftUpperBound = FALSE, shiftLowerBound = FALSE)
+twLogSumExp(x,
+shiftUpperBound = FALSE,
+shiftLowerBound = FALSE)
 }
 \arguments{
   \item{x}{vector to be summed}
@@ -18,7 +20,7 @@ If shiftLowerBound then min(x) is subtracted.
 This is useful if the distribution of x has a strong right tail but a defined lower bound.}
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

@@ -3,7 +3,9 @@
 \title{twExtractDim}
 \description{Extract \code{A[...,i,...]} from dimension \code{iDim} of an array }
 \usage{
-twExtractDim(A, i = 1, iDim = length(dim(A)))
+twExtractDim(A,
+i = 1,
+iDim = length(dim(A)))
 }
 \arguments{
   \item{A}{the array to extract values from}
@@ -27,7 +29,7 @@ is not applicable.
 This function calculates the indices to extract by using \code{\link{outer}}.}
 \value{vector representing the }
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

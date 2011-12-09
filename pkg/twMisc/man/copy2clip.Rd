@@ -3,7 +3,12 @@
 \title{copy2clip}
 \description{copies argument to the clipboard}
 \usage{
-copy2clip(x, col.names = NA, row.names = FALSE, quote = FALSE, sep = "\\t", ...)
+copy2clip(x,
+col.names = NA,
+row.names = FALSE,
+quote = FALSE,
+sep = "\\t",
+...)
 }
 \arguments{
   \item{x}{
@@ -22,6 +27,8 @@ copy2clip(x, col.names = NA, row.names = FALSE, quote = FALSE, sep = "\\t", ...)
 \details{\describe{\item{Further misc functionality of package twMisc}{
 \itemize{
 \item{ easy copying to clipboard: this method }
+\item{ create a sequence based on a range c(min,max): \code{\link{seqRange}} }
+\item{ merge several sequences to a single sequence: \code{\link{twMergeSequences}} }
 \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }
 \item{ assign first variable of RData-file into a variable: \code{\link{loadAssign}} }
 \item{ reorder factor levels: \code{\link{reorderFactor}} }
@@ -31,7 +38,7 @@ copy2clip(x, col.names = NA, row.names = FALSE, quote = FALSE, sep = "\\t", ...)
 }}}
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

@@ -3,7 +3,8 @@
 \title{tw fTestDummy}
 \description{simple function used in examples of testcases}
 \usage{
-tw.fTestDummy(a, b)
+tw.fTestDummy(a,
+b)
 }
 \arguments{
   \item{a}{
@@ -14,7 +15,7 @@ tw.fTestDummy(a, b)
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

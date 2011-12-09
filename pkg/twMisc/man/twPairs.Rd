@@ -3,7 +3,9 @@
 \title{twPairs}
 \description{Pairs-plot with scatterplots in upper part and histogram in diagonal}
 \usage{
-twPairs(x, nsample = 200, ...)
+twPairs(x,
+nsample = 200,
+...)
 }
 \arguments{
   \item{x}{numeric matrix}
@@ -22,7 +24,7 @@ twPairs(x, nsample = 200, ...)
 based on pairs.modCost from package FME}
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

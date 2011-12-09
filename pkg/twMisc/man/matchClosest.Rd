@@ -3,7 +3,13 @@
 \title{matchClosest}
 \description{Find index in b that is closest to a.}
 \usage{
-matchClosest(a, b, maxAbsDiff = Inf, isSortedA = FALSE, isSortedB = FALSE, allFiniteB = FALSE, chunkSize = round(length(b)/length(a) * 1.6))
+matchClosest(a,
+b,
+maxAbsDiff = Inf,
+isSortedA = FALSE,
+isSortedB = FALSE,
+allFiniteB = FALSE,
+chunkSize = round(length(b)/length(a) * 1.6))
 }
 \arguments{
   \item{a}{numeric vector}
@@ -18,7 +24,7 @@ matchClosest(a, b, maxAbsDiff = Inf, isSortedA = FALSE, isSortedB = FALSE, allFi
 If a_i is not finite, then c_i is NA}
 \value{vector of length of a, with each element holding an index from b}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

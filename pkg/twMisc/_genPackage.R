@@ -65,6 +65,7 @@ pkg<-"twMisc"
 	#(res <- twUtest(divertOutputFile=NULL))
 	#(res <- twUtestF(divertOutputFile=NULL))
 	#(res <- twUtestF(matchClosest))
+	require(twMisc)
 	(res <- twUtestF())
 	
 	# let R check package consistency

@@ -3,7 +3,8 @@
 \title{twDf2wikiTable}
 \description{Mediawiki-Code for table of given data.frame. }
 \usage{
-twDf2wikiTable(ds, tableProps = "style=\\"float: right;\\"")
+twDf2wikiTable(ds,
+tableProps = "style=\\"float: right;\\"")
 }
 \arguments{
   \item{ds}{data.frame}
@@ -12,7 +13,7 @@ twDf2wikiTable(ds, tableProps = "style=\\"float: right;\\"")
 
 \value{String, Side-effect: copied to clipboard}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

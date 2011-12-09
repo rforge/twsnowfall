@@ -3,7 +3,9 @@
 \title{twSmoothSwitch}
 \description{Smooth increase from 0 to 1 around b.}
 \usage{
-twSmoothSwitch(x, b = 0, smooth.range.width = 0.1 * b)
+twSmoothSwitch(x,
+b = 0,
+smooth.range.width = 0.1 * b)
 }
 \arguments{
   \item{x}{numeric vector: times to evaluate}
@@ -15,7 +17,7 @@ twSmoothSwitch(x, b = 0, smooth.range.width = 0.1 * b)
 sin(x-b)/r*pi for b-r/2 <= x <= b+r/2 \cr
 1 for b - r/2 <= x \cr}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

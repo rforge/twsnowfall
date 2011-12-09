@@ -3,7 +3,10 @@
 \title{checkMagnitude}
 \description{checkTrue that current is within interval of +-magnitude around target}
 \usage{
-checkMagnitude(target, current, orderOfMagnitudes = 1/2, ...)
+checkMagnitude(target,
+current,
+orderOfMagnitudes = 1/2,
+...)
 }
 \arguments{
   \item{target}{numeric vector}
@@ -14,7 +17,7 @@ checkMagnitude(target, current, orderOfMagnitudes = 1/2, ...)
 \details{in range \code{10^{ log10(current)+-orderOfMagnitudes } }}
 \value{TRUE or error}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
