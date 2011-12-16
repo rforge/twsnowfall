@@ -52,6 +52,7 @@ copy2clip <- function(
 	## \item{ assign first variable of RData-file into a variable: \code{\link{loadAssign}} }
 	## \item{ reorder factor levels: \code{\link{reorderFactor}} }
 	## \item{ format to significant number of digits including trailing zeros: \code{\link{formatSig}} }
+	## \item{ adds or replaces value in a vector: \code{\link{vectorElements<-}} }
 	## \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 	## }
 	##}}
@@ -583,3 +584,42 @@ attr(formatSig,"ex") <- function(){
 	formatSig(x,2)
 }
 
+
+
+"vectorElements<-" <- function(
+	# adds or replaces value in vec
+	vec	##<< a named vector
+	,value		##<< a named vector of same mode as vec
+){
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	if( 0 == length(value) ) return( vec )
+	if( is.null(vec) ) vec <- structure(vector(mode(value),0), names=character(0))
+	if( !is.vector(vec) )
+		stop("setVectorElements<-: called with argument vec being not a vector")
+	vecNames <- names(vec)
+	if( is.null(vecNames) )
+		stop("setVectorElements<-: vec must be a named vector")
+	newNames <- names(value)
+	if( 0==length(newNames) || !all(nzchar(newNames)) )
+		stop("setVectorElements<-: all components of newValues must have a name")
+	for( newName in  newNames){
+		if( newName %in% vecNames) 
+			vec[newName] <- value[newName]
+		else
+			vec <- c(vec, value[newName])
+	}
+	vec
+}
+.tmp <- .tmp <- get("vectorElements<-")
+attributes( .tmp )$ex <- function(){
+	vec <- c(a=1)
+	vectorElements(vec) <- c(a=2)
+	vec
+	vectorElements(vec) <- c(b=2)
+	vec
+	
+	l1 <- list()
+	vectorElements(l1$a) <- c(b=2)	# creating list entry a
+	l1
+}
+#is.language(as.name("vectorElements<-"))

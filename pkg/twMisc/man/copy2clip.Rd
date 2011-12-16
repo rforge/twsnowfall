@@ -33,6 +33,7 @@ sep = "\\t",
 \item{ assign first variable of RData-file into a variable: \code{\link{loadAssign}} }
 \item{ reorder factor levels: \code{\link{reorderFactor}} }
 \item{ format to significant number of digits including trailing zeros: \code{\link{formatSig}} }
+\item{ adds or replaces value in a vector: \code{\link{vectorElements<-}} }
 \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 }
 }}}

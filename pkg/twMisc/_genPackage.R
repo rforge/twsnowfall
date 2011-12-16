@@ -41,6 +41,7 @@ pkg<-"twMisc"
 	system(	paste("R CMD INSTALL --html ",pkg, sep="") )
 	setwd(prevWd)
 	
+	
 	# show in Browser
 	htmlRoot <- file.path( system.file(package = pkg), "html" )
 	html_viewer <- function(path) {
@@ -53,6 +54,9 @@ pkg<-"twMisc"
 	
 	# copy to the generated html into working directory
 	#file.copy( htmlRoot, ".", recursive=TRUE)
+	
+	updateVersionAndDate()
+	
 }
 
 .tmp.UnitTests <- function(){
