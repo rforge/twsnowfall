@@ -598,7 +598,10 @@ attr(formatSig,"ex") <- function(){
 		stop("setVectorElements<-: called with argument vec being not a vector")
 	vecNames <- names(vec)
 	if( is.null(vecNames) )
-		stop("setVectorElements<-: vec must be a named vector")
+		if( 0 == length(vec) )
+			vecNames <- names(vec) <- character(0)
+		else
+			stop("setVectorElements<-: vec must be a named vector")
 	newNames <- names(value)
 	if( 0==length(newNames) || !all(nzchar(newNames)) )
 		stop("setVectorElements<-: all components of newValues must have a name")
@@ -615,6 +618,9 @@ attributes( .tmp )$ex <- function(){
 	vec <- c(a=1)
 	vectorElements(vec) <- c(a=2)
 	vec
+	vectorElements(vec) <- c(b=2)
+	vec
+	vec=numeric(0)	# special case: names are created
 	vectorElements(vec) <- c(b=2)
 	vec
 	
