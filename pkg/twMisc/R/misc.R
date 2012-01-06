@@ -53,6 +53,7 @@ copy2clip <- function(
 	## \item{ reorder factor levels: \code{\link{reorderFactor}} }
 	## \item{ format to significant number of digits including trailing zeros: \code{\link{formatSig}} }
 	## \item{ adds or replaces value in a vector: \code{\link{vectorElements<-}} }
+	## \item{ extracting data frame collumn while keepign rownames: \code{\link{dfcol}} }
 	## \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 	## }
 	##}}
@@ -629,3 +630,21 @@ attributes( .tmp )$ex <- function(){
 	l1
 }
 #is.language(as.name("vectorElements<-"))
+
+
+dfcol <- function(
+	### extract column from a data.frame and reassing names
+	x			##<< the dataFrame
+	,colName	##<< the column name
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+){
+	structure( x[,colName], names=rownames(x) )
+	### \code{structure( x[,colName], names=rownames(x) )}
+}
+attr(dfcol,"ex") <- function(){
+	data <- data.frame( a=1:4, b=2*(1:4) )
+	rownames(data) <- LETTERS[1:4]
+	dfcol(data,"b")
+}
+
+
