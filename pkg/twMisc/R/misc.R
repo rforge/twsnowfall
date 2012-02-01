@@ -54,6 +54,7 @@ copy2clip <- function(
 	## \item{ format to significant number of digits including trailing zeros: \code{\link{formatSig}} }
 	## \item{ adds or replaces value in a vector: \code{\link{vectorElements<-}} }
 	## \item{ extracting data frame collumn while keepign rownames: \code{\link{dfcol}} }
+	## \item{ Compactly Display the Structure (\code{str}) with 3 levels without attributes: \code{\link{str3}} }
 	## \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 	## }
 	##}}
@@ -467,13 +468,17 @@ twRescale <- function (
 	clip = TRUE						##<< should values be clipped to specified range?
 ){
 	##details<<
-	## copied from package ggplot2 to avoid package redundancies
-	##author<< Hadley Wickham <h.wickham@gmail.com>
-	if (length(from) == 1 || length(to) == 1 || from[1] == from[2] || 
-		to[1] == to[2]) 
-		return(x)
+	## adapted from package ggplot2 to avoid package redundancies
+	##author<< Hadley Wickham <h.wickham@gmail.com>, Thomas Wutzler
+	
+	##details<< 
+	## If from[1] == from[2] then the mean of interval to is returned.
+	if( length(from) != 2 || length(to) != 2)
+		stop("twRescale: arguments to and from must be ranges.")
+	if ( from[1] == from[2] ) 
+		return( rep( mean(to), length(x) ) )
 	if (is.factor(x)) {
-		warning("Categorical variable automatically converted to continuous", 
+		warning("twRescale: Categorical variable automatically converted to continuous", 
 			call. = FALSE)
 		x <- as.numeric(x)
 	}
@@ -645,6 +650,16 @@ attr(dfcol,"ex") <- function(){
 	data <- data.frame( a=1:4, b=2*(1:4) )
 	rownames(data) <- LETTERS[1:4]
 	dfcol(data,"b")
+}
+
+str3 <- function(
+	### Compactly Display the Structure with 3 nesting levels and without attributes
+	object	##<< the object to display
+	,...	##<< further arguments to str		
+	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+){
+	str( object, max.level=3,  give.attr=FALSE, ...)
+	### result of \code{\link{str}( object, max.level=3,  give.attr=FALSE, ...)}
 }
 
 
