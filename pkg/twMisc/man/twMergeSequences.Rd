@@ -11,11 +11,15 @@ nInSlice = 4)
 }
 \arguments{
   \item{nItem}{integer vector (nSeq) number of items in each sequence}
-  \item{mergeMethod}{method of merging}
+  \item{mergeMethod}{method of merging\describe{
+\item{random}{sequences are merged randomly}
+\item{stack}{stack sequences}
+\item{slice}{slices of the sequences occur distributed across resulting sequence}
+}}
   \item{nInSlice}{length of a slice for mergeMethod slice}
 }
 
-
+\value{integer vector of length (sum(n)), which each position specifying the index of the originating sequence }
 
 \author{Thomas Wutzler}
 

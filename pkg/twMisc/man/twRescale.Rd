@@ -16,10 +16,12 @@ clip = TRUE)
   \item{from}{range to scale from, defaults to range of data}
   \item{clip}{should values be clipped to specified range?}
 }
-\details{copied from package ggplot2 to avoid package redundancies}
+\details{adapted from package ggplot2 to avoid package redundancies
+
+If from[1] == from[2] then the mean of interval to is returned.}
 
 
-\author{Hadley Wickham <h.wickham@gmail.com>
+\author{Hadley Wickham <h.wickham@gmail.com>, Thomas Wutzler
 Thomas Wutzler}
 
 

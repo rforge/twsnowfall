@@ -48,6 +48,7 @@ copy2clip <- function(
 	## \item{ easy copying to clipboard: this method }
 	## \item{ create a sequence based on a range c(min,max): \code{\link{seqRange}} }
 	## \item{ merge several sequences to a single sequence: \code{\link{twMergeSequences}} }
+	## \item{ recursively merge a named list or vector to another: \code{\link{twMergeLists}} }
 	## \item{ Mediawiki-Code for table of given data.frame: \code{\link{twDf2wikiTable}} }
 	## \item{ assign first variable of RData-file into a variable: \code{\link{loadAssign}} }
 	## \item{ reorder factor levels: \code{\link{reorderFactor}} }

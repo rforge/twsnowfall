@@ -1,12 +1,13 @@
 twMergeSequences <- function(
 	### merge several sequences to a single sequence
 	nItem		##<< integer vector (nSeq) number of items in each sequence
-	,mergeMethod= ##<< method of merging
-		c( ##describe<<		
+	,mergeMethod= c( ##<< method of merging
+		##describe<<		
 		random="random"		##<< sequences are merged randomly 
 		,stack="stack"		##<< stack sequences 
 		,slice="slice"		##<< slices of the sequences occur distributed across resulting sequence
-	) ##end<<
+		##end<<
+	) 
 	,nInSlice=4		##<< length of a slice for mergeMethod slice
 ){
 	##seealso<< \link{twMisc}
@@ -51,7 +52,7 @@ twMergeSequences <- function(
 		} # method slice  
 		, stop(paste("mergeSequences: unknown mergeMethod",mergeMethod))
 	)
-	### integer vector of length (sum(n)), which each position specifying the index of the originating sequence 
+	##value<< integer vector of length (sum(n)), which each position specifying the index of the originating sequence 
 	seq
 }
 attr(twMergeSequences,"ex") <- function(){

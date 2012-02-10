@@ -1,7 +1,7 @@
 Package: twMisc
 Title: tw utility functions  
-Version: 0.5.49
-Date: 2012-01-06
+Version: 0.5.50
+Date: 2012-02-06
 Author: Thomas Wutzler
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: utilities used across several other packages of tw
