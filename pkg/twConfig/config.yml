@@ -1,0 +1,11 @@
+# put options in the form <name> : [<value>,<description>]
+clusterRelDir: [../../cluster	, relative path to the default directory of bsub_r ]
+bsubOptions:   [-q SLES			, options passed to bsub ]
+outputDir: 	   [Rout			, 'subdir of the clusterRelDir where the std:out of the script is stored' ]
+IODir: 		   [parms			, subdir of the clusterRelDir where scripts read data from or write data to ]
+#IODir: 		   parms			
+#testNum:	 	[1				, just a number to test] 
+#testList:
+#    subEntry1: 1
+#    subEntry2: 2
+    
