@@ -90,6 +90,10 @@
 #----------------- twConfig S4 class -------------------
 twConfig <- setClass("twConfig"
 	,representation(env="environment",props="list")
+	##details<< 
+	## Be warned that this class breaks the copy semantics. 
+	## get returns an environment. All changes that you do to this will be visible
+	## in all other copies of the class. 
 )
 setMethod(initialize, "twConfig", function(.Object, ...) {
 		callNextMethod(.Object, ..., env=new.env(), props=list() )
@@ -200,8 +204,11 @@ setMethod("show","twConfig",function(object){
 #		object@env
 #	})
 
-setMethod("get","twConfig",function(x){
-		x@env
+setGeneric("env",	function(
+		### obtaining the environment holding the configuration
+		object,... ){standardGeneric("env")})
+setMethod("env","twConfig",function(object){
+		object@env
 	})
 
 setGeneric("getCid",	function(
@@ -221,29 +228,29 @@ setMethod("getDesc","twConfig",function(object,...){
 
 .tmp.f <- function(){
 	cfg0 <- new("twConfig")
-	names(as.list(get(cfg0)))
+	names(as.list(env(cfg0)))
 	(cfg1 <- loadR(new("twConfig")))
-	names(as.list(get(cfg1)))
+	names(as.list(env(cfg1)))
 	#loadR(cfg1)
 	getCid(cfg1, cfg1@props$cid[[1]])
 	getDesc(cfg1)
-	(tmp <- get(cfg1)$testList$scalarItem)
+	(tmp <- env(cfg1)$testList$scalarItem)
 	rm(loca)
-	try(get(cfg1)$f1())	# should throw an error because of missing loca
+	try(env(cfg1)$f1())	# should throw an error because of missing loca
 	loca="locaCallFrame"
-	get(cfg1)$f1()		# should use now defined loca 
-	get(cfg1)$f1(loca="locaDots") 	# should use arguments by ...
-	get(cfg1)$f2()		# internal resolve by function cid
+	env(cfg1)$f1()		# should use now defined loca 
+	env(cfg1)$f1(loca="locaDots") 	# should use arguments by ...
+	env(cfg1)$f2()		# internal resolve by function cid
 	#
 	(cfg2 <- loadYaml(cfg1))
-	names(as.list(get(cfg2)))
-	get(cfg2)$yamlItem1
-	get(cfg2)$msg  # now updated
-	(tmp <- get(cfg2)$ev1)  
+	names(as.list(env(cfg2)))
+	env(cfg2)$yamlItem1
+	env(cfg2)$msg  # now updated
+	(tmp <- env(cfg2)$ev1)  
 	(tmp2 <- substr(tmp,2,nchar(tmp)-1))
-	eval( parse(text=tmp2), env=get(cfg2) )  
-	get(cfg2)$f1()		# should use now loca defined in Yaml file 
-	get(cfg2)$f1(loca="locaDots") 	# should use arguments by ...
+	eval( parse(text=tmp2), env=env(cfg2) )  
+	env(cfg2)$f1()		# should use now loca defined in Yaml file 
+	env(cfg2)$f1(loca="locaDots") 	# should use arguments by ...
 }
 
 .tmp.f <- function(){

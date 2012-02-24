@@ -1,5 +1,5 @@
 yamlItem1: yamlItem1
 loca: locaYaml
 msg: Hello from Yaml
-f3: '`function(){ paste("config.yml.f3_",loca,"subItem1=",cid("subItem1"),sep="") }`'
+f3: '`function(){ paste("config.yml.f3: local=",loca,", subItem1=",cid("subItem1"),sep="") }`'
 ev1: '`cid("subItem1")`'
