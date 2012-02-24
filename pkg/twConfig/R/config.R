@@ -33,7 +33,7 @@
 			&& length(entry) <= maxNEntry		# do not parse big vectors 
 			&& level < maxLevel					# avoid too deep recursion
 		){	
-			propsL <- extractProps( env=entry, propNames=propNames, maxLevel=maxLevel, maxNEntry=maxNEntry
+			propsL <- .extractProps( env=entry, propNames=propNames, maxLevel=maxLevel, maxNEntry=maxNEntry
 				,prefix=pkey, level=level+1 )
 			for( pName in names(propsL) )
 				props[[pName]] <- c(props[[pName]], propsL[[pName]] )
@@ -44,18 +44,17 @@
 	### ,each a character vector of listExpression to  
 }
 .tmp.f <- function(){
-	(tmp <- extractProps(env))
+	(tmp <- .extractProps(env))
 }
 
 
 .testEnv <- function(
 	### testing the principle of working with environments
 ){
-	fileName <- "config.R"
-	env <- local({
-		source(fileName, local=TRUE)
-		environment()
-	})
+	fileName = "config.R"
+	env <- new.env(parent=baseenv())
+	env$fileName <- fileName
+	evalq( source(fileName, local=TRUE), env )
 	#envl <- if( is.environment(env) ) as.list(env) else env
 	#cids <- list( subList1=parse(text='testList$subList'))
 	props <- .extractProps(env)
@@ -77,31 +76,61 @@
 	with( env, attr(f1,"desc") )
 	with( env, f2() )		# note how function cid is used
 	f2 <- with(env, f2)
-}
+	#
+	envl <- as.list(env)
+	with(envl, f2)()
+	evalq( rm(list=ls()), env)
+	with(envl, f2)()
+	for( key in names(envl) )
+		env[[key]] <- envl[[key]]
+	env$cid <- function(id){ eval(cids[[id]], envir=envl ) }
+	with( envl, f1)(loca="loca3")		# now it should work
+	}
 
 #----------------- twConfig S4 class -------------------
 twConfig <- setClass("twConfig"
 	,representation(env="environment",props="list")
 )
+setMethod(initialize, "twConfig", function(.Object, ...) {
+		callNextMethod(.Object, ..., env=new.env(), props=list() )
+	}) 
 
-setGeneric("mergeList",	function(
-		### updateing the current configuration
-		object			##<< the class object	
-		,from			##<< some object that can be coerced to list holding new configuration
-	){ standardGeneric("mergeList") })
-setMethod("mergeList","twConfig",	function(
-		### updateing the current configuration
-		object			##<< the class object	
-		,from			##<< some object that can be coerced to list holding new configuration
-	){
-		object@env <- env <- as.environment(.mergeLists(as.list(object@env), as.list(from)))
-		object@props <- props <- .extractProps(object@env)
-		# reverse key -> value and convert key string to an expression
-		cids <- structure( sapply(names(props$cid),function(key){ parse(text=key)}), names=as.vector(props$cid) )
-		#object@env$cid <- function(id){ eval(cids[[id]], envir=as.list(object@env) ) }
-		object@env$cid <- function(id){ eval(cids[[id]], envir=object@env ) }
-		object
-	})
+.copyAndEmptyEnv <- function(
+	### Save the current binding of an environment to a list and then clear all binding from the environment
+	env		##<< the environment to process
+){
+	prevEnv <- as.list(env)		# save the current state of the environment, closures still point to env
+	evalq(rm(list=ls()),env)	# clear all binding from the environment
+	prevEnv
+	### The list holding all bindings previously in env
+}
+
+.mergeEnvToList <- function(
+	### recursively merge an environment to a list
+	prevEnv	## the list which entries should be recursive updated or appended
+	,env	## the environment to update
+){
+	mergedEnv <- .mergeLists( prevEnv, as.list(env) )
+	evalq(rm(list=ls()),env)			# clear it before reassigning
+	for( key in names(mergedEnv) )		# reassign the merged env
+		env[[key]] <- mergedEnv[[key]]
+	invisible(mergedEnv)
+}
+
+.updatePropsAndEnv <- function(
+	### Extract the properties 
+	object		##<< the twConfig object to update
+	,...		##<< further arguments passed to .extractProps
+){
+	props <- .extractProps(object@env, ...)
+	# reverse key -> value and convert key string to an expression
+	cids <- structure( sapply(names(props$cid),function(key){ parse(text=key)}), names=as.vector(props$cid) )
+	#env$cid <- function(id){ eval(cids[[id]], envir=as.list(env) ) }
+	object@env$cid <- function(id){ eval(cids[[id]], envir=object@env ) }
+	props
+	### the updated props that need to be assigned to the object
+}
+
 
 setGeneric("loadR",	function(
 	### parsing and R file into a configuration
@@ -115,11 +144,15 @@ setMethod("loadR","twConfig",function(
 ){
 	##details<< 
 	## The R file is source into a local environment.
-	env <- local({
-			source(fileName, local=TRUE)
-			environment()
-		})
-	mergeList(object,env)
+	# source must be done in the same environment as the current environment
+	# so that all closures point to the same frame
+	# Hence we copy all entries, source into an emptied env, merge, and retransfer to the emptied env
+	prevEnv <- .copyAndEmptyEnv( object@env )	
+	object@env$fileName <- fileName
+	evalq( source(fileName, local=TRUE), object@env )
+	.mergeEnvToList( prevEnv, object@env)
+	object@props <- .updatePropsAndEnv(object)
+	invisible(object)
 })
 
 setGeneric("loadYaml",	function(
@@ -127,7 +160,6 @@ setGeneric("loadYaml",	function(
 		object					##<< the class object	
 		,fileName="config.yml"	##<< the file to parse
 	){ standardGeneric("loadYaml") })
-
 setMethod("loadYaml","twConfig",function(
 		### parsing and Yaml file into a configuration
 		object					##<< the class object	
@@ -135,7 +167,11 @@ setMethod("loadYaml","twConfig",function(
 	){
 		if( !require(yaml)) stop("loadYaml: package yaml needs to be installed to use this functionality.")
 		yml <- yaml.load_file( fileName )
-		mergeList(object,yml)
+		prevEnv <- .copyAndEmptyEnv( object@env )
+		merged <- .mergeLists(prevEnv, yml)
+		.mergeEnvToList( merged, object@env)
+		object@props <- .updatePropsAndEnv(object)
+		invisible(object)
 	})
 
 
@@ -184,15 +220,30 @@ setMethod("getDesc","twConfig",function(object,...){
 
 
 .tmp.f <- function(){
+	cfg0 <- new("twConfig")
+	names(as.list(get(cfg0)))
 	(cfg1 <- loadR(new("twConfig")))
+	names(as.list(get(cfg1)))
+	#loadR(cfg1)
 	getCid(cfg1, cfg1@props$cid[[1]])
 	getDesc(cfg1)
 	(tmp <- get(cfg1)$testList$scalarItem)
-	try(get(cfg1)$f1())
-	f1 <- get(cfg1)$f1 
-	f1(loca="loca3")
-	get(cfg1)$f2
-	get(cfg1)$f2()
+	rm(loca)
+	try(get(cfg1)$f1())	# should throw an error because of missing loca
+	loca="locaCallFrame"
+	get(cfg1)$f1()		# should use now defined loca 
+	get(cfg1)$f1(loca="locaDots") 	# should use arguments by ...
+	get(cfg1)$f2()		# internal resolve by function cid
+	#
+	(cfg2 <- loadYaml(cfg1))
+	names(as.list(get(cfg2)))
+	get(cfg2)$yamlItem1
+	get(cfg2)$msg  # now updated
+	(tmp <- get(cfg2)$ev1)  
+	(tmp2 <- substr(tmp,2,nchar(tmp)-1))
+	eval( parse(text=tmp2), env=get(cfg2) )  
+	get(cfg2)$f1()		# should use now loca defined in Yaml file 
+	get(cfg2)$f1(loca="locaDots") 	# should use arguments by ...
 }
 
 .tmp.f <- function(){

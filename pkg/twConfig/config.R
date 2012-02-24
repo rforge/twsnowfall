@@ -11,8 +11,8 @@ testList <- structure( list(
 )
 ,desc='top list item')
 
-f1 = structure( function(loca){ c(loca, testList$vectorItem*2) }
-,desc='function accessing open binding loca and variables in local frame.')
+f1 = structure( function(...){ with( list(...),{c(loca, testList$vectorItem*2)}) }
+,desc='function accessing open binding loca and variables in local frame. Note that us must use list(...)')
 
 f2 = structure( function(){ cid('subList1')$vectorItem }
 ,desc='function accessing function cid to return an element given by an id.')
