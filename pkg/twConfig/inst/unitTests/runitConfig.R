@@ -40,3 +40,12 @@ test.yaml_cidLabelChanged <- function (){
 	checkEquals( 1, length(getDesc(cfg,"referencingItem") ))
 } 
 
+#testCases or vignette
+# simple key value pairs
+# self documentation
+# nested structures (accessing trees and elements, also of documentation)
+# backtick substitution
+# referencing items by in tree, by name (future imports) 
+# cascading demonstrating changing docu, value and both
+#    referencing item in another config file loaded afterwards
+
