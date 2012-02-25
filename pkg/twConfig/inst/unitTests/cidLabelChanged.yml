@@ -1,0 +1,2 @@
+referencedItem: [{help: item with a cid (here idc), idc: refItem},  refContents]
+testItem: refItem=`ids(refItem)`

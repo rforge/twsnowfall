@@ -220,9 +220,9 @@ setMethod(initialize, "twConfig", function(.Object
 	#props <- .extractPropsAttr(object@env, ...)
 	props <- .stripConfigProps(object@env, propNames=propNames,...)$props
 	# reverse key -> value and convert key string to an expression
-	cids <- structure( sapply(names(props$cid),function(key){ parse(text=key)}), names=as.vector(props$cid) )
+	cids <- structure( sapply(names(props[[object@cidLabel]]),function(key){ parse(text=key)}), names=as.vector(props[[object@cidLabel]]) )
 	#env$cid <- function(id){ eval(cids[[id]], envir=as.list(env) ) }
-	object@env$cid <- function(id){ eval(cids[[id]], envir=object@env ) }
+	object@env[[object@cidFunctionName]] <- function(id){ eval(cids[[id]], envir=object@env ) }
 	props
 	### the updated props that need to be assigned to the object
 }
@@ -292,15 +292,15 @@ setMethod("show","twConfig",function(object){
 		print(tmp)
 	}
 	if( length(desc) > 6)
-		cat("out of ",length(desc),"described items. str(get(<config>)).\n")
+		cat("out of ",length(desc),"described items. str(getv(<config>)).\n")
 	if( length(object@props$cid) )
 		cat("cid:",paste(object@props$cid,collapse=","),"\n")
 })
 
-setGeneric("get",	function(x,...){standardGeneric("get")})
-setMethod("get","twConfig",function(x,path="",...){
+setGeneric("getv",	function(x,...){standardGeneric("getv")})
+setMethod("getv","twConfig",function(x,path="",...){
 		if( length(grep("<-",path)) )
-			stop("twConfig.get: <- not allowed in path expression.")
+			stop("twConfig.getv: <- not allowed in path expression.")
 		if( 0==length(path) || !nzchar(path) )	as.list(x@env) else{
 			expr <- parse(text=path)
 			eval( expr, envir=x@env)
@@ -393,45 +393,46 @@ setMethod("substBacktick","twConfig",function(object,...){
 	#loadR(cfg1)
 	getCid(cfg1, cfg1@props$cid[[1]])
 	getDesc(cfg1)
-	(tmp <- get(cfg1,"testList$vectorItem2"))
-	get(cfg1,"f1") <- "foo"
+	(tmp <- getv(cfg1,"testList$vectorItem2"))
+	try(getv(cfg1,"f1") <- "foo") # must throw an error, not allowed to change values
 	rm(loca)
-	try(get(cfg1,"f1")()) # should throw an error because of missing loca
+	try(getv(cfg1,"f1")()) # should throw an error because of missing loca
 	loca="locaCallFrame"
-	get(cfg1,"f1")()		# should use now defined loca 
-	get(cfg1,"f1")(loca="locaDots") 	# should use arguments by ...
-	get(cfg1,"f2")()		# internal resolve by function cid
+	getv(cfg1,"f1")()		# should use now defined loca 
+	getv(cfg1,"f1")(loca="locaDots") 	# should use arguments by ...
+	getv(cfg1,"f2")()		# internal resolve by function cid
 	#
-	#(cfg2 <- loadYaml(cfg1)); get(cfg2,"f3")() 
+	#(cfg2 <- loadYaml(cfg1)); getv(cfg2,"f3")() 
 	(cfg2 <- loadYaml(cfg1, isSubstBacktick=FALSE))
 	names(as.list(cfg2@env))
-	get(cfg2,"yamlItem1")
-	get(cfg2,"msg")  # now updated
+	getv(cfg2,"yamlItem1")
+	getv(cfg2,"msg")  # now updated
 	getCid(cfg2,"subItem1")
 	getCid(cfg2,"yamlItem1")
-	p <- gregexpr("`",tmp)[[1]]	# find the positions
-	if( length(p) >= 2)
-		
-	(tmp2 <- substr(tmp,1,nchar(tmp)-1))
-	eval( parse(text=tmp2), env=cfg2@env )  
-	get(cfg2,"f1")()		# should use now loca defined in Yaml file 
-	get(cfg2,"f1")(loca="locaDots") 	# should use arguments by ...
-	get(cfg2,"f3")
+	getv(cfg2,"f1")()		# should use now loca defined in Yaml file 
+	getv(cfg2,"f1")(loca="locaDots") 	# should use arguments by ...
+	getv(cfg2,"f3")
 	substBacktick(cfg2)
-	get(cfg2,"ev2")
-	get(cfg2,"f3")()
+	getv(cfg2,"ev2")
+	getv(cfg2,"f3")()
 	}
 
+loadConfig <- function(
+	fileNames = c("config.yml")
+){
+	cfg <- new("twConfig")
+	for( fName in fileNames ){
+		ext <- fileExt(fName)
+		cfg <- switch(ext
+			,R =  loadR(cfg,fName)
+			,yml = loadYaml(cfg,fName)
+			,stop(paste("loadConfig: unknown file format",ext))
+		)
+	}
+	cfg
+}
 .tmp.f <- function(){
-	# S4
-	require(lme4)
-	?"mer-class"
-	#
-	showMethods("show") ## show all methods for show
-	?show ## shows the generic documentation of show
-	method?show("mer") ## method?generic("signature 1", "signature 2", ...) -- get help for the generic function for a particular signature list, usually a single class
-	getMethod("show", signature="mer") ## function definition
-	lme4:::printMer ## printMer is what the show method for mer calls	
+	(cfg <- loadConfig())
 }
 
 
