@@ -1,52 +1,3 @@
-.extractPropsAttr <- function(
-	### Extracting ids and desc attributes of the items and subItmes in the environment
-	env				##<< the environment, list or named vector to extract from				
-	, propNames		##<< names of the attributes to extract
-		=c("cid","desc")
-	, maxLevel=20	##<< maximum level or recursion
-	, maxNEntry=256	##<< maximum nuber of entries in a vector, above which elements are not inspected. 
-		##<< This prevents expeding each element of a huge vector entry.
-	, prefix=""		##<< prefix, used during recursive calls
-	, level=0 		##<< level of calling, used during recursive calls
-){
-	props <- list()	
-	envl <- if( is.environment(env) ) as.list(env) else env
-	if( !(is.list(envl) || is.vector(envl)) ) 
-		stop("extractProps: env must be an environment, list, or named vector")
-	#key <- names(envl)[1]
-	#key <- "f1"
-	#key <- "testList"
-	#i <- 1
-	namesl <- names(envl)
-	hasNames <- length(namesl) != 0
-	for( i in seq_along(envl) ){
-		key <- if(hasNames) paste( (if(nzchar(prefix))"$"else""), namesl[i], sep="") else paste("[[",i,"]]",sep="")
-		pkey <- paste(prefix,key,sep="")
-		entry <- envl[[i]]
-		a <- attributes(entry)
-		#pName <- 'desc'
-		for( pName in propNames)
-			if( length(val <- a[[pName]]) ) props[[pName]][pkey] <- a[[pName]]
-		if( (is.list(entry) || is.vector(entry))
-			#&& !(length(envl)==1 && identical(entry,envl)) # if entry==envl do not reprocess it 
-			&& !identical(entry,envl) 			# if entry==envl do not reprocess it 
-			&& length(entry) <= maxNEntry		# do not parse big vectors 
-			&& level < maxLevel					# avoid too deep recursion
-		){	
-			propsL <- .extractPropsAttr( env=entry, propNames=propNames, maxLevel=maxLevel, maxNEntry=maxNEntry
-				,prefix=pkey, level=level+1 )
-			for( pName in names(propsL) )
-				props[[pName]] <- c(props[[pName]], propsL[[pName]] )
-		}
-	}
-	props
-	### list with those enties from propNames
-	### ,each a character vector of listExpression to  
-}
-.tmp.f <- function(){
-	(tmp <- .extractPropsAttr(env))
-}
-
 .stripConfigPropsItem <- function(
 	item				##<< the item to extract
 	, propNames=		##<< names of the attributes to extract
@@ -57,7 +8,8 @@
 	## and first entry are the cProps, i.e list with its first component in propNames
 	## remove the cProps and if the sequence is of length one,
 	cProps=list()
-	if( is.list(item) && 0==length(names(item)) &&
+	if( length(item) &&
+		is.list(item) && 0==length(names(item)) &&
 		is.list(i1 <- item[[1]]) && 0!=length(names(i1)) && 
 		names(i1)[1] %in% propNames
 	){
@@ -150,8 +102,11 @@
 			subVector=list( list(cid="subVector", desc="subVector"), "msg1","msg2" )
 			,subVector2=list( list(cid="subVector2", desc="subVector2"), c("msg1","msg2") )
 			, subMsg="subMessage")
+		,f1=function(){ TRUE }
 	)
-	cat( as.yaml(cfText1))
+	yamlText1 <- as.yaml(cfText1) 
+	cat( yamlText1 )
+	tmp <- yaml.load( yamlText1 )
 	item <- cfText1$msg1
 	str(tmp2 <-.stripConfigPropsItem(item)) 
 	
@@ -160,7 +115,6 @@
 	str(as.list(envText1))
 	eval( parse(text=names(tmp2$props$cid)[1]), env=envText1)
 }
-
 
 .testEnv <- function(
 	### testing the principle of working with environments
@@ -203,32 +157,54 @@
 
 #----------------- twConfig S4 class -------------------
 twConfig <- setClass("twConfig"
-	,representation(env="environment",props="list")
+	,representation(env="environment",props="list",unstripped="list"
+		,cidLabel="character", cidFunctionName="character", descLabel="character"
+		)
 	##details<< 
 	## Be warned that this class breaks the copy semantics. 
-	## get returns an environment. All changes that you do to this will be visible
-	## in all other copies of the class. 
+	## env returns an environment. All changes that you do to this environment 
+	## will be visible in all other copies of the class.
+	## Several functions, such as loadR, set, modify thise environment.
 )
-setMethod(initialize, "twConfig", function(.Object, ...) {
-		callNextMethod(.Object, ..., env=new.env(), props=list() )
+setMethod(initialize, "twConfig", function(.Object
+		, ...
+		, env=new.env()
+		, cidLabel="cid"
+		, cidFunctionName=cidLabel
+		, descLabel="desc"
+	) {
+		callNextMethod(.Object, ..., env=env, props=list(), unstripped=list()
+			,cidLabel=cidLabel, cidFunctionName=cidFunctionName, descLabel=descLabel
+		)
 	}) 
 
-.copyAndEmptyEnv <- function(
-	### Save the current binding of an environment to a list and then clear all binding from the environment
+#.copyAndEmptyEnv <- function(
+#	### Save the current binding of an environment to a list and then clear all binding from the environment
+#	env		##<< the environment to process
+#){
+#	prevEnv <- as.list(env)		# save the current state of the environment, closures still point to env
+#	evalq(rm(list=ls()),env)	# clear all binding from the environment
+#	prevEnv
+#	### The list holding all bindings previously in env
+#}
+
+.clearAllBindings <- function(
+	### clear all the bindings in the environment 
 	env		##<< the environment to process
 ){
 	prevEnv <- as.list(env)		# save the current state of the environment, closures still point to env
 	evalq(rm(list=ls()),env)	# clear all binding from the environment
-	prevEnv
+	invisible(prevEnv)
 	### The list holding all bindings previously in env
 }
+
 
 .replaceAllBindings <- function(
 	### Clear all bindings from the environment and transfer all entries from biven list  
 	env		## the environment to update
 	,from	## the list which entries should be copied to the environment
 ){
-	evalq(rm(list=ls()),env)			# clear it before reassigning
+	evalq(rm(list=ls()),env)		# clear it before reassigning
 	for( key in names(from) )		# reassign the merged env
 		env[[key]] <- from[[key]]
 	invisible(from)
@@ -237,9 +213,12 @@ setMethod(initialize, "twConfig", function(.Object, ...) {
 .updatePropsAndEnv <- function(
 	### Extract the properties and add function cid to the environment
 	object		##<< the twConfig object to update
+	, propNames		##<< names of the attributes to extract
+		=c( object@cidLabel, object@descLabel)
 	,...		##<< further arguments passed to .extractProps
 ){
-	props <- .extractPropsAttr(object@env, ...)
+	#props <- .extractPropsAttr(object@env, ...)
+	props <- .stripConfigProps(object@env, propNames=propNames,...)$props
 	# reverse key -> value and convert key string to an expression
 	cids <- structure( sapply(names(props$cid),function(key){ parse(text=key)}), names=as.vector(props$cid) )
 	#env$cid <- function(id){ eval(cids[[id]], envir=as.list(env) ) }
@@ -264,11 +243,12 @@ setMethod("loadR","twConfig",function(
 	# source must be done in the same environment as the current environment
 	# so that all closures point to the same frame
 	# Hence we copy all entries, source into an emptied env, merge, and retransfer to the emptied env
-	prevEnv <- .copyAndEmptyEnv( object@env )	
+	# Assume that unstripped holds all the bindings		
+	.clearAllBindings( object@env )	
 	object@env$fileName <- fileName
 	evalq( source(fileName, local=TRUE), object@env )
-	merged <- .mergeLists( prevEnv, as.list(object@env) )
-	.replaceAllBindings(object@env, merged) 
+	object@unstripped <- .mergeItem( object@unstripped, as.list(object@env) )
+	.replaceAllBindings(object@env, object@unstripped) 
 	object@props <- .updatePropsAndEnv(object)
 	invisible(object)
 })
@@ -285,9 +265,8 @@ setMethod("loadYaml","twConfig",function(
 	){
 		if( !require(yaml)) stop("loadYaml: package yaml needs to be installed to use this functionality.")
 		yml <- yaml.load_file( fileName )
-		prevEnv <- .copyAndEmptyEnv( object@env )
-		merged <- .mergeLists(prevEnv, yml)
-		.replaceAllBindings(object@env, merged) 
+		object@unstripped <- .mergeItem( object@unstripped, yml )
+		.replaceAllBindings(object@env, object@unstripped) 
 		object@props <- .updatePropsAndEnv(object)
 		invisible(object)
 	})
@@ -297,7 +276,7 @@ setMethod("show","twConfig",function(object){
 	cat("twConfig object of class",	classLabel(class(object)), "\n")
 	desc <- object@props$desc
 	envl <- as.list(object@env)
-	for( key in head(names(desc),20) ){
+	for( key in head(names(desc),6) ){
 		cat("-- ",key,":", desc[[key]] ,"\n")
 		if( is.finite(match("$",key)) ) recover()
 		expr <- parse(text=key)
@@ -307,9 +286,10 @@ setMethod("show","twConfig",function(object){
 		if( is.list(tmp) ) str(tmp, max.level=3, give.attr = FALSE) else
 		print(tmp)
 	}
-	if( length(desc) > 20)
-		cat("out of ",length(desc),"described items.\n")
-	cat("cid:",paste(object@props$cid,collapse=","),"\n")
+	if( length(desc) > 6)
+		cat("out of ",length(desc),"described items. str(as.list(env(<config>))) to see all.\n")
+	if( length(object@props$cid) )
+		cat("cid:",paste(object@props$cid,collapse=","),"\n")
 })
 
 #setGeneric("getEnv",	function(object ){standardGeneric("getEnv")})
@@ -360,8 +340,10 @@ setMethod("getDesc","twConfig",function(object,...){
 	names(as.list(env(cfg2)))
 	env(cfg2)$yamlItem1
 	env(cfg2)$msg  # now updated
-	(tmp <- env(cfg2)$ev1)  
-	(tmp2 <- substr(tmp,2,nchar(tmp)-1))
+	getCid(cfg2,"subItem1")
+	getCid(cfg2,"yamlItem1")
+	(tmp <- env(cfg2)$ev2)  	#TODO implement backtick substitution
+	(tmp2 <- substr(tmp,1,nchar(tmp)-1))
 	eval( parse(text=tmp2), env=env(cfg2) )  
 	env(cfg2)$f1()		# should use now loca defined in Yaml file 
 	env(cfg2)$f1(loca="locaDots") 	# should use arguments by ...

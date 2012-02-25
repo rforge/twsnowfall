@@ -1,5 +1,5 @@
-yamlItem1: yamlItem1
+yamlItem1: [{desc: desc of yamlItem1, cid: yamlItem1},  yamlItem1]
 loca: locaYaml
 msg: Hello from Yaml
 f3: '`function(){ paste("config.yml.f3: local=",loca,", subItem1=",cid("subItem1"),sep="") }`'
-ev1: '`cid("subItem1")`'
+ev2: 'subItem1=`cid("subItem1")`'

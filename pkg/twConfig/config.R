@@ -2,17 +2,22 @@
 
 msg <- "Hello World"
 
-testList <- structure( list(
-	scalarItem = structure(1
-		,desc='subItem with cid', cid='subItem1')
-	,vectorItem = 1:3
-	,subList = structure( list( vectorItem = 1:5 )
-		,desc='subList with cid', cid='subList1')
-)
-,desc='top list item')
+testList <- list( list(desc='top list item')
+	,list(
+		vectorItem1 = 1:3
+		,vectorItem2 = list( list(desc='subItem with cid', cid='subItem1')
+			,1:3)
+		,subList = list( list(desc='subList with cid', cid='subList1') 
+				,list( 
+					vectorItem = 1:5
+					,subSubItem = "desc of subSubItem"
+				))
+			
+	))
 
-f1 = structure( function(...){ with( list(...),{c(loca, testList$vectorItem*2)}) }
-,desc='function accessing open binding loca and variables in local frame. Note that us must use list(...)')
+f1 = list( list(desc='function accessing open binding loca and variables in local frame. Note that us must use list(...)')
+		,function(...){ with( list(...),{c(loca, testList$vectorItem2*2)}) })
 
-f2 = structure( function(){ cid('subList1')$vectorItem }
-,desc='function accessing function cid to return an element given by an id.')
+f2 = list( list(desc='function accessing function cid to return an element given by an id.')
+		,function(){ cid('subList1')$vectorItem })
+
