@@ -56,6 +56,7 @@ copy2clip <- function(
 	## \item{ adds or replaces value in a vector: \code{\link{vectorElements<-}} }
 	## \item{ extracting data frame collumn while keepign rownames: \code{\link{dfcol}} }
 	## \item{ Compactly Display the Structure (\code{str}) with 3 levels without attributes: \code{\link{str3}} }
+	## \item{ Retrieving and stripping filename extension: : \code{\link{fileExt}},\code{\link{twStripFileExt}} }
 	## \item{ TODO: link functions: \code{\link{twDf2wikiTable}} }
 	## }
 	##}}
@@ -208,8 +209,24 @@ twStripFileExt <- function(
 	### Remove the all the file extension, i.e. the last dot and suceeding characters.
 	filenames
 ){
+	##seealso<< code{\link{fileExt}}, \link{twMisc}
 	sub("[.][^.]*$", "", filenames, perl=TRUE)
 }
+
+fileExt <- function(
+	### Return the file extension
+	filenames
+){
+	ifelse( regexpr("\\.",filenames) != -1,
+		sub("(^.*[.])([^.]*)$", "\\2", filenames, perl=TRUE)
+		,"")
+}
+attr(fileExt,"ex") <- function(){
+	##seealso<< code{\link{fileExt}}, \link{twMisc}
+	filenames=c("text.txt","dir/some.test.yml","a")
+	twGetFileExt(filenames)
+}
+
 
 
 

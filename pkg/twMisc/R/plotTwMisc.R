@@ -180,8 +180,8 @@ twPlot2D <- function(
 	, key.title, key.axes, axes=TRUE, las = 1	##<< see \code{\link{filled.contour}}
 	, contour=FALSE				##<< if TRUE then \code{\link{filled.contour}} is used for plotting. Otherwisee \code{\link{image}}
 	, col= rev(heat.colors(20))	##<< colors for using image
-	, color.palette=function(n){rev(heat.colors(n))} ##<< colors for using filled.contour
-	, ...						##<< further arguments passed to \code{\link{filled.contour}} or \code{\link{image}} 
+	#, color.palette=function(n){rev(heat.colors(n))}  ##<< colors for using filled.contour
+	, ...                                ##<< further arguments passed to \code{\link{filled.contour}} or \code{\link{image}} 
 ### such as \code{ key.title=title(sub="Log-Like-\nlihood\n"), color.palette=function(n){rev(heat.colors(n))} }
 ### or for image \code{col=rev(heat.colors(20))}
 ){

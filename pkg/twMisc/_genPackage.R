@@ -32,8 +32,9 @@ pkg<-"twMisc"
 	# generate RD Files
 	pkg<-"twMisc"
 	library(inlinedocs)
-	unlink( file.path("man","*.Rd") )	
-	package.skeleton.dx(".")
+	unlink( file.path("man","*.Rd") )
+	#prevWd <- setwd("..")
+	#tryCatch( package.skeleton.dx(pkg), finally=setwd(prevWd))
 	try(file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" ), silent=TRUE)	# copy descriptions of data
 	
 	# generate the HTML  files
