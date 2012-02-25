@@ -1,4 +1,4 @@
-.extractProps <- function(
+.extractPropsAttr <- function(
 	### Extracting ids and desc attributes of the items and subItmes in the environment
 	env				##<< the environment, list or named vector to extract from				
 	, propNames		##<< names of the attributes to extract
@@ -33,7 +33,7 @@
 			&& length(entry) <= maxNEntry		# do not parse big vectors 
 			&& level < maxLevel					# avoid too deep recursion
 		){	
-			propsL <- .extractProps( env=entry, propNames=propNames, maxLevel=maxLevel, maxNEntry=maxNEntry
+			propsL <- .extractPropsAttr( env=entry, propNames=propNames, maxLevel=maxLevel, maxNEntry=maxNEntry
 				,prefix=pkey, level=level+1 )
 			for( pName in names(propsL) )
 				props[[pName]] <- c(props[[pName]], propsL[[pName]] )
@@ -44,7 +44,121 @@
 	### ,each a character vector of listExpression to  
 }
 .tmp.f <- function(){
-	(tmp <- .extractProps(env))
+	(tmp <- .extractPropsAttr(env))
+}
+
+.stripConfigPropsItem <- function(
+	item				##<< the item to extract
+	, propNames=		##<< names of the attributes to extract
+		c("cid","desc")
+){
+	##details<< 
+	## If item is a sequence, i.e. an unnamed list,
+	## and first entry are the cProps, i.e list with its first component in propNames
+	## remove the cProps and if the sequence is of length one,
+	cProps=list()
+	if( is.list(item) && 0==length(names(item)) &&
+		is.list(i1 <- item[[1]]) && 0!=length(names(i1)) && 
+		names(i1)[1] %in% propNames
+	){
+		cProps <- i1
+		item[1] <- NULL
+		if( length(item) == 1) item <- item[[1]]
+	}
+	##value<< a List with components
+	list(
+		item=item		##<< item, with cProps removed and if remaining lenght=1, only the first element of the sequence 
+		,props=cProps	##<< list: the config properties
+		##end<< 
+		)
+}
+.stripConfigProps <- function(
+	### Extracting ids and desc attributes of the items and subItmes in the environment
+	env				##<< the environment, thats bindings are changed
+	, propNames		##<< names of the attributes to extract
+		=c("cid","desc")
+	, maxLevel=20	##<< maximum level or recursion
+	, maxNEntry=256	##<< maximum nuber of entries in a vector, above which elements are not inspected.
+	, isUpdateEnv=TRUE	##<< if TRUE, then env is updated so that all props are stripped
+	##<< This prevents expeding each element of a huge vector entry.
+	, prefix=""		##<< prefix, used during recursive calls
+	, items=list()	##<< sublist corresponding to prefix			
+	, level=0 		##<< level of calling, used during recursive calls
+){
+	if( 0==length(items) ) items <- 
+		if( !nzchar(prefix) ){
+			if( !is.environment(env)) stop(".stripConfigProps: env must be an environment.")
+			items <- as.list(env)
+		}else{
+			expr <- parse(text=prefix)
+			items <- eval( expr, envir=env )
+		}
+	props <- list()	
+	#key <- names(envl)[1]
+	#key <- "f1"
+	#key <- "testList"
+	namesl <- names(items)
+	hasNames <- length(namesl) != 0
+	#i <- 1	
+	for( i in seq_along(items) ){
+		key <- if(hasNames) paste( (if(nzchar(prefix))"$"else""), namesl[i], sep="") else paste("[[",i,"]]",sep="")
+		pkey <- paste(prefix,key,sep="")
+		resStrip <- .stripConfigPropsItem(items[[i]]) 
+		item <- resStrip$item
+		propsItem <- resStrip$props
+		#pName <- 'desc'
+		if( length(propsItem)){
+			for( pName in names(propsItem) )
+				props[[pName]][pkey] <- propsItem[[pName]]
+			#only need to replace entire list at the end
+			#expr <- parse(text=paste("env$",pkey," <- item",sep=""))
+			#eval(expr)
+		}
+		if( (is.list(item)  || (is.vector(item) && length(item) > 1)) &&
+			#&& !(length(envl)==1 && identical(entry,envl)) # if entry==envl do not reprocess it 
+			!identical(item,items) &&			# if entry==envl do not reprocess it 
+			length(item) <= maxNEntry &&		# do not parse big vectors 
+			level < maxLevel					# avoid too deep recursion
+		){	
+			resRec <- .stripConfigProps( env=env, propNames=propNames, maxLevel=maxLevel, maxNEntry=maxNEntry
+				,prefix=pkey, items=item, level+1 )
+			if( length(resRec$props) ){
+				for( pName in names(resRec$props) )
+					props[[pName]] <- c(props[[pName]], resRec$props[[pName]] )
+				item <- resRec$item
+			}
+		} # end recursion
+		items[i] <- item
+	} # end item
+	if( !nzchar(prefix) && isUpdateEnv ){
+		.replaceAllBindings(env, items)
+	}
+	list(
+		item = item
+		,props = props
+	)
+	### list with those enties from propNames
+	### ,each a character vector of listExpression to  
+}
+
+
+.tmp.f <- function(){
+    cfText1 <- list(
+		msg1 = list( list(cid="cid1", desc="message 1"), "Hello" )
+		,subVector = 1:3
+		,subList = list( subScalar=1, subMsg="subMessage")
+	)
+	cat( as.yaml(cfText1))
+	item <- cfText1$msg1
+	str(tmp2 <-.stripConfigPropsItem(item)) 
+	
+	envText1 <- as.environment(cfText1)
+	str(tmp2 <- .stripConfigProps( envText1 ))
+	tmp3 <- cfText1
+	#does assign to long variable name: assign("tmp3$subList$subScalar",2)
+	within()
+	
+	
 }
 
 
@@ -57,7 +171,7 @@
 	evalq( source(fileName, local=TRUE), env )
 	#envl <- if( is.environment(env) ) as.list(env) else env
 	#cids <- list( subList1=parse(text='testList$subList'))
-	props <- .extractProps(env)
+	props <- .extractPropsAttr(env)
 	# reverse key -> value and convert key string to an expression
 	cids <- structure( sapply(names(props$cid),function(key){ parse(text=key)}), names=as.vector(props$cid) )
 	.tmp.f <- function(){
@@ -109,24 +223,23 @@ setMethod(initialize, "twConfig", function(.Object, ...) {
 	### The list holding all bindings previously in env
 }
 
-.mergeEnvToList <- function(
-	### recursively merge an environment to a list
-	prevEnv	## the list which entries should be recursive updated or appended
-	,env	## the environment to update
+.replaceAllBindings <- function(
+	### Clear all bindings from the environment and transfer all entries from biven list  
+	env		## the environment to update
+	,from	## the list which entries should be copied to the environment
 ){
-	mergedEnv <- .mergeLists( prevEnv, as.list(env) )
 	evalq(rm(list=ls()),env)			# clear it before reassigning
-	for( key in names(mergedEnv) )		# reassign the merged env
-		env[[key]] <- mergedEnv[[key]]
-	invisible(mergedEnv)
+	for( key in names(from) )		# reassign the merged env
+		env[[key]] <- from[[key]]
+	invisible(from)
 }
 
 .updatePropsAndEnv <- function(
-	### Extract the properties 
+	### Extract the properties and add function cid to the environment
 	object		##<< the twConfig object to update
 	,...		##<< further arguments passed to .extractProps
 ){
-	props <- .extractProps(object@env, ...)
+	props <- .extractPropsAttr(object@env, ...)
 	# reverse key -> value and convert key string to an expression
 	cids <- structure( sapply(names(props$cid),function(key){ parse(text=key)}), names=as.vector(props$cid) )
 	#env$cid <- function(id){ eval(cids[[id]], envir=as.list(env) ) }
@@ -154,7 +267,8 @@ setMethod("loadR","twConfig",function(
 	prevEnv <- .copyAndEmptyEnv( object@env )	
 	object@env$fileName <- fileName
 	evalq( source(fileName, local=TRUE), object@env )
-	.mergeEnvToList( prevEnv, object@env)
+	merged <- .mergeLists( prevEnv, as.list(object@env) )
+	.replaceAllBindings(object@env, merged) 
 	object@props <- .updatePropsAndEnv(object)
 	invisible(object)
 })
@@ -173,7 +287,7 @@ setMethod("loadYaml","twConfig",function(
 		yml <- yaml.load_file( fileName )
 		prevEnv <- .copyAndEmptyEnv( object@env )
 		merged <- .mergeLists(prevEnv, yml)
-		.mergeEnvToList( merged, object@env)
+		.replaceAllBindings(object@env, merged) 
 		object@props <- .updatePropsAndEnv(object)
 		invisible(object)
 	})
