@@ -125,16 +125,16 @@
 			if( length(resRec$props) ){
 				for( pName in names(resRec$props) )
 					props[[pName]] <- c(props[[pName]], resRec$props[[pName]] )
-				item <- resRec$item
+				item <- resRec$items
 			}
 		} # end recursion
-		items[i] <- item
+		items[[i]] <- item
 	} # end item
 	if( !nzchar(prefix) && isUpdateEnv ){
 		.replaceAllBindings(env, items)
 	}
 	list(
-		item = item
+		items = items
 		,props = props
 	)
 	### list with those enties from propNames
@@ -145,20 +145,20 @@
 .tmp.f <- function(){
     cfText1 <- list(
 		msg1 = list( list(cid="cid1", desc="message 1"), "Hello" )
-		,subVector = 1:3
-		,subList = list( subScalar=1, subMsg="subMessage")
+		,vector = 1:3
+		,subList = list( 
+			subVector=list( list(cid="subVector", desc="subVector"), "msg1","msg2" )
+			,subVector2=list( list(cid="subVector2", desc="subVector2"), c("msg1","msg2") )
+			, subMsg="subMessage")
 	)
 	cat( as.yaml(cfText1))
 	item <- cfText1$msg1
 	str(tmp2 <-.stripConfigPropsItem(item)) 
 	
-	envText1 <- as.environment(cfText1)
+	envText1 <- list2env(cfText1)
 	str(tmp2 <- .stripConfigProps( envText1 ))
-	tmp3 <- cfText1
-	#does assign to long variable name: assign("tmp3$subList$subScalar",2)
-	within()
-	
-	
+	str(as.list(envText1))
+	eval( parse(text=names(tmp2$props$cid)[1]), env=envText1)
 }
 
 
