@@ -55,7 +55,7 @@
 	for( i in seq_along(items) ){
 		key <- if(hasNames) paste( (if(nzchar(prefix))"$"else""), namesl[i], sep="") else paste("[[",i,"]]",sep="")
 		pkey <- paste(prefix,key,sep="")
-		resStrip <- .stripConfigPropsItem(items[[i]]) 
+		resStrip <- .stripConfigPropsItem(items[[i]],propNames=propNames) 
 		item <- resStrip$item
 		propsItem <- resStrip$props
 		#pName <- 'desc'
@@ -219,10 +219,14 @@ setMethod(initialize, "twConfig", function(.Object
 ){
 	#props <- .extractPropsAttr(object@env, ...)
 	props <- .stripConfigProps(object@env, propNames=propNames,...)$props
+	#as.list(object@env)
 	# reverse key -> value and convert key string to an expression
 	cids <- structure( sapply(names(props[[object@cidLabel]]),function(key){ parse(text=key)}), names=as.vector(props[[object@cidLabel]]) )
 	#env$cid <- function(id){ eval(cids[[id]], envir=as.list(env) ) }
-	object@env[[object@cidFunctionName]] <- function(id){ eval(cids[[id]], envir=object@env ) }
+	object@env[[object@cidFunctionName]] <- function(id){
+		expr <- cids[[id]]
+		if( is.null(expr) ) warning(paste("twConfig: no cid found for key",id))
+		eval(expr, envir=object@env ) }
 	props
 	### the updated props that need to be assigned to the object
 }
@@ -279,22 +283,23 @@ setMethod("loadYaml","twConfig",function(
 
 setMethod("show","twConfig",function(object){
 	cat("twConfig object of class",	classLabel(class(object)), "\n")
-	desc <- object@props$desc
+	desc <- object@props[[object@descLabel]]
 	envl <- as.list(object@env)
+	#key <- names(desc)[1]
 	for( key in head(names(desc),6) ){
 		cat("-- ",key,":", desc[[key]] ,"\n")
 		if( is.finite(match("$",key)) ) recover()
 		expr <- parse(text=key)
 		tmp <- eval( expr, envir=envl )
-		attributes(tmp)[c("desc","cid")] <- NULL
+		#attributes(tmp)[c("desc","cid")] <- NULL
 		if( is.function(tmp)) str(args(tmp)) else 
-		if( is.list(tmp) ) str(tmp, max.level=3, give.attr = FALSE) else
+		if( is.list(tmp) || is.vector(tmp)) str(tmp, max.level=3, give.attr = FALSE) else
 		print(tmp)
 	}
 	if( length(desc) > 6)
 		cat("out of ",length(desc),"described items. str(getv(<config>)).\n")
-	if( length(object@props$cid) )
-		cat("cid:",paste(object@props$cid,collapse=","),"\n")
+	if( length(object@props[[object@cidLabel]]) )
+		cat(object@cidLabel,":",paste(object@props[[object@cidLabel]],collapse=","),"\n")
 })
 
 setGeneric("getv",	function(x,...){standardGeneric("getv")})
@@ -319,12 +324,18 @@ setGeneric("getCid",	function(
 	object,... ){standardGeneric("getCid")})
 
 setMethod("getCid","twConfig",function(object,...){
-		object@env$cid(...)
+		object@env[[object@cidFunctionName]](...)
 	})
 
 setGeneric("getDesc",	function(object,... ){standardGeneric("getDesc")})
-setMethod("getDesc","twConfig",function(object,...){
-		object@props$desc
+setMethod("getDesc","twConfig",function(object,path="",...,pattern=paste("^",path,sep="")){
+		desc <- object@props[[object@descLabel]]
+		if( 0==length(pattern) || !nzchar(pattern) ){
+			desc
+		}else{
+			i <- grep( pattern, names(desc))
+			desc[i]
+		}
 	})
 
 .substBacktick <- function(
@@ -418,21 +429,27 @@ setMethod("substBacktick","twConfig",function(object,...){
 	}
 
 loadConfig <- function(
-	fileNames = c("config.yml")
+	### Loading configuration from file
+	fileNames = c("config.yml")	##<< character vector: fileNames, order matters: duplicate entries are overwritten
+	,...	##<< further arguments passed to new("twConfig")
 ){
-	cfg <- new("twConfig")
+	cfg <- new("twConfig",...)
 	for( fName in fileNames ){
 		ext <- fileExt(fName)
 		cfg <- switch(ext
 			,R =  loadR(cfg,fName)
-			,yml = loadYaml(cfg,fName)
+			,yml = loadYaml(cfg,fName, isSubstBacktick = FALSE)
 			,stop(paste("loadConfig: unknown file format",ext))
 		)
 	}
+	substBacktick(cfg)
 	cfg
 }
 .tmp.f <- function(){
 	(cfg <- loadConfig())
+	(cfg <- loadConfig(c("config.yml","config.R")))
+	getv(cfg,"msg")	# "Hello world" from config.R, overwriting msg in yml
+	getv(cfg,"ev2")	# check that backtick substitution works
 }
 
 

@@ -18,7 +18,25 @@ test.yaml1 <- function (){
 } 
 
 test.yaml_cidLabelChanged <- function (){
-	cfg <- new(Config)
-	
+	checkException(cfg <- loadConfig(file.path(,"cidLabelChanged.yml")))	# default function name is cid
+	suppressWarnings({ 
+		cfg <- loadConfig(file.path(unitDir,"cidLabelChanged.yml")
+			, cidFunctionName="ids") # issues a warning cid not found
+		checkTrue( is.null(getCid(cfg,"refItem"))) # also issues a warning
+		checkEquals( "refItem=", getv(cfg,"referencingItem")[[2]] )	# no warning, because substitution is done at load time
+	})
+	cfg <- loadConfig(file.path(unitDir,"cidLabelChanged.yml")
+		, cidFunctionName="ids"
+		, cidLabel="idc"
+		, descLabel="help"
+	) # issues a warning cid not found
+	checkEquals("refContents",getCid(cfg,"refItem"))
+	checkEquals("refItem=refContents",getv(cfg,"referencingItem"))
+	#
+	checkEquals( 2, length(getDesc(cfg) ))
+	checkEquals( 2, length(getDesc(cfg,"ref") ))
+	checkEquals( 0, length(getDesc(cfg,"Item") ))
+	checkEquals( 2, length(getDesc(cfg,pattern="Item") ))
+	checkEquals( 1, length(getDesc(cfg,"referencingItem") ))
 } 
 

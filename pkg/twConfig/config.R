@@ -1,6 +1,6 @@
 # test R configuration file, to be parsed in R/config.R 
 
-msg <- "Hello World"
+msg <- "Hello World R"
 
 testList <- list( list(desc='top list item')
 	,list(

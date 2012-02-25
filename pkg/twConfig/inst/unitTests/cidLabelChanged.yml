@@ -1,2 +1,2 @@
 referencedItem: [{help: item with a cid (here idc), idc: refItem},  refContents]
-testItem: refItem=`ids(refItem)`
+referencingItem: [{help: item referencing cid refItem}, refItem=`ids("refItem")`]
