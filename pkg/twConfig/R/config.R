@@ -255,19 +255,24 @@ setMethod("loadR","twConfig",function(
 
 setGeneric("loadYaml",	function(
 		### parsing and Yaml file into a configuration
-		object					##<< the class object	
+		object					##<< the class object
 		,fileName="config.yml"	##<< the file to parse
+		,...
 	){ standardGeneric("loadYaml") })
 setMethod("loadYaml","twConfig",function(
 		### parsing and Yaml file into a configuration
-		object					##<< the class object	
+		object					##<< the class object
 		,fileName="config.yml"	##<< the file to parse
+		,...
+		,isSubstBacktick=TRUE	##<< if set to FALSE the backTick substitution is not done
 	){
 		if( !require(yaml)) stop("loadYaml: package yaml needs to be installed to use this functionality.")
 		yml <- yaml.load_file( fileName )
 		object@unstripped <- .mergeItem( object@unstripped, yml )
 		.replaceAllBindings(object@env, object@unstripped) 
 		object@props <- .updatePropsAndEnv(object)
+		if( isSubstBacktick )
+			substBacktick(object)
 		invisible(object)
 	})
 
@@ -287,7 +292,7 @@ setMethod("show","twConfig",function(object){
 		print(tmp)
 	}
 	if( length(desc) > 6)
-		cat("out of ",length(desc),"described items. str(as.list(env(<config>))) to see all.\n")
+		cat("out of ",length(desc),"described items. str(get(<config>)).\n")
 	if( length(object@props$cid) )
 		cat("cid:",paste(object@props$cid,collapse=","),"\n")
 })
@@ -322,6 +327,62 @@ setMethod("getDesc","twConfig",function(object,...){
 		object@props$desc
 	})
 
+.substBacktick <- function(
+	### do a backtick substituion
+	s0				##<< scalar string that need to be substituted
+	,envir=parent.frame()	##<< the Environment where sustitutions should take place
+	,maxSubst=25	##<< maximum number of substituions
+){
+	##details<< 
+	## A backtick substitution could create more backticks, resulting
+	## in an endless loop of subsitions. Hence limit the number of substitutions.
+	pattern="`([^`]*)`"
+	s1 <- s0
+	m <- regexpr(pattern,s1)
+	l <- attr(m,"match.length")
+	if( l == nchar(s1) ){
+		# when replacing the entire string just return the evaluated R object
+		sm0 <- substr(s1,2,m+l-2)
+		expr <- parse(text=sm0)
+		ret <- eval(expr, envir=envir)
+		return(ret)
+	}
+	iSubst <- 0
+	while( m != -1 && iSubst < maxSubst ){
+		iSubst <- iSubst + 1
+		l <- attr(m,"match.length") 
+		sm1 <- if( l == 2) "" else {
+				sm0 <- substr(s1,m+1, m+l-2)
+				expr <- parse(text=sm0)
+				sm1 <- as.character(eval(expr, envir=envir))
+			} 
+		s1 <- paste(substr(s1,1,m-1),sm1,substr(s1,m+l,nchar(s1)),sep="")
+		m <- regexpr(pattern,s1)
+	}
+	s1
+}
+attr(.substBacktick, "ex") <- function(){
+	b="chars of b"
+	s0 <- "2+3=`2+3`, b=`b`, empty<``>"
+	#gsub( "`[^`]*`","X",s0)
+	(s1 <- .substBacktick(s0))
+	.substBacktick("`function(a){TRUE}`")
+}
+
+setGeneric("substBacktick",	function(object,... ){standardGeneric("substBacktick")})
+setMethod("substBacktick","twConfig",function(object,...){
+		#fTmp <- function(entry){"XX"}
+		#res <- rapply( as.list(object@env), fTmp, classes="character", how="replace" )
+		#.substBacktick('item=`cid("yamlItem1")`',envir=object@env)
+		res <- rapply( as.list(object@env), .substBacktick, classes="character", how="replace", envir=object@env )
+		.replaceAllBindings(object@env,res)
+		invisible(res)
+	})
+
+
+
+
+
 
 
 .tmp.f <- function(){
@@ -341,7 +402,8 @@ setMethod("getDesc","twConfig",function(object,...){
 	get(cfg1,"f1")(loca="locaDots") 	# should use arguments by ...
 	get(cfg1,"f2")()		# internal resolve by function cid
 	#
-	(cfg2 <- loadYaml(cfg1))
+	#(cfg2 <- loadYaml(cfg1)); get(cfg2,"f3")() 
+	(cfg2 <- loadYaml(cfg1, isSubstBacktick=FALSE))
 	names(as.list(cfg2@env))
 	get(cfg2,"yamlItem1")
 	get(cfg2,"msg")  # now updated
@@ -354,7 +416,11 @@ setMethod("getDesc","twConfig",function(object,...){
 	eval( parse(text=tmp2), env=cfg2@env )  
 	get(cfg2,"f1")()		# should use now loca defined in Yaml file 
 	get(cfg2,"f1")(loca="locaDots") 	# should use arguments by ...
-}
+	get(cfg2,"f3")
+	substBacktick(cfg2)
+	get(cfg2,"ev2")
+	get(cfg2,"f3")()
+	}
 
 .tmp.f <- function(){
 	# S4
@@ -368,23 +434,8 @@ setMethod("getDesc","twConfig",function(object,...){
 	lme4:::printMer ## printMer is what the show method for mer calls	
 }
 
-.tmp.f.sub <- function(){
-	b="chars of b"
-	s0 <- "2+3=`2+3`, b=`b`, empty<``>"
-	pattern="`([^`]*)`"
-	#gsub( "`[^`]*`","X",s0)
-	s1 <- s0
-	m <- regexpr(pattern,s1)
-	while( m != -1){
-		l <- attr(m,"match.length") 
-		sm1 <- if( l == 2) "" else {
-				sm0 <- substr(s1,m+1, m+l-2)
-				sm1 <- as.character(eval(parse(text=sm0)))
-			} 
-		s1 <- paste(substr(s1,1,m-1),sm1,substr(s1,m+l,nchar(s1)),sep="")
-		m <- regexpr(pattern,s1)
-	}
-}
+
+
 
 
 
