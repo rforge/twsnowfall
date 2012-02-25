@@ -292,18 +292,22 @@ setMethod("show","twConfig",function(object){
 		cat("cid:",paste(object@props$cid,collapse=","),"\n")
 })
 
-#setGeneric("getEnv",	function(object ){standardGeneric("getEnv")})
-#setMethod("getEnv","twConfig",function(object){
-#		recover()
+setGeneric("get",	function(x,...){standardGeneric("get")})
+setMethod("get","twConfig",function(x,path="",...){
+		if( length(grep("<-",path)) )
+			stop("twConfig.get: <- not allowed in path expression.")
+		if( 0==length(path) || !nzchar(path) )	as.list(x@env) else{
+			expr <- parse(text=path)
+			eval( expr, envir=x@env)
+		}
+	})
+
+#setGeneric("env",	function(
+#		### obtaining the environment holding the configuration
+#		object,... ){standardGeneric("env")})
+#setMethod("env","twConfig",function(object){
 #		object@env
 #	})
-
-setGeneric("env",	function(
-		### obtaining the environment holding the configuration
-		object,... ){standardGeneric("env")})
-setMethod("env","twConfig",function(object){
-		object@env
-	})
 
 setGeneric("getCid",	function(
 	### obtaining configuration for config id
@@ -322,31 +326,34 @@ setMethod("getDesc","twConfig",function(object,...){
 
 .tmp.f <- function(){
 	cfg0 <- new("twConfig")
-	names(as.list(env(cfg0)))
+	names(as.list(cfg0@env))
 	(cfg1 <- loadR(new("twConfig")))
-	names(as.list(env(cfg1)))
+	names(as.list(cfg1@env))
 	#loadR(cfg1)
 	getCid(cfg1, cfg1@props$cid[[1]])
 	getDesc(cfg1)
-	(tmp <- env(cfg1)$testList$scalarItem)
+	(tmp <- get(cfg1,"testList$vectorItem2"))
+	get(cfg1,"f1") <- "foo"
 	rm(loca)
-	try(env(cfg1)$f1())	# should throw an error because of missing loca
+	try(get(cfg1,"f1")()) # should throw an error because of missing loca
 	loca="locaCallFrame"
-	env(cfg1)$f1()		# should use now defined loca 
-	env(cfg1)$f1(loca="locaDots") 	# should use arguments by ...
-	env(cfg1)$f2()		# internal resolve by function cid
+	get(cfg1,"f1")()		# should use now defined loca 
+	get(cfg1,"f1")(loca="locaDots") 	# should use arguments by ...
+	get(cfg1,"f2")()		# internal resolve by function cid
 	#
 	(cfg2 <- loadYaml(cfg1))
-	names(as.list(env(cfg2)))
-	env(cfg2)$yamlItem1
-	env(cfg2)$msg  # now updated
+	names(as.list(cfg2@env))
+	get(cfg2,"yamlItem1")
+	get(cfg2,"msg")  # now updated
 	getCid(cfg2,"subItem1")
 	getCid(cfg2,"yamlItem1")
-	(tmp <- env(cfg2)$ev2)  	#TODO implement backtick substitution
+	p <- gregexpr("`",tmp)[[1]]	# find the positions
+	if( length(p) >= 2)
+		
 	(tmp2 <- substr(tmp,1,nchar(tmp)-1))
-	eval( parse(text=tmp2), env=env(cfg2) )  
-	env(cfg2)$f1()		# should use now loca defined in Yaml file 
-	env(cfg2)$f1(loca="locaDots") 	# should use arguments by ...
+	eval( parse(text=tmp2), env=cfg2@env )  
+	get(cfg2,"f1")()		# should use now loca defined in Yaml file 
+	get(cfg2,"f1")(loca="locaDots") 	# should use arguments by ...
 }
 
 .tmp.f <- function(){
@@ -359,6 +366,24 @@ setMethod("getDesc","twConfig",function(object,...){
 	method?show("mer") ## method?generic("signature 1", "signature 2", ...) -- get help for the generic function for a particular signature list, usually a single class
 	getMethod("show", signature="mer") ## function definition
 	lme4:::printMer ## printMer is what the show method for mer calls	
+}
+
+.tmp.f.sub <- function(){
+	b="chars of b"
+	s0 <- "2+3=`2+3`, b=`b`, empty<``>"
+	pattern="`([^`]*)`"
+	#gsub( "`[^`]*`","X",s0)
+	s1 <- s0
+	m <- regexpr(pattern,s1)
+	while( m != -1){
+		l <- attr(m,"match.length") 
+		sm1 <- if( l == 2) "" else {
+				sm0 <- substr(s1,m+1, m+l-2)
+				sm1 <- as.character(eval(parse(text=sm0)))
+			} 
+		s1 <- paste(substr(s1,1,m-1),sm1,substr(s1,m+l,nchar(s1)),sep="")
+		m <- regexpr(pattern,s1)
+	}
 }
 
 
