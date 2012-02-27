@@ -35,7 +35,7 @@ test.yaml_cidLabelChanged <- function (){
 	#
 	checkEquals( 2, length(getDesc(cfg) ))
 	checkEquals( 2, length(getDesc(cfg,"ref") ))
-	checkEquals( 0, length(getDesc(cfg,"Item") ))
+	checkEquals( 0, length(getDesc(cfg,"Item") ))		# non starting with Item
 	checkEquals( 2, length(getDesc(cfg,pattern="Item") ))
 	checkEquals( 1, length(getDesc(cfg,"referencingItem") ))
 } 
@@ -56,6 +56,8 @@ test.copySubConfig <- function (){
 	cfg1 <- loadConfig(c(file.path(unitDir,"copySubConfig.yml") ))
 	checkEquals( "subEntry1_value", getCid(cfg1,"subEntry1") )
 	checkEquals( "subEntry1=subEntry1_value", getv(cfg1,"list1$referencingItem") )
+	checkEquals( 3, length(getDesc(cfg1,"list1$")) )
+	checkEquals( 1, length(getDesc(cfg1,"list1$entry1")) )
 	#object <- cfg1; path="list1"
 	#
 	cfg2 <- copySubConfig(cfg1)		# makes a copy	
@@ -73,6 +75,7 @@ test.copySubConfig <- function (){
 	checkTrue( all( names(getv(cfg1)$list1) %in% names(getv(cfg2)) ) )
 	checkEquals( "subEntry1_value", getCid(cfg2,"subEntry1") )
 	checkEquals( "subEntry1=subEntry1_value", getv(cfg2,"referencingItem"))
+	checkEquals( 3, length(getDesc(cfg2)) )
 } 
 
 

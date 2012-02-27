@@ -329,7 +329,7 @@ setMethod("getCid","twConfig",function(object,...){
 	})
 
 setGeneric("getDesc",	function(object,... ){standardGeneric("getDesc")})
-setMethod("getDesc","twConfig",function(object,path="",...,pattern=paste("^",path,sep="")){
+setMethod("getDesc","twConfig",function(object,path="",...,pattern=paste("^",gsub("\\$","\\\\$",path),sep="")){
 		desc <- object@props[[object@descLabel]]
 		if( 0==length(pattern) || !nzchar(pattern) ){
 			desc
