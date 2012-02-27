@@ -404,8 +404,8 @@ setMethod("substBacktick","twConfig",function(object,...){
 		invisible(res)
 	})
 
-setGeneric("subConfig",	function(object,... ){standardGeneric("subConfig")})
-setMethod("subConfig","twConfig",function(
+setGeneric("copySubConfig",	function(object,... ){standardGeneric("copySubConfig")})
+setMethod("copySubConfig","twConfig",function(
 		### copy a subTree of the configuration 
 		object,path="",...,isSubstBacktick=TRUE
 	){
@@ -413,16 +413,18 @@ setMethod("subConfig","twConfig",function(
 		 copy <- object
 		 copy@env <- new.env()
 		 tmp <- object@unstripped
-		 iSub <- if( path=="" ) TRUE else grep(paste("^",gsub("\\$","\\\\$",path),sep=""), names(tmp) )
-		 if( 0==length(iSub) ){
-			 copy@unstripped <- list()
+		 iSub <- grep(paste("^",gsub("\\$","\\\\$",path),sep=""), names(tmp) )
+		 if( path=="" || length(iSub) > 1 ){
+			 copy@unstripped <- tmp[ iSub ]
 		 } else if( 1==length(iSub) ){
-			 copy@unstripped <- tmp[[ iSub[1] ]]
+			 copy@unstripped <- tmp[[ iSub ]]
 			 # possibly remove first describing entry
 			 if( any( c(copy@cidLabel,copy@descLabel) %in% names(copy@unstripped[[1]]) ))
-				 copy@unstripped <- copy@unstripped[-1]
-			 .replaceAllBindings(copy@env, copy@unstripped )
-		 } else stop("twConfig.subConfig: path not unique")
+				 copy@unstripped <- copy@unstripped[[2]]
+		 } else if( 0==length(iSub) ){
+			 copy@unstripped <- list()
+		 }
+		 .replaceAllBindings(copy@env, copy@unstripped )
 		 copy@props <- .updatePropsAndEnv(copy)
 		 if( isSubstBacktick )
 			 substBacktick(copy)

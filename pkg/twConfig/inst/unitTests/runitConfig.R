@@ -52,24 +52,27 @@ test.unnamedItemsWithCid <- function (){
 	checkTrue( is.null(getCid(cfg2,"refItem")) )	# also throw warning and return NULL: refItem not there any more
 }
 
-test.subConfig <- function (){
-	cfg1 <- loadConfig(c(file.path(unitDir,"subConfig.yml") ))
+test.copySubConfig <- function (){
+	cfg1 <- loadConfig(c(file.path(unitDir,"copySubConfig.yml") ))
 	checkEquals( "subEntry1_value", getCid(cfg1,"subEntry1") )
 	checkEquals( "subEntry1=subEntry1_value", getv(cfg1,"list1$referencingItem") )
 	#object <- cfg1; path="list1"
 	#
-	cfg2 <- subConfig(object)		# makes a copy	
+	cfg2 <- copySubConfig(cfg1)		# makes a copy	
 	checkEquals( getv(cfg1), getv(cfg2) )
 	cfg2@env$newVar <- "newVar"
 	checkEquals( getv(cfg2,"newVar"), "newVar" )
-	checkException( getv(cfg1,"newVar") )		# indeed distinct environments
+	checkException( getv(cfg1,"newVar") )		# throws and error: indeed distinct environments
 	#
-	cfg2 <- subConfig(object,"nonExisting")	
+	cfg2 <- copySubConfig(cfg1,"nonExisting")	
 	checkEquals(names(getv(cfg2)),"cid")		# empty unless the cid function
 	#
-	cfg2 <- subConfig(object,"list1")	
-	
-	
+	#trace("copySubConfig", recover, signature="twConfig")
+	cfg2 <- copySubConfig(cfg1,"list1")
+	tmp <- getv(cfg2)
+	checkTrue( all( names(getv(cfg1)$list1) %in% names(getv(cfg2)) ) )
+	checkEquals( "subEntry1_value", getCid(cfg2,"subEntry1") )
+	checkEquals( "subEntry1=subEntry1_value", getv(cfg2,"referencingItem"))
 } 
 
 
