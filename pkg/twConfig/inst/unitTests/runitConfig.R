@@ -40,6 +40,16 @@ test.yaml_cidLabelChanged <- function (){
 	checkEquals( 1, length(getDesc(cfg,"referencingItem") ))
 } 
 
+test.unnamedItemsWithCid.yml <- function (){
+	cfg1 <- loadConfig(c(file.path(unitDir,"unnamedItemsWithCid.yml") ))	# throw one warning
+	checkEquals(3, length(getv(cfg1,"sequence1")) )			# first entry out of 4, the properties map has been stripped
+	#str3(getv(cfg1))
+	checkEquals("refContents",getCid(cfg1,"refItem"))
+	cfg2 <- loadConfig(c(file.path(unitDir,"unnamedItemsWithCid.yml"),file.path(unitDir,"unnamedItemsWithCid2.yml") ))	# throw two warnings, cid now gone
+	checkTrue( is.null(getCid(cfg2,"refItem")) )	# also throw warning
+} 
+
+
 #testCases or vignette
 # simple key value pairs
 # self documentation

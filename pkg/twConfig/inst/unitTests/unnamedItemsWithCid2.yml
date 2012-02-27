@@ -1,0 +1,4 @@
+# when overloading unnamedItemsWithCid, sequence1 is overwritten instead of merged
+sequence1: 
+- item2
+

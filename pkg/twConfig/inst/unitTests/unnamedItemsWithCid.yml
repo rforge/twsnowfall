@@ -1,0 +1,9 @@
+sequence1: 
+- {desc: unnamed sequence with nested cid, will be overwritten on merge}
+- item1
+- [{desc: item with a cid refItem, cid: refItem},  refContents]
+- 1:3
+
+sequence2: 1:2
+
+referencingItem: [{desc: item referencing cid refItem}, refItem=`cid("refItem")`]

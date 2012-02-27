@@ -60,6 +60,7 @@
 		propsItem <- resStrip$props
 		#pName <- 'desc'
 		if( length(propsItem)){
+			if( !hasNames) warning(paste("twConfig: unnamed sequence containing described items'",pkey,"' will be replaced instead of merged during loading cascading configuration.",sep=""))
 			for( pName in names(propsItem) )
 				props[[pName]][pkey] <- propsItem[[pName]]
 			#only need to replace entire list at the end
