@@ -106,6 +106,7 @@ twDynamicClusterApplyDep <- function (
 	cl, fun, n, argfun, ##<< a function returning a list of arguments passed to fun
 	dependsStep,		##<< dependencies in 1..n
 	initVal=vector("list",dependsStep)	##<<  results presented to argfun for the first 1..dependsStep results
+	,freeMasterNode=FALSE	##<< if set to TRUE, no job is submitted to node 1, so that this node can dispatch jobs without waiting
 ){
 	##seealso<< 
 	## \code{\link{sfRemoteWrapper}}
@@ -140,7 +141,8 @@ twDynamicClusterApplyDep <- function (
 	#when args was too big, sendCall did not return
 		}
 		#submit 2 jobs to each node, so that if one is finished there is already one in the queue
-		for (i in 1:min(n, 2*useNCpus, dependsStep)){
+		node0 <- if(!freeMasterNode || n<2) 1 else 2	# start with two in order to keep first node free for dispatching
+		for (i in node0:min(n, 2*useNCpus, dependsStep)){
 			node = (i-1)%%useNCpus+1
 			submit(node, i)
 			jobState[i] <- "processing"
@@ -177,6 +179,7 @@ sfFArgsApplyDep <- function (
 	SFFARGSAPPLY_ADDARGS=list(),
 		###  results presented to argfun for the first 1..dependsStep results
 	debugSequential=FALSE	##<< the number of processors (might be smaller than cluster to assure that previous case i-useNCpus has been evaluated.)
+	,freeMasterNode=FALSE	##<< if set to TRUE, no job is submitted to first node, so that this node can dispatch jobs without waiting
 ){
 	if( !is.vector(SFFARGSAPPLY_initVal) || !(length(SFFARGSAPPLY_initVal)>=SFFARGSAPPLY_dependsStep) )
 		stop("initVal must be vector of mode list with length dependsStep")
@@ -190,7 +193,7 @@ sfFArgsApplyDep <- function (
 	#argfun(1,SFFARGSAPPLY_initVal[[1]])
 	if (sfParallel() && !debugSequential) 
 		return(twDynamicClusterApplyDep(sfGetCluster(), F_APPLY, N_APPLYCASES, argfun,
-				dependsStep=ds,initVal=SFFARGSAPPLY_initVal ))
+				dependsStep=ds,initVal=SFFARGSAPPLY_initVal, freeMasterNode=freeMasterNode))
 	else {
 		val <- c(SFFARGSAPPLY_initVal[1:ds], vector("list",N_APPLYCASES) ) #prepend with initial values
 		for( i in 1:N_APPLYCASES){
