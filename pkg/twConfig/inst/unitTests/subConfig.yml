@@ -1,0 +1,7 @@
+list1: 
+- {desc: desc of list1}
+- entry1: [{desc: desc of entry1, cid: entry1_cid},  entry1_value]
+  sublist: 
+    subEntry1: [{desc: desc of subEntry1, cid: subEntry1},  subEntry1_value]
+  referencingItem: [{desc: references cid("subEntry1")}, subEntry1=`cid("subEntry1")` ]
+entry2: [{desc: descr of entry2}, foo]

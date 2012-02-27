@@ -355,8 +355,14 @@ setMethod("getDesc","twConfig",function(object,path="",...,pattern=paste("^",pat
 	if( l == nchar(s1) ){
 		# when replacing the entire string just return the evaluated R object
 		sm0 <- substr(s1,2,m+l-2)
-		expr <- parse(text=sm0)
-		ret <- eval(expr, envir=envir)
+		ret <- try({
+				expr <- parse(text=sm0)
+				eval(expr, envir=envir)	
+			},silent=TRUE)
+		if( inherits(ret,"try-error")){
+			warning("error in twConfig: parsing text '",sm0,"': ",ret)
+			ret <- "error"
+		}
 		return(ret)
 	}
 	iSubst <- 0
@@ -365,8 +371,15 @@ setMethod("getDesc","twConfig",function(object,path="",...,pattern=paste("^",pat
 		l <- attr(m,"match.length") 
 		sm1 <- if( l == 2) "" else {
 				sm0 <- substr(s1,m+1, m+l-2)
-				expr <- parse(text=sm0)
-				sm1 <- as.character(eval(expr, envir=envir))
+				sm1 <- try({ 
+					expr <- parse(text=sm0)
+					eval(expr, envir=envir) 
+				},silent=TRUE)
+				if( inherits(sm1,"try-error")){
+					warning("error in twConfig: parsing text '",sm0,"': ",sm1)
+					sm1 <- "error"
+				}
+				sm1
 			} 
 		s1 <- paste(substr(s1,1,m-1),sm1,substr(s1,m+l,nchar(s1)),sep="")
 		m <- regexpr(pattern,s1)
@@ -390,6 +403,42 @@ setMethod("substBacktick","twConfig",function(object,...){
 		.replaceAllBindings(object@env,res)
 		invisible(res)
 	})
+
+setGeneric("subConfig",	function(object,... ){standardGeneric("subConfig")})
+setMethod("subConfig","twConfig",function(
+		### copy a subTree of the configuration 
+		object,path="",...,isSubstBacktick=TRUE
+	){
+		 #recover()
+		 copy <- object
+		 copy@env <- new.env()
+		 tmp <- object@unstripped
+		 iSub <- if( path=="" ) TRUE else grep(paste("^",gsub("\\$","\\\\$",path),sep=""), names(tmp) )
+		 if( 0==length(iSub) ){
+			 copy@unstripped <- list()
+		 } else if( 1==length(iSub) ){
+			 copy@unstripped <- tmp[[ iSub[1] ]]
+			 # possibly remove first describing entry
+			 if( any( c(copy@cidLabel,copy@descLabel) %in% names(copy@unstripped[[1]]) ))
+				 copy@unstripped <- copy@unstripped[-1]
+			 .replaceAllBindings(copy@env, copy@unstripped )
+		 } else stop("twConfig.subConfig: path not unique")
+		 copy@props <- .updatePropsAndEnv(copy)
+		 if( isSubstBacktick )
+			 substBacktick(copy)
+		 invisible(copy)
+#			 #pName <- names(copy@props)[1]
+#			 for( pName in names(copy@props) ){
+#				 prop <- copy@props[[pName]] 
+#				 iSubProps <- grep(paste("^",gsub("\\$","\\\\$",path),"\\$",sep=""), names(prop) )
+#				 prop <- prop[iSubProps]
+#				 #name <- names(prop)[1]			 
+#				 names(prop) <- 
+#					 sapply(names(prop),function(name){ substr(name, start=nchar(path)+2, stop=nchar(name))})
+#				 copy@props[[pName]] <- prop
+#			 }
+	})
+
 
 
 

@@ -40,7 +40,7 @@ test.yaml_cidLabelChanged <- function (){
 	checkEquals( 1, length(getDesc(cfg,"referencingItem") ))
 } 
 
-test.unnamedItemsWithCid.yml <- function (){
+test.unnamedItemsWithCid <- function (){
 	cfg1 <- loadConfig(c(file.path(unitDir,"unnamedItemsWithCid.yml") ))	# throw one warning
 	checkEquals(3, length(getv(cfg1,"sequence1")) )			# first entry out of 4, the properties map has been stripped
 	checkEquals( 3, length(getDesc(cfg1)) )		# including description of the subItem
@@ -50,7 +50,28 @@ test.unnamedItemsWithCid.yml <- function (){
 	cfg2 <- loadConfig(c(file.path(unitDir,"unnamedItemsWithCid.yml"),file.path(unitDir,"unnamedItemsWithCid2.yml") ))	# throw two warnings, cid now gone
 	checkEquals( 1, length(getDesc(cfg2,"sequence1")) )		# descritpion of the top item is still there
 	checkTrue( is.null(getCid(cfg2,"refItem")) )	# also throw warning and return NULL: refItem not there any more
+}
+
+test.subConfig <- function (){
+	cfg1 <- loadConfig(c(file.path(unitDir,"subConfig.yml") ))
+	checkEquals( "subEntry1_value", getCid(cfg1,"subEntry1") )
+	checkEquals( "subEntry1=subEntry1_value", getv(cfg1,"list1$referencingItem") )
+	#object <- cfg1; path="list1"
+	#
+	cfg2 <- subConfig(object)		# makes a copy	
+	checkEquals( getv(cfg1), getv(cfg2) )
+	cfg2@env$newVar <- "newVar"
+	checkEquals( getv(cfg2,"newVar"), "newVar" )
+	checkException( getv(cfg1,"newVar") )		# indeed distinct environments
+	#
+	cfg2 <- subConfig(object,"nonExisting")	
+	checkEquals(names(getv(cfg2)),"cid")		# empty unless the cid function
+	#
+	cfg2 <- subConfig(object,"list1")	
+	
+	
 } 
+
 
 
 #testCases or vignette
