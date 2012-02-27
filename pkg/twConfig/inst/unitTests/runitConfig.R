@@ -43,10 +43,13 @@ test.yaml_cidLabelChanged <- function (){
 test.unnamedItemsWithCid.yml <- function (){
 	cfg1 <- loadConfig(c(file.path(unitDir,"unnamedItemsWithCid.yml") ))	# throw one warning
 	checkEquals(3, length(getv(cfg1,"sequence1")) )			# first entry out of 4, the properties map has been stripped
+	checkEquals( 3, length(getDesc(cfg1)) )		# including description of the subItem
+	checkEquals( 2, length(getDesc(cfg1,"sequence1")) )		# including description of the subItem
 	#str3(getv(cfg1))
 	checkEquals("refContents",getCid(cfg1,"refItem"))
 	cfg2 <- loadConfig(c(file.path(unitDir,"unnamedItemsWithCid.yml"),file.path(unitDir,"unnamedItemsWithCid2.yml") ))	# throw two warnings, cid now gone
-	checkTrue( is.null(getCid(cfg2,"refItem")) )	# also throw warning
+	checkEquals( 1, length(getDesc(cfg2,"sequence1")) )		# descritpion of the top item is still there
+	checkTrue( is.null(getCid(cfg2,"refItem")) )	# also throw warning and return NULL: refItem not there any more
 } 
 
 
