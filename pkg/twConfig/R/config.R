@@ -313,6 +313,15 @@ setMethod("getv","twConfig",function(x,path="",...){
 		}
 	})
 
+setGeneric("setv",	function(x,...){standardGeneric("setv")})
+setMethod("setv","twConfig",function(x,path="",value="TRUE",...){
+		if( 0!=length(path) && nzchar(path) ){
+			expr <- parse(text=paste(path," <- '",value,"'",sep=""))
+			eval( expr, envir=x@env)
+		}
+	})
+
+
 #setGeneric("env",	function(
 #		### obtaining the environment holding the configuration
 #		object,... ){standardGeneric("env")})

@@ -5,3 +5,4 @@ list1:
     subEntry1: [{desc: desc of subEntry1, cid: subEntry1},  subEntry1_value]
   referencingItem: [{desc: references cid("subEntry1")}, subEntry1=`cid("subEntry1")` ]
 entry2: [{desc: descr of entry2}, foo]
+f2: [{desc: accessing cid subEntry1 by function}, '`function(){cid("subEntry1")}`']

@@ -14,7 +14,14 @@
 
 
 test.yaml1 <- function (){
-	#print(unitDir)
+	cfg1 <- loadConfig(c(file.path(unitDir,"copySubConfig.yml") ))
+	checkException( getv(cfg1,"testSetItem") )
+	setv(cfg1,"testSetItem","value of testSetItem")
+	checkEquals( "value of testSetItem", getv(cfg1,"testSetItem"))
+	checkEquals( "subEntry1_value", getv(cfg1,"f2")() )
+	setv(cfg1,"list1$sublist$subEntry1","new value of subEntry1")
+	checkEquals( "subEntry1=subEntry1_value", getv(cfg1,"list1$referencingItem")) # value did not change, evaluated during load
+	checkEquals( "new value of subEntry1", getv(cfg1,"f2")() )
 } 
 
 test.yaml_cidLabelChanged <- function (){
