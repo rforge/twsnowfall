@@ -14,7 +14,7 @@
 	sfInit(parallel=FALSE)
 	twUtestF()
 	
-	twUtestF("applyLB",test="test.sfFArgsApplyLB")
+	twUtestF("sfPar",test="sfParSequential")
 	twUtestF("applyLB")
 }
 

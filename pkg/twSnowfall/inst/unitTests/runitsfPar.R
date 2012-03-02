@@ -32,7 +32,8 @@ test.sfParSequential <- function(){
 	checkEquals(.exp,sfPar( fList, a="aha" ))
 	
 	aPre = "aha"
-	checkEquals(.exp,sfPar( fList, a=as.name("aPre") ))	#should work, ... are evaluated before distribution
+	checkEquals(.exp,sfPar( fList, a=aPre ))	#should work, ... are evaluated before distribution
+	#checkEquals(.exp,sfPar( fList, a=as.name("aPre") ))	#does not work aPre is not known in sfPar, because sfPar is not defined in current scope 
 	if( sfParallel() ){
 	  checkException(sfPar( fList, sfParArgsList=list(a=as.name("aPre")) ))	#should give an error because not yet exported
 	  sfExport("aPre")

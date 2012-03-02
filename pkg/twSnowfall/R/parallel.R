@@ -141,9 +141,10 @@ twDynamicClusterApplyDep <- function (
 	#when args was too big, sendCall did not return
 		}
 		#submit 2 jobs to each node, so that if one is finished there is already one in the queue
-		node0 <- if(!freeMasterNode || n<2) 1 else 2	# start with two in order to keep first node free for dispatching
-		for (i in node0:min(n, 2*useNCpus, dependsStep)){
-			node = (i-1)%%useNCpus+1
+		#node0 <- if(!freeMasterNode || n<2) 1 else 2	# start with two in order to keep first node free for dispatching
+		nWorkers <- if(!freeMasterNode || useNCpus==1) useNCpus else useNCpus-1
+		for (i in 1:min(n, 2*nWorkers, dependsStep)){
+			node = (i-1)%%nWorkers+1
 			submit(node, i)
 			jobState[i] <- "processing"
 		}
