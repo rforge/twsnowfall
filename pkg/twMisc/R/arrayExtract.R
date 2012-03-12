@@ -15,7 +15,8 @@ twExtractDim <- function(
 	## \itemize{
 	## \item Extract \code{A[...,i,...]} from dimension \code{iDim} of an array: this method
 	## \item Splitting an array by dimesnion and listing subarray: \code{\link{twListArrDim}} 
-	## \item Extracting from last dimensions: \code{\link{twExtractFromLastDims}} 
+	## \item Extracting from last dimensions: \code{\link{twExtractFromLastDims}}
+	## \item Stacking a dimension: \code{\link{twStackArrayDim}}
 	## }
 	##}}
 	
@@ -78,7 +79,10 @@ twListArrDim <- function(
 	##seealso<< \link{twExtractDim}, \link{twMisc}
 	#lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
 	#i <- 1 
-	res <- lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
+	res <- structure(
+		lapply(1:(dim(x)[iDim]),function(i){ twExtractDim(x,i,iDim) })
+		,names=dimnames(x)[[iDim]]
+	)
 }
 
 twExtractFromLastDims <- function(
@@ -110,6 +114,25 @@ attr(twExtractFromLastDims,"ex") <- function(){
 		resExp[,ii] <- Aext[,(i[ii]-1) %% 3+1,(i[ii]-1) %/% 3+1]
 	(res <- twExtractFromLastDims(Aext,i))
 	identical( resExp, structure(res, dimnames=NULL) )
+}
+
+twStackArrayDim <- function(
+	### stacks a dimension of an array, i.e. reduces to a lower dimension 
+	x								##<< the array to process
+	,sourceDim=length(dim(x))		##<< the dimension that should be stacked
+	,destDim=  length(dim(x))-1		##<< the dimension, along which to stack, referring to the resulting array
+	,sep="_"						##<< character separating the parts of the new dimension names
+){
+	##seealso<< \link{twExtractDim}, \link{twMisc}
+	xl <- twListArrDim(x,sourceDim)
+	xr <- abind( xl, along=destDim)
+	dimnames(xr)[[destDim]] <- outer( dimnames(xl[[1]])[[destDim]], names(xl), paste, sep=sep  )
+	xr
+	### array of one dimension less than x.
+	# Dimnames of destDim are concatenaed names of the sourceDim and the original destDim
+}
+attr(twStackArrayDim,"ex") <- function(){
+	
 }
 
 
