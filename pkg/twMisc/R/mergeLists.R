@@ -10,6 +10,7 @@ twMergeLists <- function(
 	## Values of source are appended to dest or overwrite values in dest.
 	## If an item is a vector or a list itself, the item is merged recursively. 
 	#
+	#recover()
 	#if( level > 0 ) recover()
 	if( 0==length(source) ) source=list()
 	if( 0==length(dest) ) 

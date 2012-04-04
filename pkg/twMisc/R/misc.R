@@ -95,6 +95,27 @@ twXlscol07 <- list( blue="#4572A7", red="#AA4643", green="#89A54E", violet="#715
 ### A list of line types, that are well distinguishable.
 twLtys <- c("22", "44", "13", "1343", "73", "2262", "12223242", "F282", "F4448444", "224282F2", "F1")
 	
+#http://geography.uoregon.edu/datagraphics/color_scales.htm
+### green to magenta colorblind safe continuos scale
+twContCols16 <- c(
+	rgb(0,80,0, maxColorValue=255)
+	, rgb(0,134,0, maxColorValue=255)
+	, rgb(0,187,0, maxColorValue=255)
+	, rgb(0,241,0, maxColorValue=255)
+	, rgb(80,255,80, maxColorValue=255)
+	, rgb(134,255,134, maxColorValue=255)
+	, rgb(187,255,187, maxColorValue=255)
+	, rgb(255,255,255, maxColorValue=255)
+	, rgb(255,241,255, maxColorValue=255)
+	, rgb(255,187,255, maxColorValue=255)
+	, rgb(255,134,255, maxColorValue=255)
+	, rgb(255,80,255, maxColorValue=255)
+	, rgb(241,0,241, maxColorValue=255)
+	, rgb(187,0,187, maxColorValue=255)
+	, rgb(134,0,134, maxColorValue=255)
+	, rgb(80,0,80, maxColorValue=255)
+)
+
 .tmp.f <- function(
 	### dummy, holds code that is not to be executed
 ){

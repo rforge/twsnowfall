@@ -35,6 +35,7 @@ pkg<-"twMisc"
 	unlink( file.path("man","*.Rd") )
 	#prevWd <- setwd("..")
 	#tryCatch( package.skeleton.dx(pkg), finally=setwd(prevWd))
+	package.skeleton.dx(".")
 	try(file.copy( Sys.glob(file.path("inst","genData","*.Rd")), "man" ), silent=TRUE)	# copy descriptions of data
 	
 	# generate the HTML  files
