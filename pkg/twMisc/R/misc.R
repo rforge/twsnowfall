@@ -503,7 +503,7 @@ twRescale <- function (
 	### Rescale numeric vector to have specified minimum and maximum. 
 	x,								##<< data to rescale
 	to = c(0, 1),					##<< range to scale to
-	from = range(x, na.rm = TRUE),	##<< range to scale from, defaults to range of data
+	from = range({x[!is.finite(x)] <- NA;x}, na.rm = TRUE),	##<< range to scale from, defaults to range of data
 	clip = TRUE						##<< should values be clipped to specified range?
 ){
 	##details<<
