@@ -36,12 +36,15 @@ twWin <- function(
 	,xpos=40,ypos=-80
 	,...
 ){
+	cdev = dev.cur()
 	windows(width=width,height=height,pointsize=pointsize, record=record, xpos=xpos, ypos=ypos, ...)	# nice to get 4 plot in powerpoint screen
 	par( las=1 )					#also y axis labels horizontal
 	par(mar=c(2.0,3.3,0,0)+0.3 )  #margins
 	par(tck=0.02 )				#axe-tick length inside plots             
 	par(mgp=c(1.1,0.2,0) )  #positioning of axis title, axis labels, axis
 	#par( mfrow=c(1,2) )	#tow plots in window
+	### the device before opening the new window
+	cdev
 }
 
 str3 <- function(
