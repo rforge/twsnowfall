@@ -30,7 +30,7 @@ sfPar <- function(
 ){
 	# sfPar
 	##seealso<< 
-	## \code{\link{sfRemoteWrapper}}
+	## \code{\link{twSnowfall}}
 	
 	##details<<  
 	## If argsList is a name it is evaluated on the node before calling the function

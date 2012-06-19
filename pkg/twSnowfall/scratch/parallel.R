@@ -63,7 +63,7 @@ sfFArgsApplyLB <- function(
 	debugSequential=FALSE	##<< evaluate using lapply instead of dynamicClusterApply
 ){
 	##seealso<< 
-	## \code{\link{sfRemoteWrapper}}
+	## \code{\link{twSnowfall}}
 	snowfall:::sfCheck()
 	snowfall:::checkFunction(F_ARGS)
 	addArgs = c(SFFARGSAPPLY_ADDARGS, list(...))
@@ -87,7 +87,7 @@ sfSimplifyLBResult <- function(
 	caseNames=NULL	##<< list of column names, name corresponds to dimension name for columns, i.e as obtained from dimnames(X)[1]
 ){
 	##seealso<< 
-	## \code{\link{sfRemoteWrapper}}
+	## \code{\link{twSnowfall}}
 	
 	# assumes that all components in the list are of identical structure
 	res <- 
@@ -117,7 +117,7 @@ sfApplyMatrixLB <- function(
 	debugSequential = FALSE 	##<< use apply 
 ){
 	##seealso<< 
-	## \code{\link{sfRemoteWrapper}}
+	## \code{\link{twSnowfall}}
 	
 	if( !is.matrix(X) )
 		stop("X must be matrix.")
@@ -148,7 +148,7 @@ twDynamicClusterApplyDep <- function (
 	initVal=vector("list",dependsStep)	##<<  results presented to argfun for the first 1..dependsStep results
 ){
 	##seealso<< 
-	## \code{\link{sfRemoteWrapper}}
+	## \code{\link{twSnowfall}}
 	
 	##details<< 
 	## \code{argfun=function(i,prevRes) list( <args(i,prevRes)> )} 
@@ -232,7 +232,7 @@ sfFArgsApplyDep <- function (
 	### a list of results of F_APPLY
 	
 	##seealso<< 
-	## \code{\link{sfRemoteWrapper}}
+	## \code{\link{twSnowfall}}
 	## \code{\link{twDynamicClusterApplyDep}}
 }
 #twUtestF("applyLB","test.sfFArgsApplyLB")
@@ -291,7 +291,7 @@ sfPar <- function(
 ){
 	# sfPar
 	##seealso<< 
-	## \code{\link{sfRemoteWrapper}}
+	## \code{\link{twSnowfall}}
 	
 	##details<<  
 	## if argsList is a name it is evaluated on the node before calling the function

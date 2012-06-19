@@ -3,7 +3,12 @@
 \title{sfFArgsApplyLB}
 \description{Load balanced application of F_APPLY to arguments supplied by function F_ARGS(i).}
 \usage{
-sfFArgsApplyLB(N_APPLYCASES, F_ARGS, F_APPLY, ..., SFFARGSAPPLY_ADDARGS = list(), debugSequential = FALSE)
+sfFArgsApplyLB(N_APPLYCASES,
+F_ARGS,
+F_APPLY,
+...,
+SFFARGSAPPLY_ADDARGS = list(),
+debugSequential = FALSE)
 }
 \arguments{
   \item{N_APPLYCASES}{i=1..N_APPLYCASES}
@@ -16,11 +21,11 @@ sfFArgsApplyLB(N_APPLYCASES, F_ARGS, F_APPLY, ..., SFFARGSAPPLY_ADDARGS = list()
 
 \value{a list of results of F_APPLY}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
-\seealso{\code{\link{sfRemoteWrapper}}}
+\seealso{\code{\link{twSnowfall}}}
 \examples{
 #sfInit(parallel=TRUE,cpus=2)
 

@@ -3,7 +3,10 @@
 \title{sfPar}
 \description{Executing a list of functions distributed via sfApply.}
 \usage{
-sfPar(fList, sfParParallel = TRUE, sfParArgsList = NULL, ...)
+sfPar(fList,
+sfParParallel = TRUE,
+sfParArgsList = NULL,
+...)
 }
 \arguments{
   \item{fList}{the list of functions}
@@ -16,11 +19,11 @@ this allows to distribute variables by sfExport before rather than transferring 
 which is advantages when the call is issued very often and the arguments are large}
 \value{a list of returns for each function}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
-\seealso{\code{\link{sfRemoteWrapper}}}
+\seealso{\code{\link{twSnowfall}}}
 \examples{
 #sfInit(parallel=TRUE,cpus=4)
 fList <- list(

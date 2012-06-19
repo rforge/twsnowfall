@@ -3,7 +3,11 @@
 \title{sfApplyMatrixLB}
 \description{Load balanced parallel application of FUN to rows or columns of matrix X }
 \usage{
-sfApplyMatrixLB(X, MARGIN = 1, FUN, ..., debugSequential = FALSE)
+sfApplyMatrixLB(X,
+MARGIN = 1,
+FUN,
+...,
+debugSequential = FALSE)
 }
 \arguments{
   \item{X}{matrix with rows corresponding to cases supplied to first argument of FUN}
@@ -15,9 +19,9 @@ sfApplyMatrixLB(X, MARGIN = 1, FUN, ..., debugSequential = FALSE)
 \details{if debugSequentail is TRUE, simple apply is used }
 \value{a list with result of FUN for each row or columns of X respectively}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
-\seealso{\code{\link{sfRemoteWrapper}}}
+\seealso{\code{\link{twSnowfall}}}
 

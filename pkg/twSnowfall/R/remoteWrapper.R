@@ -5,16 +5,7 @@ sfRemoteWrapper <- function(
 	remoteFun = NULL, 			##<< The function to be called. Alternatively provided as an entry in remoteFunArgs.
 	remoteDumpfileBasename=NULL		##<< The name of a dump on error. If null, no dump is created. Alternatively provided as an entry in remoteFunArgs.
 ){
-	##alias<< twSnowfall
-	
-	##seealso<<  
-	## Further functionality of the package: \itemize{
-	## \item{ providing more than one argument to load balanced apply: \code{\link{sfFArgsApplyLB}}  }
-	## \item{ providing result of a previous call to FUN in load balancing: \code{\link{sfFArgsApplyDep}} }
-	## \item{ simplifying the list of results of \code{\link{sfClusterApply}} similar to \code{\link{apply}}: \code{\link{sfSimplifyLBResult}}  }
-	## \item{ load balanced parallel application of FUN to rows or columns of matrix X: \code{\link{sfApplyMatrixLB}}  }
-	## \item{ executing a list of functions distributed across cpus via sfApply: \code{\link{sfPar}}  }
-	## }
+	##seealso<< \code{\link{twSnowfall}} 
 	
 	##details<< 
 	## If remoteFunArgs is a name, it is first evaulated in the parent frame.

@@ -3,7 +3,15 @@
 \title{sfFArgsApplyDep}
 \description{Load balanced application of F_APPLY with using result from a previous run to construct arguments.}
 \usage{
-sfFArgsApplyDep(N_APPLYCASES, F_ARGS, F_APPLY, SFFARGSAPPLY_initVal, SFFARGSAPPLY_dependsStep = length(SFFARGSAPPLY_initVal), ..., SFFARGSAPPLY_ADDARGS = list(), debugSequential = FALSE)
+sfFArgsApplyDep(N_APPLYCASES,
+F_ARGS,
+F_APPLY,
+SFFARGSAPPLY_initVal,
+SFFARGSAPPLY_dependsStep = length(SFFARGSAPPLY_initVal),
+...,
+SFFARGSAPPLY_ADDARGS = list(),
+debugSequential = FALSE,
+freeMasterNode = FALSE)
 }
 \arguments{
   \item{N_APPLYCASES}{number of cases to calculate}
@@ -14,15 +22,16 @@ sfFArgsApplyDep(N_APPLYCASES, F_ARGS, F_APPLY, SFFARGSAPPLY_initVal, SFFARGSAPPL
   \item{\dots}{further arguments passed to F_APPLY}
   \item{SFFARGSAPPLY_ADDARGS}{results presented to argfun for the first 1..dependsStep results}
   \item{debugSequential}{the number of processors (might be smaller than cluster to assure that previous case i-useNCpus has been evaluated.)}
+  \item{freeMasterNode}{if set to TRUE, no job is submitted to first node, so that this node can dispatch jobs without waiting}
 }
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
-\seealso{\code{\link{sfRemoteWrapper}}
+\seealso{\code{\link{twSnowfall}}
 \code{\link{twDynamicClusterApplyDep}}}
 \examples{
 #sfInit(parallel=TRUE,cpus=2)

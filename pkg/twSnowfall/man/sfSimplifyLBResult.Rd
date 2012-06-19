@@ -3,7 +3,8 @@
 \title{sfSimplifyLBResult}
 \description{Transform the list resulting from \code{\link{sfClusterApplyLB}} to vector or matrix, similar as apply. }
 \usage{
-sfSimplifyLBResult(resl, caseNames = NULL)
+sfSimplifyLBResult(resl,
+caseNames = NULL)
 }
 \arguments{
   \item{resl}{
@@ -18,9 +19,9 @@ sfSimplifyLBResult(resl, caseNames = NULL)
 \item{list}{list of lists. May transform to dataframe by: do.call(rbind, lapply(.res,data.frame)))}
 \item{data.frame}{list of data.frames}}}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
-\seealso{\code{\link{sfRemoteWrapper}}}
+\seealso{\code{\link{twSnowfall}}}
 

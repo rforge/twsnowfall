@@ -3,7 +3,10 @@
 \title{twResultFilename}
 \description{Construct a modified filename from paramFilename.}
 \usage{
-twResultFilename(paramFilename, iproc = NULL, prefix = "res_", ext = ".RData")
+twResultFilename(paramFilename,
+iproc = NULL,
+prefix = "res_",
+ext = ".RData")
 }
 \arguments{
   \item{paramFilename}{filename to modify}
@@ -14,7 +17,7 @@ twResultFilename(paramFilename, iproc = NULL, prefix = "res_", ext = ".RData")
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

@@ -3,7 +3,9 @@
 \title{newSOCKnode}
 \description{adapted from snow 0.3-3, modified to work with pahts that include white spaces}
 \usage{
-newSOCKnode(machine = "localhost", ..., options = defaultClusterOptions)
+newSOCKnode(machine = "localhost",
+...,
+options = defaultClusterOptions)
 }
 \arguments{
   \item{machine}{
@@ -16,7 +18,7 @@ newSOCKnode(machine = "localhost", ..., options = defaultClusterOptions)
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
