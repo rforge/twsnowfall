@@ -1,7 +1,7 @@
 \name{vectorElements<-}
 \alias{vectorElements<-}
 \title{vectorElements<-}
-
+\description{adds or replaces value in vector}
 \usage{
 vectorElements<-(vec,
 value)

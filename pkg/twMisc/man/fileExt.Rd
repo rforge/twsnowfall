@@ -20,5 +20,5 @@ fileExt(filenames)
 \examples{
 ##seealso<< code{\link{fileExt}}, \link{twMisc}
 filenames=c("text.txt","dir/some.test.yml","a")
-twGetFileExt(filenames)
+fileExt(filenames)
 }

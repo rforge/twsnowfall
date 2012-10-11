@@ -20,7 +20,8 @@ However, with standard  extraction the syntax is fixed.
 \itemize{
 \item Extract \code{A[...,i,...]} from dimension \code{iDim} of an array: this method
 \item Splitting an array by dimesnion and listing subarray: \code{\link{twListArrDim}} 
-\item Extracting from last dimensions: \code{\link{twExtractFromLastDims}} 
+\item Extracting from last dimensions: \code{\link{twExtractFromLastDims}}
+\item Stacking a dimension: \code{\link{twStackArrayDim}}
 }
 }}
 

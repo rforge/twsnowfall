@@ -36,4 +36,4 @@ it returns always only one best estimate.}
 
 
 \seealso{twMisc}
-
+\examples{FALSE}

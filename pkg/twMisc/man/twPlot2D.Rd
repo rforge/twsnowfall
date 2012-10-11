@@ -60,6 +60,7 @@ col = rev(heat.colors(20)),
 #mtrace(twApply2DMesh)
 #mtrace(twPlot2DFun)
 	tmp <- twApply2DMesh(x,y,f,knotSpacing="all")
-	twPlot2D( x,y,tmp,zlab="density")
+	#plot(tmp)
+	twPlot2D( tmp$mesh,z=tmp$fval,zlab="density")
 	
 }

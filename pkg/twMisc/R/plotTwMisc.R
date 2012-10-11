@@ -199,9 +199,9 @@ twPlot2D <- function(
 	
 	if( contour ){
 		if (missing(key.title)) 
-			filled.contour( xy$x, xy$y, z, xlab=xlab, ylab=ylab, key.title=title(sub=zlab,line=1), color.palette=color.palette, ... )
+			filled.contour( xy$x, xy$y, z, xlab=xlab, ylab=ylab, key.title=title(sub=zlab,line=1), ... )
 		else
-			filled.contour( xy$x, xy$y, z, xlab=xlab, ylab=ylab, color.palette=color.palette, ... )
+			filled.contour( xy$x, xy$y, z, xlab=xlab, ylab=ylab, ... )
 	}else{
 		mar.orig <- par.orig$mar
 		zlim <- range(z, na.rm=TRUE)
@@ -246,7 +246,8 @@ attr(twPlot2D,"ex") <- function(){
 #mtrace(twApply2DMesh)
 #mtrace(twPlot2DFun)
 	tmp <- twApply2DMesh(x,y,f,knotSpacing="all")
-	twPlot2D( x,y,tmp,zlab="density")
+	#plot(tmp)
+	twPlot2D( tmp$mesh,z=tmp$fval,zlab="density")
 	
 }
 

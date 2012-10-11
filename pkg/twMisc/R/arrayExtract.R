@@ -117,22 +117,24 @@ attr(twExtractFromLastDims,"ex") <- function(){
 }
 
 twStackArrayDim <- function(
-	### stacks a dimension of an array, i.e. reduces to a lower dimension 
-	x								##<< the array to process
-	,sourceDim=length(dim(x))		##<< the dimension that should be stacked
-	,destDim=  length(dim(x))-1		##<< the dimension, along which to stack, referring to the resulting array
-	,sep="_"						##<< character separating the parts of the new dimension names
+		### stacks a dimension of an array, i.e. reduces to a lower dimension 
+		x								##<< the array to process
+		,sourceDim=length(dim(x))		##<< the dimension that should be stacked
+		,destDim=  length(dim(x))-1		##<< the dimension, along which to stack, referring to the resulting array
+		,sep="_"						##<< character separating the parts of the new dimension names
 ){
-	##seealso<< \link{twExtractDim}, \link{twMisc}
+	##seealso<< 
+	## \code{\link{twExtractDim}}, \link{twMisc}
 	xl <- twListArrDim(x,sourceDim)
 	xr <- abind( xl, along=destDim)
 	dimnames(xr)[[destDim]] <- outer( dimnames(xl[[1]])[[destDim]], names(xl), paste, sep=sep  )
 	xr
-	### array of one dimension less than x.
-	# Dimnames of destDim are concatenaed names of the sourceDim and the original destDim
+	### Array of one dimension less than x.
+	### Dimnames are concatenaed names of the sourceDim and the original destDim
 }
 attr(twStackArrayDim,"ex") <- function(){
-	
+	#twStackArrayDim()
 }
+
 
 

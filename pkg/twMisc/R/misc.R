@@ -12,7 +12,7 @@ seqRange <- function(
 	range	##<< the range for the sequence
 	,...	##<< further arguments to seq, defaults to length.out=50
 ){
-	##alias<< twMisc
+	# ##alias<< twMisc
 	
 	##details<< \describe{\item{Functionality of package twMisc}{
 	## \itemize{
@@ -183,7 +183,7 @@ fileExt <- function(
 attr(fileExt,"ex") <- function(){
 	##seealso<< code{\link{fileExt}}, \link{twMisc}
 	filenames=c("text.txt","dir/some.test.yml","a")
-	twGetFileExt(filenames)
+	fileExt(filenames)
 }
 
 
@@ -478,7 +478,7 @@ reorderFactor <- function(
 	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
 ){
 	levelMap <- match(levels(x), as.factor(newLevels))
-	factor( newLevels[levelMap[x]], level=newLevels)	
+	factor( newLevels[levelMap[x]], levels=newLevels)	
 	### factor with levels corresponding to newLevels
 }
 attr(reorderFactor,"ex") <- function(){
@@ -491,43 +491,6 @@ attr(reorderFactor,"ex") <- function(){
 	all(x == y)
 }
 
-cooksDistance.loess <- function(
-	### calculate cooksDistance for loess models
-	formula		##<< parameters for \code{\link{loess}}
-	,data
-	,...
-	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
-){
-	mf <- model.frame(formula,data, na.action=NULL)
-	i <- which( !apply(mf, 1, function(row) any(is.na(row)) ))
-	mfComplete <- na.omit(mf) 
-	x <- loess(formula, mfComplete,...)
-	nP <- x$enp
-	mse <- x$s
-	denom <- nP*mse
-	#iOut <- 1
-	y <- fitted(x)
-	cdist <- rep( NA, nrow(data) )
-	cdist[i] <- sapply( 1:nrow(mfComplete), function(iOut){
-			yi <- fitted(loess( formula, mfComplete[-iOut,], ...))
-			sum( (y[-iOut] - yi)^2 ) / denom
-		})
-	##value<< list with elements
-	list( mod=x			##<< the fitted loess model
-		, cdist=cdist)		##<< numeric vector of cooks distance
-	##end<<
-}
-attr(cooksDistance.loess,"ex") <- function(){
-	tmp <- seq(1,350,length.out=9)
-	nPar <-  
-	data <- data.frame( 
-		time = tmp
-		,fluo = log(tmp) + rnorm(length(tmp), sd=max(log(tmp)/5))
-	)
-	plot(fluo ~ time, data)
-	res <- cooksDistance.loess( fluo ~ time, data, span=0.9)
-	plot( res ~ time, dss)
-}
 
 
 formatSig <- function(
@@ -548,14 +511,13 @@ attr(formatSig,"ex") <- function(){
 	formatSig(x,2)
 }
 
-
-
 "vectorElements<-" <- function(
-	# adds or replaces value in vec
-	vec	##<< a named vector
+	### adds or replaces value in vector
+	vec			##<< a named vector
 	,value		##<< a named vector of same mode as vec
 ){
 	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	
 	if( 0 == length(value) ) return( vec )
 	if( is.null(vec) ) vec <- structure(vector(mode(value),0), names=character(0))
 	if( !is.vector(vec) )

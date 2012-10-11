@@ -1,6 +1,5 @@
 \name{seqRange}
 \alias{seqRange}
-\alias{twMisc}
 \title{seqRange}
 \description{Create a sequence based on a range c(min,max)}
 \usage{
