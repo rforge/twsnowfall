@@ -2,12 +2,7 @@
 \alias{checkMagnitude}
 \title{checkMagnitude}
 \description{checkTrue that current is within interval of +-magnitude around target}
-\usage{
-checkMagnitude(target,
-current,
-orderOfMagnitudes = 1/2,
-...)
-}
+\usage{checkMagnitude(target, current, orderOfMagnitudes = 1/2, ...)}
 \arguments{
   \item{target}{numeric vector}
   \item{current}{numeric vector (recyled) of the same length as target}

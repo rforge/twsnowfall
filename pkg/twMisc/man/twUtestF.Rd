@@ -2,9 +2,7 @@
 \alias{twUtestF}
 \title{twUtestF}
 \description{Running \code{\link{twUtest}} and reporting failed Tests as data.frame}
-\usage{
-twUtestF(...)
-}
+\usage{twUtestF(...)}
 \arguments{
   \item{\dots}{arguments passed to twUtest}
 }

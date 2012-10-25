@@ -2,9 +2,7 @@
 \alias{loadAssign}
 \title{loadAssign}
 \description{Load a RData file and return the value of the first entry}
-\usage{
-loadAssign(...)
-}
+\usage{loadAssign(...)}
 \arguments{
   \item{\dots}{arguments to \code{\link{load}}}
 }
@@ -16,7 +14,7 @@ Then the value of the first entry of ls in that environment is returned.}
 
 
 
-\seealso{\code{\link{copy2clip}}, \link{twMisc}}
+\seealso{\code{\link{seqRange}}, \link{twMisc}}
 \examples{
 # save the filename character into a temporary file 
 fout <- fout2 <- file.path(tempdir(),"tmp.RData")

@@ -29,7 +29,6 @@ twPairs <- function (
 	## \item Pairs-plot with scatterplots in upper part and histogram in diagonal: this method 
 	## \item 2D image and contour plots: \code{\link{plot.twApply2DMesh}}
 	## \item 3D scatter and contour plots: \code{plot.twApply3DMesh} has been moved to package twMiscRgl because of package dependencies. 
-	## \item TODO: link functions: \code{\link{twDf2wikiTable}} 
 	## }
 	##}}
 		
@@ -182,8 +181,8 @@ twPlot2D <- function(
 	, col= rev(heat.colors(20))	##<< colors for using image
 	#, color.palette=function(n){rev(heat.colors(n))}  ##<< colors for using filled.contour
 	, ...                                ##<< further arguments passed to \code{\link{filled.contour}} or \code{\link{image}} 
-### such as \code{ key.title=title(sub="Log-Like-\nlihood\n"), color.palette=function(n){rev(heat.colors(n))} }
-### or for image \code{col=rev(heat.colors(20))}
+		## # such as \code{ key.title=title(sub="Log-Like-\nlihood\n"), color.palette=function(n){rev(heat.colors(n))} }
+		## # or for image \code{col=rev(heat.colors(20))}
 ){
 	# plot.twApply2DMesh
 	##seealso<< \code{\link{twPairs}}, \link{twMisc}

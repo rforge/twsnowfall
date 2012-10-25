@@ -2,10 +2,7 @@
 \alias{vectorElements<-}
 \title{vectorElements<-}
 \description{adds or replaces value in vector}
-\usage{
-vectorElements<-(vec,
-value)
-}
+\usage{vectorElements(vec) <- value}
 \arguments{
   \item{vec}{a named vector}
   \item{value}{a named vector of same mode as vec}
@@ -17,5 +14,5 @@ value)
 
 
 
-\seealso{\code{\link{copy2clip}}, \link{twMisc}}
+\seealso{\code{\link{seqRange}}, \link{twMisc}}
 

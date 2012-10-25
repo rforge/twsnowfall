@@ -2,11 +2,7 @@
 \alias{twExtractFromLastDims}
 \title{twExtractFromLastDims}
 \description{Extract slices i from array Aext keeping the all first dimensions.}
-\usage{
-twExtractFromLastDims(Aext,
-i,
-dPrev = c(1))
-}
+\usage{twExtractFromLastDims(Aext, i, dPrev = c(1))}
 \arguments{
   \item{Aext}{array to extract from}
   \item{i}{indices in matrix of last dimensions}

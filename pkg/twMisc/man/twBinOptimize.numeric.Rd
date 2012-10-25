@@ -2,17 +2,9 @@
 \alias{twBinOptimize.numeric}
 \title{twBinOptimize numeric}
 \description{Finding the index of a sorted numeric vector whose element is closest to target. }
-\usage{
-\method{twBinOptimize}{numeric}(x,
-target = 0,
-...,
-interval = c(1,
-length(x)),
-lower = ceiling(min(interval)),
-upper = floor(max(interval)),
-maxiter = 100,
-showiter = FALSE)
-}
+\usage{\method{twBinOptimize}{numeric}(x, target = 0, ..., interval = c(1, length(x)), 
+    lower = ceiling(min(interval)), upper = floor(max(interval)), 
+    maxiter = 100, showiter = FALSE)}
 \arguments{
   \item{x}{numeric vector to be optimized. The term abs(x[i])-target) is minimized.}
   \item{target}{Target value for \code{x}. Defaults to 0.}

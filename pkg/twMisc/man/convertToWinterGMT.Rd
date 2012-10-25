@@ -2,10 +2,7 @@
 \alias{convertToWinterGMT}
 \title{convertToWinterGMT}
 \description{convert series to winter time, i.e. expressed as GMT}
-\usage{
-convertToWinterGMT(x,
-hourOffset = -1)
-}
+\usage{convertToWinterGMT(x, hourOffset = -1)}
 \arguments{
   \item{x}{POSIXct vector using summer time}
   \item{hourOffset}{offset of the original time zone winter time}

@@ -2,10 +2,7 @@
 \alias{tw.fTestDummy}
 \title{tw fTestDummy}
 \description{simple function used in examples of testcases}
-\usage{
-tw.fTestDummy(a,
-b)
-}
+\usage{tw.fTestDummy(a, b)}
 \arguments{
   \item{a}{
 }

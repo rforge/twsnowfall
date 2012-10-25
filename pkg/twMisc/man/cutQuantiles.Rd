@@ -2,18 +2,8 @@
 \alias{cutQuantiles}
 \title{cutQuantiles}
 \description{Cut a Numeric Variable into Intervals of about same number of observations.}
-\usage{
-cutQuantiles(x,
-cuts,
-m = 150,
-g,
-levels.mean = FALSE,
-digits,
-minmax = TRUE,
-oneval = TRUE,
-onlycuts = FALSE,
-onlymeans = FALSE)
-}
+\usage{cutQuantiles(x, cuts, m = 150, g, levels.mean = FALSE, digits, 
+    minmax = TRUE, oneval = TRUE, onlycuts = FALSE, onlymeans = FALSE)}
 \arguments{
   \item{x}{numeric vector to classify into intervals}
   \item{cuts}{cut points}
@@ -35,7 +25,7 @@ onlymeans = FALSE)
 
 \seealso{\code{\link{cut}},\code{\link{quantile}}
 
-\code{\link{copy2clip}}, \link{twMisc}}
+\code{\link{seqRange}}, \link{twMisc}}
 \examples{
 set.seed(1)
 x <- runif(1000, 0, 100)

@@ -2,11 +2,7 @@
 \alias{twExtractDim}
 \title{twExtractDim}
 \description{Extract \code{A[...,i,...]} from dimension \code{iDim} of an array }
-\usage{
-twExtractDim(A,
-i = 1,
-iDim = length(dim(A)))
-}
+\usage{twExtractDim(A, i = 1, iDim = length(dim(A)))}
 \arguments{
   \item{A}{the array to extract values from}
   \item{i}{the index to extract}
@@ -14,7 +10,7 @@ iDim = length(dim(A)))
 }
 \details{Sometimes the dimension of an array that is to be processed is 
 only fixed during runtime, i.e. by a value of a variable.
-However, with standard  extraction the syntax is fixed.
+However, with standard \code{[,,]} extraction the syntax is fixed.
 
 \describe{\item{Array functionality of package \link{twMisc} }{
 \itemize{

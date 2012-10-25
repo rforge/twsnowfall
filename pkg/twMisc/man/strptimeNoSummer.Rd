@@ -2,13 +2,8 @@
 \alias{strptimeNoSummer}
 \title{strptimeNoSummer}
 \description{Parse time given as character with ignoring daylight savings.}
-\usage{
-strptimeNoSummer(x,
-format = "\%Y-\%m-\%d \%H:\%M:\%S",
-hourOffset = -1,
-tz = "CET",
-...)
-}
+\usage{strptimeNoSummer(x, format = "\%Y-\%m-\%d \%H:\%M:\%S", hourOffset = -1, 
+    tz = "CET", ...)}
 \arguments{
   \item{x}{character vector holing the times}
   \item{format}{format argument to \code{\link{strptime}} such as \code{format="\%d.\%m.\%y \%H:\%M"}}

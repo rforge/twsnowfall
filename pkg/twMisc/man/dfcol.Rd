@@ -2,10 +2,7 @@
 \alias{dfcol}
 \title{dfcol}
 \description{extract column from a data.frame and reassing names}
-\usage{
-dfcol(x,
-colName)
-}
+\usage{dfcol(x, colName)}
 \arguments{
   \item{x}{the dataFrame}
   \item{colName}{the column name}
@@ -17,7 +14,7 @@ colName)
 
 
 
-\seealso{\code{\link{copy2clip}}, \link{twMisc}}
+\seealso{\code{\link{seqRange}}, \link{twMisc}}
 \examples{
 data <- data.frame( a=1:4, b=2*(1:4) )
 rownames(data) <- LETTERS[1:4]

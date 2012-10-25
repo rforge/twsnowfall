@@ -2,19 +2,10 @@
 \alias{twUtest}
 \title{twUtest}
 \description{Running a Testunit from a specified source of a package.}
-\usage{
-twUtest(unitname = NULL,
-testFunc = NULL,
-package = NULL,
-lib.loc = NULL,
-verbose = getOption("verbose"),
-envir = .GlobalEnv,
-unitTestSubDir = "unitTests",
-divertOutputFile = (if (is.null(testFunc)) tempfile() else NULL),
-unlinkOutputFile = TRUE,
-mtrace = FALSE,
-...)
-}
+\usage{twUtest(unitname = NULL, testFunc = NULL, package = NULL, lib.loc = NULL, 
+    verbose = getOption("verbose"), envir = .GlobalEnv, unitTestSubDir = "unitTests", 
+    divertOutputFile = (if (is.null(testFunc)) tempfile() else NULL), 
+    unlinkOutputFile = TRUE, mtrace = FALSE, ...)}
 \arguments{
   \item{unitname}{the name of the Testunit or object with the same name. Null for running all test}
   \item{testFunc}{Regular expression for matching test functions. Provide function name for executing a single test function (useful for debuggin).}

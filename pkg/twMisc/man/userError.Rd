@@ -2,11 +2,7 @@
 \alias{userError}
 \title{userError}
 \description{Generates an error of class userError}
-\usage{
-userError(message,
-class = character(0),
-call = NULL)
-}
+\usage{userError(message, class = character(0), call = NULL)}
 \arguments{
   \item{message}{error msg}
   \item{class}{character vector: the classes hyrarchy below class userError. First entry is the most specialized}

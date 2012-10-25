@@ -2,12 +2,7 @@
 \alias{twDiffTS}
 \title{twDiffTS}
 \description{Approximation of the derivative dy/dx }
-\usage{
-twDiffTS(y,
-x,
-na.rm = TRUE,
-doSort = TRUE)
-}
+\usage{twDiffTS(y, x, na.rm = TRUE, doSort = TRUE)}
 \arguments{
   \item{y}{
 }

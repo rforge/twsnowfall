@@ -2,11 +2,7 @@
 \alias{twEnumNames}
 \title{twEnumNames}
 \description{Creates integer variables with positions from colnames or names of x.}
-\usage{
-twEnumNames(x,
-inherits = TRUE,
-prefix = "i_")
-}
+\usage{twEnumNames(x, inherits = TRUE, prefix = "i_")}
 \arguments{
   \item{x}{
 }

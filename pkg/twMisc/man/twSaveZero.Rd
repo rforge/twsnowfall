@@ -2,10 +2,7 @@
 \alias{twSaveZero}
 \title{twSaveZero}
 \description{Function going to zero for small x over several orders of magnitude}
-\usage{
-twSaveZero(x,
-kM = 1e-10)
-}
+\usage{twSaveZero(x, kM = 1e-10)}
 \arguments{
   \item{x}{numeric vector}
   \item{kM}{order of magnitude where decrease happens}

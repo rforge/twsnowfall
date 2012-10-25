@@ -2,15 +2,8 @@
 \alias{twRescale}
 \title{twRescale}
 \description{Rescale numeric vector to have specified minimum and maximum. }
-\usage{
-twRescale(x,
-to = c(0,
-1),
-from = range({
-    x[!is.finite(x)] <- NA
-    x
-}, na.rm = TRUE), clip = TRUE)
-}
+\usage{twRescale(x, to = c(0, 1), from = range(x[is.finite(x)], na.rm = TRUE), 
+    clip = TRUE)}
 \arguments{
   \item{x}{data to rescale}
   \item{to}{range to scale to}

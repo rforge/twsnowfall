@@ -2,10 +2,7 @@
 \alias{twDiffrl}
 \title{twDiffrl}
 \description{Approximation of dx by (x_+1 - x_-1). }
-\usage{
-twDiffrl(x,
-na.rm = TRUE)
-}
+\usage{twDiffrl(x, na.rm = TRUE)}
 \arguments{
   \item{x}{
 }

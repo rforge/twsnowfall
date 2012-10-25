@@ -2,16 +2,8 @@
 \alias{twIntegrateTS}
 \title{twIntegrateTS}
 \description{Integrate dy between xl and xr.}
-\usage{
-twIntegrateTS(dy,
-x,
-xl = min(x,
-na.rm = TRUE),
-xr = max(x,
-na.rm = TRUE),
-na.rm = TRUE,
-doSort = TRUE)
-}
+\usage{twIntegrateTS(dy, x, xl = min(x, na.rm = TRUE), xr = max(x, na.rm = TRUE), 
+    na.rm = TRUE, doSort = TRUE)}
 \arguments{
   \item{dy}{rate}
   \item{x}{times, rate dy refers to interval (x[i],x[i+1]), see \code{\link{twCalcObsScale}} to translate to this observation scale}

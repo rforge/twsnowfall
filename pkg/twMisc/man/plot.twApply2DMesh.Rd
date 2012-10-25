@@ -2,13 +2,8 @@
 \alias{plot.twApply2DMesh}
 \title{plot twApply2DMesh}
 \description{Creating an image or contour plot of a three-dimensional array.}
-\usage{
-\method{plot}{twApply2DMesh}(x,
-zlab = NULL,
-xlim = NULL,
-ylim = NULL,
-...)
-}
+\usage{\method{plot}{twApply2DMesh}(x, zlab = NULL, xlim = NULL, ylim = NULL, 
+    ...)}
 \arguments{
   \item{x}{object of class twApply2DMesh, a result of \code{\link{twApply2DMesh}}}
   \item{zlab}{label of the color key}

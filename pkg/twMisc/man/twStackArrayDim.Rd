@@ -2,12 +2,8 @@
 \alias{twStackArrayDim}
 \title{twStackArrayDim}
 \description{stacks a dimension of an array, i.e. reduces to a lower dimension }
-\usage{
-twStackArrayDim(x,
-sourceDim = length(dim(x)),
-destDim = length(dim(x)) - 1,
-sep = "_")
-}
+\usage{twStackArrayDim(x, sourceDim = length(dim(x)), destDim = length(dim(x)) - 
+    1, sep = "_")}
 \arguments{
   \item{x}{the array to process}
   \item{sourceDim}{the dimension that should be stacked}

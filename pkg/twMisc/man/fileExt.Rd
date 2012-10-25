@@ -2,9 +2,7 @@
 \alias{fileExt}
 \title{fileExt}
 \description{Return the file extension}
-\usage{
-fileExt(filenames)
-}
+\usage{fileExt(filenames)}
 \arguments{
   \item{filenames}{
 }

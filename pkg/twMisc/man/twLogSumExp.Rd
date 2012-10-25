@@ -2,11 +2,7 @@
 \alias{twLogSumExp}
 \title{twLogSumExp}
 \description{calculates the log(sum(exp(x))) in numerically safer way}
-\usage{
-twLogSumExp(x,
-shiftUpperBound = FALSE,
-shiftLowerBound = FALSE)
-}
+\usage{twLogSumExp(x, shiftUpperBound = FALSE, shiftLowerBound = FALSE)}
 \arguments{
   \item{x}{vector to be summed}
   \item{shiftUpperBound}{use this if x has a clear upper bound}

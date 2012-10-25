@@ -12,23 +12,6 @@ seqRange <- function(
 	range	##<< the range for the sequence
 	,...	##<< further arguments to seq, defaults to length.out=50
 ){
-	# ##alias<< twMisc
-	
-	##details<< \describe{\item{Functionality of package twMisc}{
-	## \itemize{
-	## \item enhanced support for Unit-Tests: \code{\link{twUtestF}} 
-	## \item debugging: \code{\link{traceback.curr}} 
-	## \item working with constants: \code{\link{twEnumNames}} 
-	## \item support for working with ODEs: \code{\link{twIntegrateTS}} 
-	## \item Optimizing a function where first argument is an index.: \code{\link{twBinOptimize.numeric}} 
-	## \item plotting routines: \code{\link{twPairs}}
-	## \item matching by closest value: \code{\link{matchClosest}}
-	## \item dealing with summer/winter time: \code{\link{strptimeNoSummer}}
-	## \item collection of misc: \code{\link{copy2clip}}
-	## \item extracting from arrays: \code{\link{twExtractDim}}
-	## \item updating the version and the date of the description file: \code{\link{updateVersionAndDate}}
-	## }
-	##}}
 	if( 0==length(list(...)))
 		seq( range[1],range[2], length.out=50 )
 	else
@@ -122,13 +105,24 @@ if( !exists("within")){
 }
 
 evalCommandArgs <- function(
-	### evaluate args passed to a batch script
+	### evaluate args passed to a batch script 
+	args = commandArgs(TRUE)			##<< the commands to be evaluated 
+	,envir = new.env(parent=baseenv())	##<< the environment where args should be evaluated
 ){
 	##<<details R CMD BATCH --vanilla '--args i=1 n=8' testCommandArgs.R testCommandArgs.Rout
-	args=(commandArgs(TRUE))
 	for(i in seq( along.with=args)){
-		eval.parent(parse(text=args[[i]]))
+		eval( parse(text=args[[i]]), envir=envir)
 	}
+	### The environment where the arguments have been evaluated (may use $ or as.list)
+	envir
+}
+attr(evalCommandArgs,"ex") <- function(){
+	system('Rscript -e "str(commandArgs(TRUE))" i=1 n=8')
+	as.list(evalCommandArgs(args=c("i=1","n=8")))
+	if( FALSE ){
+	  # do not run automatically, as it depends on twMisc installed
+	  system('Rscript -e "library(twMisc); str(as.list(evalCommandArgs())); ls()" i=1 n=8')
+    }
 }
 
 
@@ -275,7 +269,7 @@ cutQuantiles <- function (
 	## copied from Hmisc:cutQuantiles to reduce package dependencies.
 	
 	##seealso<< \code{\link{cut}},\code{\link{quantile}}
-	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	##seealso<< \code{\link{seqRange}}, \link{twMisc}
 	
 	method <- 1
 	x.unique <- sort(unique(c(x[!is.na(x)], if (!missing(cuts)) cuts)))
@@ -420,13 +414,15 @@ attr(cutQuantiles,"ex") <- function(){
 
 twRescale <- function (
 	### Rescale numeric vector to have specified minimum and maximum. 
-	x,								##<< data to rescale
-	to = c(0, 1),					##<< range to scale to
-	from = range({x[!is.finite(x)] <- NA;x}, na.rm = TRUE),	##<< range to scale from, defaults to range of data
-	clip = TRUE						##<< should values be clipped to specified range?
+	x				##<< data to rescale
+	,to = c(0, 1)	##<< range to scale to
+	,from =			##<< range to scale from, defaults to range of data
+		range(x[is.finite(x)], na.rm = TRUE)	
+	,clip = TRUE	##<< should values be clipped to specified range?
 ){
 	##details<<
 	## adapted from package ggplot2 to avoid package redundancies
+	
 	##author<< Hadley Wickham <h.wickham@gmail.com>, Thomas Wutzler
 	
 	##details<< 
@@ -437,23 +433,24 @@ twRescale <- function (
 		return( rep( mean(to), length(x) ) )
 	if (is.factor(x)) {
 		warning("twRescale: Categorical variable automatically converted to continuous", 
-			call. = FALSE)
+				call. = FALSE)
 		x <- as.numeric(x)
 	}
 	scaled <- (x - from[1])/diff(from) * diff(to) + to[1]
 	if (clip) {
 		ifelse(!is.finite(scaled) | .inside(scaled,to), scaled, 
-			NA)
+				NA)
 	}
 	else {
 		scaled
 	}
 }
 
+
 loadAssign <- function(
 	### Load a RData file and return the value of the first entry
 	...	##<< arguments to \code{\link{load}}
-	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
 	##details<<
 	## The load function is evaluated in a local environment.
@@ -475,7 +472,7 @@ reorderFactor <- function(
 	### reorder the factor levels in a factor
 	x			##<< factor to reorder
 	, newLevels	##<< character vector: levels in new order
-	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
 	levelMap <- match(levels(x), as.factor(newLevels))
 	factor( newLevels[levelMap[x]], levels=newLevels)	
@@ -496,7 +493,7 @@ attr(reorderFactor,"ex") <- function(){
 formatSig <- function(
 	### format real values to significant number of digits
 	x, digits=3
-	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
 	#l10x <- log10(x)
 	ifelse( x < 10^(digits-1) #l10x < digits-1
@@ -516,7 +513,7 @@ attr(formatSig,"ex") <- function(){
 	vec			##<< a named vector
 	,value		##<< a named vector of same mode as vec
 ){
-	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	##seealso<< \code{\link{seqRange}}, \link{twMisc}
 	
 	if( 0 == length(value) ) return( vec )
 	if( is.null(vec) ) vec <- structure(vector(mode(value),0), names=character(0))
@@ -539,8 +536,8 @@ attr(formatSig,"ex") <- function(){
 	}
 	vec
 }
-.tmp <- .tmp <- get("vectorElements<-")
-attributes( .tmp )$ex <- function(){
+.tmp <- get("vectorElements<-")
+attributes(.tmp )$ex <- function(){
 	vec <- c(a=1)
 	vectorElements(vec) <- c(a=2)
 	vec
@@ -557,11 +554,14 @@ attributes( .tmp )$ex <- function(){
 #is.language(as.name("vectorElements<-"))
 
 
+
+
+
 dfcol <- function(
 	### extract column from a data.frame and reassing names
 	x			##<< the dataFrame
 	,colName	##<< the column name
-	##seealso<< \code{\link{copy2clip}}, \link{twMisc}
+	##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
 	structure( x[,colName], names=rownames(x) )
 	### \code{structure( x[,colName], names=rownames(x) )}

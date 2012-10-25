@@ -2,13 +2,8 @@
 \alias{twCalcObsScale}
 \title{twCalcObsScale}
 \description{Calculate mean slopes, i.e. rates, between within time intervals.}
-\usage{
-twCalcObsScale(dx,
-times1 = NULL,
-times2 = NULL,
-na.rm = TRUE,
-doSort = TRUE)
-}
+\usage{twCalcObsScale(dx, times1 = NULL, times2 = NULL, na.rm = TRUE, 
+    doSort = TRUE)}
 \arguments{
   \item{dx}{numeric vector: slopes at time points times}
   \item{times1}{

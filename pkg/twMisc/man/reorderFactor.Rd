@@ -2,10 +2,7 @@
 \alias{reorderFactor}
 \title{reorderFactor}
 \description{reorder the factor levels in a factor}
-\usage{
-reorderFactor(x,
-newLevels)
-}
+\usage{reorderFactor(x, newLevels)}
 \arguments{
   \item{x}{factor to reorder}
   \item{newLevels}{character vector: levels in new order}
@@ -17,7 +14,7 @@ newLevels)
 
 
 
-\seealso{\code{\link{copy2clip}}, \link{twMisc}}
+\seealso{\code{\link{seqRange}}, \link{twMisc}}
 \examples{
 x <- as.factor(sample(c("low","medium","high"),10,replace=TRUE) )
 x

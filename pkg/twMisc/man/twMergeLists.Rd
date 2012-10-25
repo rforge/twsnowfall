@@ -2,11 +2,7 @@
 \alias{twMergeLists}
 \title{twMergeLists}
 \description{Recursively merge a list or vector to another list or vector}
-\usage{
-twMergeLists(dest,
-source,
-level = 0)
-}
+\usage{twMergeLists(dest, source, level = 0)}
 \arguments{
   \item{dest}{list or vector that values are merged to}
   \item{source}{list or vector that values are taken from}

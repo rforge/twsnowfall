@@ -2,9 +2,7 @@
 \alias{traceback.curr}
 \title{traceback curr}
 \description{prints the current function calls, with the deepest call on top}
-\usage{
-traceback.curr(collapse = NULL)
-}
+\usage{traceback.curr(collapse = NULL)}
 \arguments{
   \item{collapse}{an optional character string to separate the results. Not NA_character_.}
 }

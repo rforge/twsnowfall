@@ -2,19 +2,10 @@
 \alias{twApply2DMesh}
 \title{twApply2DMesh}
 \description{Applying FUN over cube-grid of x,y,z values}
-\usage{
-twApply2DMesh(x,
-y = NULL,
-FUN = "+",
-argsFUN = list(),
-dims = 20,
-knotSpacing = c(midquantile = "midquantile",
-quantile = "quantile",
-all = "all",
-equidistant = "equidistant"),
-label = deparse(substitute(FUN)),
-...)
-}
+\usage{twApply2DMesh(x, y = NULL, FUN = "+", argsFUN = list(), dims = 20, 
+    knotSpacing = c(midquantile = "midquantile", quantile = "quantile", 
+        all = "all", equidistant = "equidistant"), label = deparse(substitute(FUN)), 
+    ...)}
 \arguments{
   \item{x}{range of x and y ordinate see \code{\link{xy.coords}}}
   \item{y}{

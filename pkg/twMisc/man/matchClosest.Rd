@@ -2,15 +2,9 @@
 \alias{matchClosest}
 \title{matchClosest}
 \description{Find index in b that is closest to a.}
-\usage{
-matchClosest(a,
-b,
-maxAbsDiff = Inf,
-isSortedA = FALSE,
-isSortedB = FALSE,
-allFiniteB = FALSE,
-chunkSize = round(length(b)/length(a) * 1.6))
-}
+\usage{matchClosest(a, b, maxAbsDiff = Inf, isSortedA = FALSE, isSortedB = FALSE, 
+    allFiniteB = FALSE, chunkSize = round(length(b)/length(a) * 
+        1.6))}
 \arguments{
   \item{a}{numeric vector}
   \item{b}{numeric vector}

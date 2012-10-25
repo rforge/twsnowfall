@@ -2,21 +2,9 @@
 \alias{twPlot2D}
 \title{twPlot2D}
 \description{Creating an image or contour plot of a three-dimensional array.}
-\usage{
-twPlot2D(x,
-y = NULL,
-z = NULL,
-xlab = NULL,
-ylab = NULL,
-zlab = NULL,
-key.title,
-key.axes,
-axes = TRUE,
-las = 1,
-contour = FALSE,
-col = rev(heat.colors(20)),
-...)
-}
+\usage{twPlot2D(x, y = NULL, z = NULL, xlab = NULL, ylab = NULL, zlab = NULL, 
+    key.title, key.axes, axes = TRUE, las = 1, contour = FALSE, 
+    col = rev(heat.colors(20)), ...)}
 \arguments{
   \item{x}{locations of grid lines at which the values in z are measured. These must be in ascending order. By default, equally spaced values from 0 to 1 are used. If x is a list, its components x$x and x$y are used for x and y, respectively. If the list has component z this is used for z.}
   \item{y}{
@@ -36,7 +24,9 @@ col = rev(heat.colors(20)),
 }
   \item{contour}{if TRUE then \code{\link{filled.contour}} is used for plotting. Otherwisee \code{\link{image}}}
   \item{col}{colors for using image}
-  \item{\dots}{further arguments passed to \code{\link{filled.contour}} or \code{\link{image}}}
+  \item{\dots}{further arguments passed to \code{\link{filled.contour}} or \code{\link{image}}
+# such as \code{ key.title=title(sub="Log-Like-\nlihood\n"), color.palette=function(n){rev(heat.colors(n))} }
+# or for image \code{col=rev(heat.colors(20))}}
 }
 
 

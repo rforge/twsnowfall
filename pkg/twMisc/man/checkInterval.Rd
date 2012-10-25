@@ -2,12 +2,8 @@
 \alias{checkInterval}
 \title{checkInterval}
 \description{checkTrue( all((current >= targetMin) && (current <= targetMax)) )}
-\usage{
-checkInterval(current,
-targetMin = 0.025,
-targetMax = 0.975,
-...)
-}
+\usage{checkInterval(current, targetMin = 0.025, targetMax = 0.975, 
+    ...)}
 \arguments{
   \item{current}{
 }
