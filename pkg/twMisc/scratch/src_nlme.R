@@ -49,33 +49,33 @@ VarCorr.lme <- function (x, sigma = 1, rdig = 3) {
 }
 
 VarCorr.pdMat <- function (x, sigma = 1, rdig = 3) {
-	sx <- summary(x)
-	sd <- sigma * attr(sx, "stdDev")
-	var <- sd^2
-	p <- dim(sx)[2]
-	v <- array(c(var, sd), c(p, 2), list(names(sd), c("Variance", 
-				"StdDev")))
-	attr(v, "formStr") <- if (inherits(attr(x, "formula"), "listForm")) {
-			paste(class(x)[[1]], "(list(", paste(sapply(attr(x, "formula"), 
-						function(x) as.character(deparse(x))), collapse = ","), 
-				"))", sep = "")
-		}
-		else {
-			paste(class(x)[[1]], "(", substring(deparse(attr(x, "formula")), 
-					2), ")", sep = "")
-		}
-	if (attr(sx, "noCorrelation") | (p <= 1)) {
-		return(v)
-	}
-	ll <- lower.tri(sx)
-	sx[ll] <- format(round(sx[ll], digits = rdig))
-	sx[!ll] <- ""
-	if (!is.null(colnames(sx))) {
-		sx[1, ] <- abbreviate(colnames(sx), minlength = rdig + 
-				3)
-	}
-	dimnames(sx) <- list(names(sd), c("Corr", rep("", p - 1)))
-	attr(v, "corr") <- sx[, -p, drop = FALSE]
-	v
+    sx <- summary(x)
+    sd <- sigma * attr(sx, "stdDev")
+    var <- sd^2
+    p <- dim(sx)[2]
+    v <- array(c(var, sd), c(p, 2), list(names(sd), c("Variance", 
+                "StdDev")))
+    attr(v, "formStr") <- if (inherits(attr(x, "formula"), "listForm")) {
+            paste(class(x)[[1]], "(list(", paste(sapply(attr(x, "formula"), 
+                        function(x) as.character(deparse(x))), collapse = ","), 
+                "))", sep = "")
+        }
+        else {
+            paste(class(x)[[1]], "(", substring(deparse(attr(x, "formula")), 
+                    2), ")", sep = "")
+        }
+    if (attr(sx, "noCorrelation") | (p <= 1)) {
+        return(v)
+    }
+    ll <- lower.tri(sx)
+    sx[ll] <- format(round(sx[ll], digits = rdig))
+    sx[!ll] <- ""
+    if (!is.null(colnames(sx))) {
+        sx[1, ] <- abbreviate(colnames(sx), minlength = rdig + 
+                3)
+    }
+    dimnames(sx) <- list(names(sd), c("Corr", rep("", p - 1)))
+    attr(v, "corr") <- sx[, -p, drop = FALSE]
+    v
 }
 

@@ -2,9 +2,9 @@ vec <- c(a="foo", b="bar")
 nms <- names(vec)
 nms <- make.names(nms)
 for( i in seq(along.with=vec) ){
-	if( exists(nms[i]) )
-		stop("tried to override existing variable")
-	assign( nms[i], i  )
+    if( exists(nms[i]) )
+        stop("tried to override existing variable")
+    assign( nms[i], i  )
 }
 
 
