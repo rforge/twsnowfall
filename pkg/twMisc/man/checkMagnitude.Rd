@@ -16,16 +16,16 @@
 
 
 
-\seealso{\code{\link{twUtestF}}}
+\seealso{\code{\link{twMisc}} \code{\link{checkInterval}}}
 \examples{
 target=1e4
-checkMagnitude(1e4, 3e4)	#TRUE
-try(checkMagnitude(1e4, 6e4))	#error
-checkMagnitude(1e4, 5000)	#TRUE
-try(checkMagnitude(1e4, 2000))	#error
+checkMagnitude(1e4, 3e4)    #TRUE
+try(checkMagnitude(1e4, 6e4))   #error
+checkMagnitude(1e4, 5000)   #TRUE
+try(checkMagnitude(1e4, 2000))  #error
 
-checkMagnitude(1e-4, 3e-4)	#TRUE
-try(checkMagnitude(1e-4, 6e-4))	#error
-checkMagnitude(1e-4, 5e-5)	#TRUE
-try(checkMagnitude(1e-4, 2e-5))	#error
+checkMagnitude(1e-4, 3e-4)  #TRUE
+try(checkMagnitude(1e-4, 6e-4)) #error
+checkMagnitude(1e-4, 5e-5)  #TRUE
+try(checkMagnitude(1e-4, 2e-5)) #error
 }

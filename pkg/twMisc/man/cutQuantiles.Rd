@@ -32,6 +32,6 @@ x <- runif(1000, 0, 100)
 z <- cutQuantiles(x, c(10,20,30))
 table(z)
 table(cutQuantiles(x, g=10))      # quantile groups
-cutQuantiles(x, g=10, onlymeans=TRUE)	  # get only the means of each group
+cutQuantiles(x, g=10, onlymeans=TRUE)     # get only the means of each group
 table(cutQuantiles(x, m=50))      # group x into intevals with at least 50 obs.
 }

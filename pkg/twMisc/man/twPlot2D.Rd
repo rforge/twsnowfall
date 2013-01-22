@@ -37,20 +37,20 @@
 
 \seealso{\code{\link{twPairs}}, \link{twMisc}}
 \examples{
-	nmix3 <- function(x, y, m, s) {
-		0.4 * dnorm(x, m, s) * dnorm(y, m, s)  +
-			0.3 * dnorm(x, -m, s) * dnorm(y, -m, s)  +
-			0.3 * dnorm(x, m, s) * dnorm(y, -1.5 * m, s) 
-	}
-	f <- function(x,y) nmix3(x,y,.5,.5)
-	
-	n <- 30
-	x <- sort(rnorm(n,.5,.7))
-	y <- sort(rnorm(n,.5,.8))
+    nmix3 <- function(x, y, m, s) {
+        0.4 * dnorm(x, m, s) * dnorm(y, m, s)  +
+            0.3 * dnorm(x, -m, s) * dnorm(y, -m, s)  +
+            0.3 * dnorm(x, m, s) * dnorm(y, -1.5 * m, s) 
+    }
+    f <- function(x,y) nmix3(x,y,.5,.5)
+    
+    n <- 30
+    x <- sort(rnorm(n,.5,.7))
+    y <- sort(rnorm(n,.5,.8))
 #mtrace(twApply2DMesh)
 #mtrace(twPlot2DFun)
-	tmp <- twApply2DMesh(x,y,f,knotSpacing="all")
-	#plot(tmp)
-	twPlot2D( tmp$mesh,z=tmp$fval,zlab="density")
-	
+    tmp <- twApply2DMesh(x,y,f,knotSpacing="all")
+    #plot(tmp)
+    twPlot2D( tmp$mesh,z=tmp$fval,zlab="density")
+    
 }

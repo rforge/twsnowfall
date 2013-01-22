@@ -21,5 +21,5 @@ targetMin and targetMax default to two p of sided 95\% confidence interval }
 
 
 
-\seealso{\code{\link{twUtestF}}}
+\seealso{\code{\link{twMisc}} \code{\link{checkMagnitude}}}
 

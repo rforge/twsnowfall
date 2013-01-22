@@ -46,8 +46,8 @@ x <- exp(seq(-10,100,length.out=1e6))
 # generate some sample indices that will be found by optimization
 n <- 1e2
 .where <- sample.int(length(x),n, replace=TRUE)
-.val <- x[.where]*1.00001	# add some error, for exact matches use the faster function match
-system.time( .where2 <- sapply(.val, function(vali){ which.min(abs(x-vali))  } ))	
+.val <- x[.where]*1.00001   # add some error, for exact matches use the faster function match
+system.time( .where2 <- sapply(.val, function(vali){ which.min(abs(x-vali))  } ))   
 system.time( .where3 <- sapply(.val, function(vali){ twBinOptimize(x,vali)$where} ))
-#Rprof();  .numiter3 <- sapply(.val, function(vali){ twBinOptimize(x,vali)$numiter} ); Rprof(NULL);	summaryRprof()
+#Rprof();  .numiter3 <- sapply(.val, function(vali){ twBinOptimize(x,vali)$numiter} ); Rprof(NULL); summaryRprof()
 }

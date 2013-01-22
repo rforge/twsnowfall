@@ -30,10 +30,10 @@ Next the hour offset is added, and the tzone attribute is changed.}
 \examples{
 # time series all recored in CET withoug switching to summer time between 2 and 3
 tmpd<- c("2010-03-28 00:00:00"
-	,"2010-03-28 01:00:00"
-	,"2010-03-28 02:00:00"
-	,"2010-03-28 03:00:00"
-	,"2010-03-28 04:00:00"
+    ,"2010-03-28 01:00:00"
+    ,"2010-03-28 02:00:00"
+    ,"2010-03-28 03:00:00"
+    ,"2010-03-28 04:00:00"
 )
 
 # problems with daylight savings

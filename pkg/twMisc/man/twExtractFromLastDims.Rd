@@ -29,7 +29,7 @@ i <- which(B != 0)
 # how to index Aext to obtain those indices?
 resExp <- matrix(0,nrow=nrow(Aext),ncol=length(i) )
 for( ii in seq(along.with=i) )
-	resExp[,ii] <- Aext[,(i[ii]-1) \%\% 3+1,(i[ii]-1) \%/\% 3+1]
+    resExp[,ii] <- Aext[,(i[ii]-1) \%\% 3+1,(i[ii]-1) \%/\% 3+1]
 (res <- twExtractFromLastDims(Aext,i))
 identical( resExp, structure(res, dimnames=NULL) )
 }

@@ -21,5 +21,5 @@ as.list(evalCommandArgs(args=c("i=1","n=8")))
 if( FALSE ){
   # do not run automatically, as it depends on twMisc installed
   system('Rscript -e "library(twMisc); str(as.list(evalCommandArgs())); ls()" i=1 n=8')
-    }
+}
 }

@@ -8,7 +8,7 @@
 }
 \details{The load function is evaluated in a local environment.
 Then the value of the first entry of ls in that environment is returned.}
-
+\value{Value of the first variable the loaded file}
 
 \author{Thomas Wutzler}
 
@@ -20,6 +20,6 @@ Then the value of the first entry of ls in that environment is returned.}
 fout <- fout2 <- file.path(tempdir(),"tmp.RData")
 save(fout,file=fout)
 fout <- "changed"
-(x <- loadAssign(file=fout2))	
-fout				# note that is has not been overwritten with load
+(x <- loadAssign(file=fout2))   
+fout                # note that is has not been overwritten with load
 }

@@ -24,9 +24,9 @@
 \examples{
 #Example: Nested contours of mixture of three tri-variate normal densities
 nmix3 <- function(x, y, m, s) {
-	0.4 * dnorm(x, m, s) * dnorm(y, m, s)  +
-		0.3 * dnorm(x, -m, s) * dnorm(y, -m, s)  +
-		0.3 * dnorm(x, m, s) * dnorm(y, -1.5 * m, s) 
+    0.4 * dnorm(x, m, s) * dnorm(y, m, s)  +
+        0.3 * dnorm(x, -m, s) * dnorm(y, -m, s)  +
+        0.3 * dnorm(x, m, s) * dnorm(y, -1.5 * m, s) 
 }
 f <- function(x,y) nmix3(x,y,.5,.5)
 

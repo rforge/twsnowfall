@@ -22,10 +22,10 @@ must compare only against times with time zone GMT. }
 \examples{
 # this example was constructed for system time zone beeing "CET"
 tmpd<- c("2010-03-28 00:00:00"
-	,"2010-03-28 01:00:00"
-	,"2010-03-28 02:00:00"
-	,"2010-03-28 03:00:00"
-	,"2010-03-28 04:00:00"
+    ,"2010-03-28 01:00:00"
+    ,"2010-03-28 02:00:00"
+    ,"2010-03-28 03:00:00"
+    ,"2010-03-28 04:00:00"
 )
 # note the shift from 1 to 3 in the first next line
 (tmp.cet2 <- strptimeNoSummer(tmpd))

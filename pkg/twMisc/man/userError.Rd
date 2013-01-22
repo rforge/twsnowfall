@@ -20,23 +20,23 @@ to handle different error sources}
 \seealso{\link{twMisc}}
 \examples{
 res <- tryCatch({
-		#stop( userError("My error message") )
-		stop( userError(class="argsError", "My error message") )
-	}
-	,argsError=function(e){ 
-		cat("Handle my very specialized error of class argsError/userError/error\n"); 
-		print(e)
-	}
-	,userError=function(e){ 
-		cat("Handle my specialized errors of class userError/error\n"); 
-		print(e)
-	}
-	,error=function(e){
-		cat("Handle all the other errors\n")
-		print(e)
-	}
-	,finally=function(){
-		cat("Finally clear up.")
-	}
+        #stop( userError("My error message") )
+        stop( userError(class="argsError", "My error message") )
+    }
+    ,argsError=function(e){ 
+        cat("Handle my very specialized error of class argsError/userError/error\n"); 
+        print(e)
+    }
+    ,userError=function(e){ 
+        cat("Handle my specialized errors of class userError/error\n"); 
+        print(e)
+    }
+    ,error=function(e){
+        cat("Handle all the other errors\n")
+        print(e)
+    }
+    ,finally=function(){
+        cat("Finally clear up.")
+    }
 ) # end of tryCatch
 }
