@@ -1,8 +1,13 @@
 pngBitmap <- function(
-    ### opening a png Device, either by \code{\link{png}} using a graphics windows or \code{\link{bitmap}} using ghostscript
+    ### savely opening a png Device
     fileName    ##<< string scalar: the output file name
     ,...        ##<< further arguments to png or bitmap
 ){
+    ##details<<
+    ## On unix systems without X11 \code{\link{png}} using a graphics window fails, 
+    ## while on Windows systems \code{\link{bitmap}} using possibly missing ghostscript fails.
+    ## \cr pngBitmap tries both approaches.
+    ##
     res <- suppressWarnings(try( png(fileName,...), silent=TRUE ))
     if( inherits(res, "try-error") ){
         bitmap(fileName,...)
