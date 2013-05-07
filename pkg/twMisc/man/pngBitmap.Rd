@@ -9,7 +9,8 @@
 }
 \details{On unix systems without X11 \code{\link{png}} using a graphics window fails, 
 while on Windows systems \code{\link{bitmap}} using possibly missing ghostscript fails.
-\cr pngBitmap tries both approaches.
+
+\code{pngBitmap} tries both approaches.
 }
 
 

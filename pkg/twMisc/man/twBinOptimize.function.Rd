@@ -15,11 +15,13 @@
   \item{showiter}{Boolean flag indicating whether the algorithm state should be printed at each iteration. Defaults to FALSE.}
 }
 \details{This function can be applied similar to \code{\link{optimize}} for cases, where the argument
-to be optimized is an index instead of a contnuous variable. 
+to be optimized is an index instead of a continuous variable. 
 A binary search over the index is performed.
-\cr The function \code{x} must be monotonic. If it is not strictly monotonic the returned
-index (\code{$where}) can be any of the indices with equal values. 
-\cr The code is based on binsearch of the gtools package. In difference to the original code, 
+
+The function \code{x} must be monotonic. If it is not strictly monotonic the returned
+index (\code{$where}) can be any of the indices with equal values.
+
+The code is based on binsearch of the gtools package. In difference to the original code, 
 it returns always only one best estimate.}
 \value{A list containing:
 \item{call}{How the function was called.}
