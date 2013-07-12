@@ -6,7 +6,7 @@ twResultFilename <- function(
 	,ext=".RData"	##<< file extension
 ){
 	if( 0 < length(iproc))	
-		file.path(dirname(paramFilename),paste(prefix,twStripFileExt(basename(paramFilename)),"_",iproc,ext,sep=""))
+		file.path(dirname(paramFilename),paste(prefix,twMisc::twStripFileExt(basename(paramFilename)),"_",iproc,ext,sep=""))
 	else
-		file.path(dirname(paramFilename),paste(prefix,twStripFileExt(basename(paramFilename)),ext,sep=""))
+		file.path(dirname(paramFilename),paste(prefix,twMisc::twStripFileExt(basename(paramFilename)),ext,sep=""))
 }

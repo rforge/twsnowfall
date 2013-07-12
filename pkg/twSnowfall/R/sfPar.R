@@ -16,7 +16,7 @@
 		cl = c( list(fList[[index]]), sfParArgsList, list(...) )
 		return( eval( as.call(cl) ) )
 	} 
-	traceback.curr()
+	twMisc::traceback.curr()
 	str(sfParArgsList)
 	stop(".sfParInternal: evaluated argsList must be a list")
 }
