@@ -8,7 +8,8 @@ checkInterval <- function(
     ##seealso<< \code{\link{twMisc}} \code{\link{checkMagnitude}}
     ##details<< 
     ## all parameters will be recycled int the comparison
-    ## targetMin and targetMax default to two p of sided 95% confidence interval 
+    ## targetMin and targetMax default to two p of sided 95% confidence interval
+    if( !require(RUnit) ) stop("checkInterval: library RUnit must be loaded")
     checkTrue( all((current >= targetMin) && (current <= targetMax)), ... )
 }
 
@@ -23,6 +24,7 @@ checkMagnitude <- function(
     ##seealso<< \code{\link{twMisc}} \code{\link{checkInterval}}
     ##details<< 
     ## in range \code{10^{ log10(current)+-orderOfMagnitudes } }
+    if( !require(RUnit) ) stop("checkMagnitude: library RUnit must be loaded")
     .range <- 10^t( sapply(target, function(par){ log10(par)+orderOfMagnitudes*c(-1,+1) }))
     checkInterval(current,.range[,1],.range[,2],...)
     ### TRUE or error

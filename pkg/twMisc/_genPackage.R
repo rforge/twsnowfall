@@ -8,12 +8,12 @@ pkg<-"twMisc"
     # usually done on startup library(MyPackage)
     
     # this code uses several packages that need to be installed once
-    # install.packages(c("RUnit","inlinedocs","R.methodsS3", "abind","twMisc"), repos = c("http://R-Forge.R-project.org","http://cran.rakanu.com/"), dep = TRUE)
+    # install.packages(c("RUnit","inlinedocs","R.methodsS3", "abind::abind","twMisc"), repos = c("http://R-Forge.R-project.org","http://cran.rakanu.com/"), dep = TRUE)
     # in case that you use not the current R-version, you need to download the sources tarball from https://r-forge.r-project.org/R/?group_id=887
     #   upack the sources, and issue from a shell from the folder above extracted folder twMisc "R CMD INSTALL twMisc"
     
     library(RUnit)
-    library(abind)
+    library(abind::abind)
     library(R.methodsS3)
     library(debug)
     

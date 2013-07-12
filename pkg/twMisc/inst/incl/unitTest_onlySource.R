@@ -124,7 +124,7 @@ tmp.f <- function(){
     twUtest("twMisc",unitname=twUtest)
 }
 
-setMethodS3("as.data.frame", "RUnitTestData", function(
+R.methodsS3::setMethodS3("as.data.frame", "RUnitTestData", function(
         ### extract information from RUnit Testresult return value
         x, row.names, optional, ...
 ){

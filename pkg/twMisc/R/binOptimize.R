@@ -1,6 +1,6 @@
 #twUtest(twBinOptimize)
 
-setMethodS3("twBinOptimize","numeric", function( 
+R.methodsS3::setMethodS3("twBinOptimize","numeric", function( 
     ### Finding the index of a sorted numeric vector whose element is closest to target. 
     x           ##<< numeric vector to be optimized. The term abs(x[i])-target) is minimized.
     ,target=0   ##<< Target value for \code{x}. Defaults to 0.
@@ -170,7 +170,7 @@ attr(twBinOptimize.numeric,"ex") <- function(){
 
 
 
-setMethodS3("twBinOptimize","function", function( 
+R.methodsS3::setMethodS3("twBinOptimize","function", function( 
         ### Optimizing a function where first argument is an index. 
         x           ##<< the monotonic vectorized function to be optimized. The term abs(x(i,...)-target) is minimized.
         ,target=0   ##<< Target value for \code{x}. Defaults to 0.

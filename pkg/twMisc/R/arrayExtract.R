@@ -62,7 +62,7 @@ attr(twExtractDim,"ex") <- function(){
     
     # list all subarrays of last dimension
     (tmp3 <- twListArrDim(A))
-    identical( structure(abind(tmp3,rev.along=0), dimnames=NULL), A )
+    identical( structure(abind::abind(tmp3,rev.along=0), dimnames=NULL), A )
     
     # list all subarrays of second dimension
     (tmp4 <- twListArrDim(A,2))
@@ -100,7 +100,7 @@ twExtractFromLastDims <- function(
 }
 attr(twExtractFromLastDims,"ex") <- function(){
     (A <- matrix(1:6, ncol=2))
-    (Aext <- abind( lapply(1:4, function(i){(i)/10+A}), along=0 ))
+    (Aext <- abind::abind( lapply(1:4, function(i){(i)/10+A}), along=0 ))
     # Note that the second and third dimension of Aext correspond to A 
     
     # Now we whish to extract from Aext based on 
@@ -126,7 +126,7 @@ twStackArrayDim <- function(
     ##seealso<< 
     ## \code{\link{twExtractDim}}, \link{twMisc}
     xl <- twListArrDim(x,sourceDim)
-    xr <- abind( xl, along=destDim)
+    xr <- abind::abind( xl, along=destDim)
     dimnames(xr)[[destDim]] <- outer( dimnames(xl[[1]])[[destDim]], names(xl), paste, sep=sep  )
     xr
     ### Array of one dimension less than x.

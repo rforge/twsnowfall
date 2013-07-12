@@ -14,7 +14,7 @@
   \item{\dots}{further arguments passed to checkTrue}
 }
 \details{all parameters will be recycled int the comparison
-targetMin and targetMax default to two p of sided 95\% confidence interval }
+targetMin and targetMax default to two p of sided 95\% confidence interval}
 
 
 \author{Thomas Wutzler}

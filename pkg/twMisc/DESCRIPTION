@@ -5,7 +5,7 @@ Date: 2013-01-22
 Author: Thomas Wutzler
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: utilities used across several other packages of tw
-Depends: RUnit, R.methodsS3, abind
-Suggests: inlinedocs,debug
+Imports: R.methodsS3, abind
+Suggests: inlinedocs,debug,RUnit
 License: Apache License (== 2.0)
 LazyLoad: yes

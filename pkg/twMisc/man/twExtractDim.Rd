@@ -45,7 +45,7 @@ identical( tmp2, A[,2,] )
 
 # list all subarrays of last dimension
 (tmp3 <- twListArrDim(A))
-identical( structure(abind(tmp3,rev.along=0), dimnames=NULL), A )
+identical( structure(abind::abind(tmp3,rev.along=0), dimnames=NULL), A )
 
 # list all subarrays of second dimension
 (tmp4 <- twListArrDim(A,2))

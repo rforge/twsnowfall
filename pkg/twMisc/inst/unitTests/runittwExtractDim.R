@@ -1,7 +1,7 @@
 test.one <- function(){
     A0 <- matrix(1:8,ncol=2) 
-    A <- abind( lapply(1:4, function(i){(i)*10+A0}), rev.along=0 )
-    A3 <- abind( lapply(1:3, function(i){(i)*100+A}), rev.along=0 )
+    A <- abind::abind( lapply(1:4, function(i){(i)*10+A0}), rev.along=0 )
+    A3 <- abind::abind( lapply(1:3, function(i){(i)*100+A}), rev.along=0 )
     (res <- twExtractDim(A,2) ); 
     checkEquals( A[,,2], res, check.attributes = FALSE )
     #mtrace(twExtractDim)
@@ -28,7 +28,7 @@ test.one <- function(){
 ztest.extractLastDims <- function(){
     # example of extracting from a matrix 
     (A <- matrix(1:6, ncol=2))
-    (Aext <- abind( lapply(1:4, function(i){(i)/10+A}), along=0 ))
+    (Aext <- abind::abind( lapply(1:4, function(i){(i)/10+A}), along=0 ))
     # Note that the second and third dimension of Aext correspond to A 
     
     # Now we whish to extract from Aext based on 

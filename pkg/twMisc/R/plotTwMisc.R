@@ -138,7 +138,7 @@ twApply2DMesh <- function(
     ### }
 }
 
-setMethodS3("plot","twApply2DMesh", function( 
+R.methodsS3::setMethodS3("plot","twApply2DMesh", function( 
     ### Creating an image or contour plot of a three-dimensional array.
     x                           ##<< object of class twApply2DMesh, a result of \code{\link{twApply2DMesh}}
     ,zlab=NULL                  ##<< label of the color key

@@ -18,7 +18,7 @@
 \seealso{\link{twExtractDim}, \link{twMisc}}
 \examples{
 (A <- matrix(1:6, ncol=2))
-(Aext <- abind( lapply(1:4, function(i){(i)/10+A}), along=0 ))
+(Aext <- abind::abind( lapply(1:4, function(i){(i)/10+A}), along=0 ))
 # Note that the second and third dimension of Aext correspond to A 
 
 # Now we whish to extract from Aext based on 
