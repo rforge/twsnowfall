@@ -5,8 +5,9 @@ Date: 2010-11-26
 Author: Thomas Wutzler
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: utilities used across several other packages of tw. Uses rgl and misc3d packages and therefore not in twMisc
-Depends: twMisc, rgl, misc3d
-Suggests: inlinedocs,debug
-License: GPL-2
+Depends: twMisc, rgl
+Imports: misc3d
+Suggests: inlinedocs,debug,RUnit
+License: Apache License (== 2.0)
 LazyLoad: yes
 

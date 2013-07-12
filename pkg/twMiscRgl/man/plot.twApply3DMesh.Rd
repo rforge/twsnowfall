@@ -3,9 +3,11 @@
 \alias{twMiscRgl}
 \title{plot twApply3DMesh}
 \description{Creates an rgl scene with contours from calculated mesh.}
-\usage{
-\method{plot}{twApply3DMesh}(x, probs = NULL, levels = NULL, xlab = NULL, ylab = NULL, zlab = NULL, sample = x$sample, nDrawPoints = if (0 < length(sample)) nrow(sample) else 200, col = rev(heat.colors(100)), alo = 0.1, ahi = 0.5, cmap = heat.colors, box = TRUE, axes = TRUE, xlim = NULL, ylim = NULL, zlim = NULL, ...)
-}
+\usage{\method{plot}{twApply3DMesh}(x, probs = NULL, levels = NULL, xlab = NULL, 
+    ylab = NULL, zlab = NULL, sample = x$sample, nDrawPoints = if (0 < 
+        length(sample)) nrow(sample) else 200, col = rev(heat.colors(100)), 
+    alo = 0.1, ahi = 0.5, cmap = heat.colors, box = TRUE, axes = TRUE, 
+    xlim = NULL, ylim = NULL, zlim = NULL, ...)}
 \arguments{
   \item{x}{results of \code{\link{twApply3DMesh}}}
   \item{probs}{numeric vector: levels will be calculated with quantiles of the results of the sample}
@@ -44,9 +46,9 @@ If argument \code{level} is supplied, the argument \code{probs} is ignored.
 Together with a small \code{nDrawPoints} this saves calculation time.
 If a sample was provided the quantiles of surface levels are calculated from
 the sample, otherwise from the mesh x.}
-\value{If contourLevles was given then the 3D array of function evaluations }
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+
+\author{Thomas Wutzler}
 
 
 

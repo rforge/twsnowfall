@@ -2,9 +2,8 @@
 \alias{play3dRound}
 \title{play3dRound}
 \description{Spin one round.}
-\usage{
-play3dRound(duration = Inf, rpm = if (is.infinite(duration)) 60/secRound else 60/duration, ...)
-}
+\usage{play3dRound(duration = Inf, rpm = if (is.infinite(duration)) 60/secRound else 60/duration, 
+    ...)}
 \arguments{
   \item{duration}{duration of one round in seconds}
   \item{rpm}{rotations per minute}
@@ -13,7 +12,7 @@ play3dRound(duration = Inf, rpm = if (is.infinite(duration)) 60/secRound else 60
 
 
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

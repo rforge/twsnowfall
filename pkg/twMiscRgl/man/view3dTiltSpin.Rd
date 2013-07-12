@@ -2,9 +2,7 @@
 \alias{view3dTiltSpin}
 \title{view3dTiltSpin}
 \description{Adjusting the rgl viewing position by first tilting to front and then spinning to right.}
-\usage{
-view3dTiltSpin(spin = -20, tilt = 20)
-}
+\usage{view3dTiltSpin(spin = -20, tilt = 20)}
 \arguments{
   \item{spin}{spinning angle in degree}
   \item{tilt}{tilting angle in degree}
@@ -12,7 +10,7 @@ view3dTiltSpin(spin = -20, tilt = 20)
 
 \value{the tilted but not spinned userMatrix}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 

@@ -57,7 +57,7 @@ twApply3DMesh <- function(
 
 
 
-setMethodS3("plot","twApply3DMesh", function( 
+R.methodsS3::setMethodS3("plot","twApply3DMesh", function( 
 		### Creates an rgl scene with contours from calculated mesh.
 		x							##<< results of \code{\link{twApply3DMesh}}
 		, probs=NULL 				##<< numeric vector: levels will be calculated with quantiles of the results of the sample
@@ -128,7 +128,7 @@ setMethodS3("plot","twApply3DMesh", function(
 		if( 0 < nc){
 			col <- rev(cmap(length(levels)))
 			al <- seq(alo, ahi, len = length(levels))
-			contour3d(x$fval,levels,xyz$x,xyz$y,xyz$z,color=col,alpha=al, add=( nDrawPoints > 0 ), box = FALSE, axes = FALSE
+			misc3d::contour3d(x$fval,levels,xyz$x,xyz$y,xyz$z,color=col,alpha=al, add=( nDrawPoints > 0 ), box = FALSE, axes = FALSE
 				, ...
 			)
 		}

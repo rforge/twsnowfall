@@ -2,9 +2,10 @@
 \alias{twApply3DMesh}
 \title{twApply3DMesh}
 \description{Applying FUN over cube-grid of x,y,z values}
-\usage{
-twApply3DMesh(x, y = NULL, z = NULL, FUN = "+", argsFUN = list(), dims = 5, knotSpacing = c(quantile = "quantile", midquantile = "midquantile", all = "all", equidistant = "equidistant"), nSample = 0, label = deparse(substitute(FUN)), ...)
-}
+\usage{twApply3DMesh(x, y = NULL, z = NULL, FUN = "+", argsFUN = list(), 
+    dims = 5, knotSpacing = c(quantile = "quantile", midquantile = "midquantile", 
+        all = "all", equidistant = "equidistant"), nSample = 0, 
+    label = deparse(substitute(FUN)), ...)}
 \arguments{
   \item{x}{range of x,y and z ordinate see \code{\link{xyz.coords}}}
   \item{y}{
@@ -37,7 +38,7 @@ the edges are not representative of the sample, but the grid spans the full spac
 \item rangeOrig: list with items x, and y with the range of the original sample
 }}
 
-\author{Thomas Wutzler <twutz@bgc-jena.mpg.de>}
+\author{Thomas Wutzler}
 
 
 
