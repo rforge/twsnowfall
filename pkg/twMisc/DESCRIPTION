@@ -7,5 +7,5 @@ Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: utilities used across several other packages of tw
 Imports: R.methodsS3, abind
 Suggests: inlinedocs,debug,RUnit
-License: Apache License (== 2.0)
+License: LGPL (>= 2.1)
 LazyLoad: yes
