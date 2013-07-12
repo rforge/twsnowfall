@@ -8,6 +8,6 @@ Description: utilities used across several other packages of tw. Uses rgl and mi
 Depends: twMisc, rgl
 Imports: misc3d
 Suggests: inlinedocs,debug,RUnit
-License: Apache License (== 2.0)
+License: GPL-3
 LazyLoad: yes
 
