@@ -8,5 +8,5 @@ Description: snowfall extension for 1) extended load balancing and 2) dependenci
 Depends: snowfall
 Imports: twMisc
 Suggests: RUnit, debug
-License: Apache License (== 2.0)
+License: GPL-3
 LazyLoad: yes
