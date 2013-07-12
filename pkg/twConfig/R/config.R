@@ -117,7 +117,7 @@
 	eval( parse(text=names(tmp2$props$cid)[1]), env=envText1)
 }
 
-.testEnv <- function(
+.tmp.f <- function( # testEnv
 	### testing the principle of working with environments
 ){
 	fileName = "config.R"
@@ -496,7 +496,7 @@ loadConfig <- function(
 ){
 	cfg <- new("twConfig",...)
 	for( fName in fileNames ){
-		ext <- fileExt(fName)
+		ext <- .fileExt(fName)
 		cfg <- switch(ext
 			,R =  loadR(cfg,fName)
 			,yml = loadYaml(cfg,fName, isSubstBacktick = FALSE)
