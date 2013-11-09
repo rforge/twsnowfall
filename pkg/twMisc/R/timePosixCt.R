@@ -56,7 +56,7 @@ convertToWinterGMT <- function(
     ##seealso<< \code{\link{strptimeNoSummer}}, \link{twMisc}
     
     ##details<< 
-    ## R plots time zones with summer and winter time automatically swithing 
+    ## R plots time zones with summer and winter time automatically switching 
     ## to summer time. This is annoying in plots of hours across the time shift.
     ## Remedy is to express hours in GMT, which has no summer time.
     ## Note, however, that the time not comparable acress time zones any more and you

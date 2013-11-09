@@ -1,5 +1,8 @@
-
 syntax: regexp
 ^\.project$
 syntax: regexp
 ^\.RData$
+syntax: glob
+.svn
+syntax: regexp
+~$
