@@ -1,7 +1,7 @@
 Package: twMiscRgl
 Title: tw 3D utility functions   
 Version: 0.5-1
-Date: 2010-11-26
+Date: 2013-11-26
 Author: Thomas Wutzler
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
 Description: utilities used across several other packages of tw. Uses rgl and misc3d packages and therefore not in twMisc
@@ -10,4 +10,3 @@ Imports: misc3d
 Suggests: inlinedocs,debug,RUnit
 License: GPL-3
 LazyLoad: yes
-
