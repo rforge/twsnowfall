@@ -91,16 +91,16 @@ attr(.calcKnots,"ex") <- function(){
 }
 
 twApply2DMesh <- function(
-    ### Applying FUN over cube-grid of x,y,z values
-    x,y=NULL                    ##<< range of x and y ordinate see \code{\link{xy.coords}}
+    ### Applying FUN over x-y grid that is adapted to the density of x,y values. 
+    x,y=NULL                    ##<< range of x and y ordinate see \code{\link{xy.coords}}.
     ,FUN="+", argsFUN=list()    
-    ,dims=20                    ##<< integer vector of length 1 or 2: number of points
+    ,dims=20                    ##<< integer vector of length 1 or 2: number of points in each dimension
     ,knotSpacing=c(             ##<< method for calulating the knots 
         ##describe<<
         midquantile="midquantile"   ##<< \code{\link{cutQuantiles}} for midpoints of intervals holding about equal number of points, by excluding the edges the sample is represented better (default)  
         ,quantile="quantile"        ##<< \code{\link{cutQuantiles}} for breaks of intervals holding about equal number of points, includes edges
-        ,all="all"                  ##<< take all the provided xyz coordinates (overwrites nKnots)
-        ,equidistant="equidistant"  ##<< cover the range of dimension i by \code{nKnots} equidistant points
+        ,all="all"                  ##<< take all the provided xyz coordinates (overwrites dims)
+        ,equidistant="equidistant"  ##<< cover the range of dimension i by \code{dims} equidistant points
         ##end<<
         )
     ,label=deparse(substitute(FUN))
@@ -110,7 +110,10 @@ twApply2DMesh <- function(
     ##seealso<< \code{\link{twPairs}}, \link{twMisc}
     
     ##details<< 
-    ## note that knotSpacing default is "midquantile", so the grid does not cover the full range
+    ## Note that knotSpacing default is "midquantile",
+    ## so x and y do not specify the real coordinates (only with knotSpacing=all),
+    ## but \code{dims} coordinates are calculated based on the density 
+    ## Note that with "midquantile", the grid does not cover the full range
     ## but the grid spacing is representative of the marginal distributions
     if( length(dims)<2 ) dims <- rep(dims[1],2)
     xy <- xy.coords(x,y)
@@ -154,7 +157,7 @@ R.methodsS3::setMethodS3("plot","twApply2DMesh", function(
     twPlot2D(x$mesh,z=x$fval,zlab=zlab,xlim=xlim,ylim=ylim,...)
 })
 attr(plot.twApply2DMesh,"ex") <- function(){
-    #Example: Nested contours of mixture of three tri-variate normal densities
+    #Example: Nested contours of mixture of three bi-variate normal densities
     nmix3 <- function(x, y, m, s) {
         0.4 * dnorm(x, m, s) * dnorm(y, m, s)  +
             0.3 * dnorm(x, -m, s) * dnorm(y, -m, s)  +

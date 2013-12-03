@@ -117,12 +117,14 @@ plotArrowText <- function(
     text(x=Xf, y=Yf, labels=labels, cex=cex, col=col, adj=c(0,0))
 }
 attr(plotArrowText,"ex") <- function(){
-    plot(sin(1:10),type="l")
-    cat("\nClick on the plot four times to place labels and arrowheads.\n")
-    plotArrowText(c("Here is one label.","And another."),X=locator(2),
-            x=locator(2),cex=c(1.4,3),arrow.lwd=c(2,4),arrow.length=c(0.1,0.25),
-            border.lwd=c(1,3), fill=c("pink","white"), col=c("blue","green"),
-            adj=c(0,1),border.col=c("orange","purple"))    
+    if( FALSE ){
+        plot(sin(1:10),type="l")
+        cat("\nClick on the plot four times to place labels and arrowheads (2xtext and 2xanchor). \n")
+        tmp <- plotArrowText(c("Here is one label.","And another."),X=locator(2),
+                x=locator(2),cex=c(1.4,3),arrow.lwd=c(2,4),arrow.length=c(0.1,0.25),
+                border.lwd=c(1,3), fill=c("pink","white"), col=c("blue","green"),
+                adj=c(0,1),border.col=c("orange","purple"))
+    }
 }
 
 locateArrowText <- function(
@@ -130,7 +132,7 @@ locateArrowText <- function(
     nlab=1  
     ,digits=2
 ){
-    cat("\nClick on the plot twice locate arrowheads and text positions. Repeat this",nlab,"times\n")
+    cat("\nClick on the plot twice to locate first arrowheads and then text position. Repeat this",nlab,"times\n")
     pos <- locator(nlab*2)
     evens <- (1:nlab)*2
     odds <- evens-1
@@ -139,16 +141,15 @@ locateArrowText <- function(
     X <- pos$x[evens]
     Y <- pos$y[evens]
     ### string source code to be pasted into plotArrowText command 
+    cat("\nPaste the result (in clipboard) into your source code of plotArrowText.\n")
     copy2clip(paste("X=",deparse(round(X,digits),width=500),",Y=",deparse(round(Y,digits),width=500),",x=",deparse(round(x,digits),width=500),",y=",deparse(round(y,digits),width=500),sep=""))
 }
 attr(locateArrowText,"ex") <- function(){
-    if( FALSE ){    # not to be executed during package test
-        plot(sin(1:10),type="l")
-        copy2clip(locateArrowText(2))  # paste the result into the following command (second line) 
-        plotArrowText(c("Here is one label.","And another.")
-            ,X=c(6.45, 5.27),Y=c(0.81, -0.35),x=c(6.94, 5.73),y=c(0.61, -0.49)
-            ,adj=c(1,0))
-    }
+    plot(sin(1:10),type="l")
+    #copy2clip(locateArrowText(2))  # paste the result into the following command (second line) 
+    plotArrowText(c("Here is one label.","And another.")
+        ,X=c(3.48, 7.9),Y=c(0.59, -0.45),x=c(2.53, 6.22),y=c(0.5, -0.06)    # this line is pasted from clipboard
+        ,adj=c(1,0))
 }
 
 
