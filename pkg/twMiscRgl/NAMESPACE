@@ -1,6 +1,8 @@
 exportPattern("^[^\\.]")	#exports all variables that do not start with a period.
 
 
+importFrom("misc3d", contour3d )
+
 
 
 

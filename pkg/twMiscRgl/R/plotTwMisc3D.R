@@ -10,8 +10,8 @@ twApply3DMesh <- function(
 		,all="all"					##<< take all the provided xyz coordinates (overwrites nKnots)
 		,equidistant="equidistant")	##<< cover the range of dimension i by \code{nKnots} equidistant points
 		##end<<
-	,nSample=0			##<< number of points to sample from xyz in addition to grid
-	## Results will be provided in dataframe of four coloumns with attribute "sample".
+	,nSample=0			##<< number of points to sample from xyz in addition to grid.
+	    ## Results will be provided in dataframe of four coloumns with list entry "sample".
 	,label=deparse(substitute(FUN))	##<< label of the z-variable, stored in attribute label
 	,...				##<< further arguments passed to FUN
 ){
