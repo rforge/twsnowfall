@@ -17,7 +17,7 @@ sfFArgsApplyLB <- function(
 	snowfall:::checkFunction(F_ARGS)
 	addArgs = c(SFFARGSAPPLY_ADDARGS, list(...))
 	argfun <- function(i) c(F_ARGS(i), addArgs)
-	if (snowfall::sfParallel() && !debugSequential) 
+	if (sfParallel() && !debugSequential) 
 		return(dynamicClusterApply(snowfall::sfGetCluster(), F_APPLY, N_APPLYCASES, argfun ))
 	else {
 		lapply(1:N_APPLYCASES, function(i){
