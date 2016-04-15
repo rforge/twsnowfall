@@ -19,16 +19,16 @@
 
 \seealso{\code{\link{twMisc}} \code{\link{expect_isInInterval}}}
 \examples{
-if( requireNamespace("testthat") ){
+tmp <- if( requireNamespace("testthat") ){
     target=1e4
     expect_isOfMagnitude(1e4, 3e4)    #TRUE
-    try(expect_isOfMagnitude(1e4, 6e4))   #error
+    #try(expect_isOfMagnitude(1e4, 6e4))   #error
     expect_isOfMagnitude(1e4, 5000)   #TRUE
-    try(expect_isOfMagnitude(1e4, 2000))  #error
+    #try(expect_isOfMagnitude(1e4, 2000))  #error
     
     expect_isOfMagnitude(1e-4, 3e-4)  #TRUE
-    try(expect_isOfMagnitude(1e-4, 6e-4)) #error
+    #try(expect_isOfMagnitude(1e-4, 6e-4)) #error
     expect_isOfMagnitude(1e-4, 5e-5)  #TRUE
-    try(expect_isOfMagnitude(1e-4, 2e-5)) #error
+    #try(expect_isOfMagnitude(1e-4, 2e-5)) #error
 }
 }

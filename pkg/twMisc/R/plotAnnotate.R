@@ -156,7 +156,8 @@ attr(locateArrowText,"ex") <- function(){
         plot(sin(1:10),type="l")
         tmp <- locateArrowText(2)  # paste the result into the following command (second line) 
         plotArrowText(c("Here is one label.","And another.")
-            ,X=c(3.48, 7.9),Y=c(0.59, -0.45),x=c(2.53, 6.22),y=c(0.5, -0.06)    # this line is pasted from clipboard
+            # this line is pasted from clipboard
+            ,X=c(3.48, 7.9),Y=c(0.59, -0.45),x=c(2.53, 6.22),y=c(0.5, -0.06)    
             ,adj=c(1,0))
     }
 }

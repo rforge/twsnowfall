@@ -57,10 +57,15 @@ stopCustom <- function(
 }
 attr(stopCustom,"ex") <- function(){
     myLog <- function(x) {
-        if (x[1]=="uncaughtClass") stopCustom(c("uncaughtClass"),x)     # handled by "error"
-        if (x[1]=="uncaughtTwMiscSublass") stopCustom(c("uncaughtSubClass","twMiscError"),x)    # handled by "twMiscError"
-        if (!is.numeric(x))  stopCustom(c("invalidClass","twMiscError"), "myLog() needs numeric input, but input was",x)
-        if (any(x < 0)) stopCustom(c("invalidValue","twMiscError"), "myLog() needs positive inputs, but input was",x)
+        # handled by "error"
+        if (x[1]=="uncaughtClass") stopCustom(c("uncaughtClass"),x)     
+        # handled by "twMiscError"
+        if (x[1]=="uncaughtTwMiscSublass") stopCustom(c("uncaughtSubClass",
+                    "twMiscError"),x)    
+        if (!is.numeric(x))  stopCustom(c("invalidClass","twMiscError"), 
+                    "myLog() needs numeric input, but input was",x)
+        if (any(x < 0)) stopCustom(c("invalidValue","twMiscError"), 
+                    "myLog() needs positive inputs, but input was",x)
         log(x)
     }
     tryCatch(

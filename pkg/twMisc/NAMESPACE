@@ -5,6 +5,8 @@ S3method(plot,twApply2DMesh)
 #S3method(twBinOptimize,numeric)
 #S3method(twBinOptimize,"function")
 
+S3method(format, "POSIXctz")
+
 import(methods)
 import(parallel)
 importFrom(abind, abind, adrop)

@@ -19,7 +19,4 @@
 \seealso{\code{\link{twMisc}}}
 \examples{
 barplot(structure(rep(1,10),names=names(twXlscol07())),col=unlist(twXlscol07()), horiz=TRUE, las=1 )
-#twBlindCol <- list(blue="#0072B2",orange="#D55E00",yellow="#F0E442",lightblue="#56B4E9",lightorange="#E69F00"
-#,pink="#CC79A7",green="#2B9F78",black="#000000")
-#barplot(structure(rep(1,8),names=names(twBlindCol)),col=unlist(twBlindCol), horiz=TRUE, las=1 )
 }
