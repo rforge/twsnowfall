@@ -1,11 +1,14 @@
-\name{twLtys}
-\alias{twLtys}
-\docType{data}
-\title{twLtys}
-\description{A list of line types, that are well distinguishable.}
-\usage{twLtys}
-
-
-
-
-
+\name{twLtys}
+\alias{twLtys}
+\title{twLtys}
+\description{Returns a character vector line types, that are well distinguishable.}
+\usage{twLtys()}
+
+
+
+\author{Thomas Wutzler}
+
+
+
+\seealso{\code{\link{twXlscol07}}, \code{\link{twMisc}}}
+

@@ -129,27 +129,36 @@ attr(plotArrowText,"ex") <- function(){
 
 locateArrowText <- function(
     ### generate Arrow and Label positions source code for \code{\link{plotArrowText}}
-    nlab=1  
-    ,digits=2
+    nLabel=1        ##<< number of labels to generate
+    ,digits=2       ##<< number of digits to round position to
+    ,...            ##<< further arguments to \code{\link{write.table}}
 ){
-    cat("\nClick on the plot twice to locate first arrowheads and then text position. Repeat this",nlab,"times\n")
-    pos <- locator(nlab*2)
-    evens <- (1:nlab)*2
+    cat("\nClick on the plot twice to locate first arrowheads and then text center position. Repeat this",nLabel,"times\n")
+    pos <- locator(nLabel*2)
+    evens <- (1:nLabel)*2
     odds <- evens-1
     x <- pos$x[odds]
     y <- pos$y[odds]
     X <- pos$x[evens]
     Y <- pos$y[evens]
-    ### string source code to be pasted into plotArrowText command 
     cat("\nPaste the result (in clipboard) into your source code of plotArrowText.\n")
-    copy2clip(paste("X=",deparse(round(X,digits),width=500),",Y=",deparse(round(Y,digits),width=500),",x=",deparse(round(x,digits),width=500),",y=",deparse(round(y,digits),width=500),sep=""))
+    res <- paste("X=",deparse(round(X,digits),width.cutoff=500)
+            ,",Y=",deparse(round(Y,digits),width.cutoff=500)
+            ,",x=",deparse(round(x,digits),width.cutoff=500)
+            ,",y=",deparse(round(y,digits),width.cutoff=500),sep="")
+    write.table(res, "clipboard", sep = "\t", row.names = FALSE, col.names=FALSE, quote = FALSE, ...)
+    ##value<< string source code to be pasted into \code{\link{plotArrowText}} command. 
+    res
 }
 attr(locateArrowText,"ex") <- function(){
-    plot(sin(1:10),type="l")
-    #copy2clip(locateArrowText(2))  # paste the result into the following command (second line) 
-    plotArrowText(c("Here is one label.","And another.")
-        ,X=c(3.48, 7.9),Y=c(0.59, -0.45),x=c(2.53, 6.22),y=c(0.5, -0.06)    # this line is pasted from clipboard
-        ,adj=c(1,0))
+    isInteractiveAllowed <- FALSE
+    if( isInteractiveAllowed ){
+        plot(sin(1:10),type="l")
+        tmp <- locateArrowText(2)  # paste the result into the following command (second line) 
+        plotArrowText(c("Here is one label.","And another.")
+            ,X=c(3.48, 7.9),Y=c(0.59, -0.45),x=c(2.53, 6.22),y=c(0.5, -0.06)    # this line is pasted from clipboard
+            ,adj=c(1,0))
+    }
 }
 
 

@@ -1,9 +1,14 @@
 exportPattern("^[^\\.]")	#exports all variables that do not start with a period.
 
 S3method(plot,twApply2DMesh)
-S3method(twBinOptimize,numeric)
-S3method(twBinOptimize,"function")
 
+#S3method(twBinOptimize,numeric)
+#S3method(twBinOptimize,"function")
+
+import(methods)
+import(parallel)
+importFrom(abind, abind, adrop)
+importFrom(R.methodsS3, setMethodS3) 
 
 
 

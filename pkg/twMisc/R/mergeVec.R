@@ -8,7 +8,7 @@ twMergeSequences <- function(
         ,slice="slice"      ##<< slices of the sequences occur distributed across resulting sequence
         ##end<<
     ) 
-    ,nInSlice=4     ##<< length of a slice for mergeMethod slice
+    ,nInSlice=min(4L,nItem)  ##<< integer: length of a slice for mergeMethod slice
 ){
     ##seealso<< \link{twMisc}
     

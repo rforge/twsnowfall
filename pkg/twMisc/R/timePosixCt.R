@@ -1,7 +1,24 @@
+setSessionCETWintertime <- function(
+### switches session to Central European time, without daylight saving times (DTS)
+){
+    ##details<< 
+    ## Often, logger data is recorded without notion of daylight time savings.
+    ## When reading csv-files, or querying DATETIME database columns, the dates get converted
+    ## to POSIXct using sessions time zone. If this is set to CET, then there are problems:
+    ## The summer times are one hour off from the logger
+    ## If a invalid time is encountered (lost hour during swith to summer time) then all 
+    ## times are reset to midnight.
+    ##
+    ## So set session time zone to west african time (WAT, Africa/Kinshasa), that corresponds
+    ## to CET but does not observe DTS.
+    Sys.setenv(TZ='Africa/Kinshasa')
+}
+
+
 strptimeNoSummer <- function(
-    ### Parse time given as character with ignoring daylight savings.
+    ### deprecated: Parse time given as character with ignoring daylight savings.
     x       ##<< character vector holing the times
-    ,format='%Y-%m-%d %H:%M:%S'     ##<< format argument to \code{\link{strptime}} such as \code{format="%d.%m.%y %H:%M"}
+    ,format                         ##<< format argument to \code{\link{strptime}} such as \code{format="%d.%m.%y %H:%M"}
     , hourOffset=-1                 ##<< offset of measurement time zone from UTC in hours
     , tz="CET"                      ##<< time zone attribute for printing
     , ...                   ##<< futher arguments to \code{\link{strptime}} such as \code{format="%d.%m.%y %H:%M"}
@@ -18,6 +35,10 @@ strptimeNoSummer <- function(
     ##details<< 
     ## The String is parsed using time zone UTC, where not daylight shifts occur. 
     ## Next the hour offset is added, and the tzone attribute is changed.
+    ##
+    ## Better uses a corresponding time zone withotu DTS (e.g. 'Etc/GMT-1' instead of CET)
+    ## (see example)
+    if( missing(format) ) format<-'%Y-%m-%d %H:%M:%S'	# cannot put to default argument, because %sign in Rd
     tmp.UTC <- as.POSIXct(strptime(x,format=format,tz="UTC",...))
     tmp.cet <- tmp.UTC + 3600*hourOffset
     attr(tmp.cet,"tzone") <- tz
@@ -33,6 +54,11 @@ attr(strptimeNoSummer,"ex") <- function(){
         ,"2010-03-28 04:00:00"
     )
     
+    # recommended solution: parse in UTC or 'Etc/GMT-1'
+    (tmp.GMT1 <- as.POSIXct(strptime(tmpd,'%Y-%m-%d %H:%M:%S',tz="Etc/GMT-1")))
+    plot(seq_along(tmp.GMT1) ~ tmp.GMT1)
+    
+    
     # problems with daylight savings
     # R automatically switches between CET and CEST 
     (tmp.cet <- as.POSIXct(strptime(tmpd,'%Y-%m-%d %H:%M:%S',tz="CET")))
@@ -43,10 +69,6 @@ attr(strptimeNoSummer,"ex") <- function(){
     plot(seq_along(tmp.cet2) ~ tmp.cet2)
     diff(tmp.cet2)
     
-    # if time bias is not an issue, one may parse in UTC 
-    (tmp.UTC <- as.POSIXct(strptime(tmpd,'%Y-%m-%d %H:%M:%S',tz="UTC")))
-    plot(seq_along(tmp.UTC) ~ tmp.UTC)
-    
     # or use the time offset field in POSIXlt
     tmp.cetz <- as.POSIXct(strptime(paste0(tmpd," +0100"),'%Y-%m-%d %H:%M:%S  %z'), tz="CET")
     #tmp.cetz <- as.POSIXct(strptime(paste0(tmpd," +0100"),'%Y-%m-%d %H:%M:%S  %z'))
@@ -55,7 +77,7 @@ attr(strptimeNoSummer,"ex") <- function(){
 }
 
 convertToWinterUTC <- function(
-    ### convert series to winter time, i.e. expressed as GMT
+    ### deprecated: convert series to winter time, i.e. expressed as GMT
     x               ##<< POSIXct vector using summer time
     ,hourOffset=-1  ##<< offset of the original time zone winter time
 ){
@@ -66,7 +88,9 @@ convertToWinterUTC <- function(
     ## to summer time. This is annoying in plots of hours across the time shift.
     ## Remedy is to express hours in GMT, which has no summer time.
     ## Note, however, that the time not comparable acress time zones any more and you
-    ## must compare only against times with time zone GMT. 
+    ## must compare only against times with time zone GMT.
+    ##
+    ## Better switch session to a time zone without DTS (see \code{\link{setSessionCETWintertime}})
     attr(x,"tzone") <- "GMT"
     x - 3600*hourOffset
     ### POSIXct vector in winter time (expressed as GMT, so actually offset to absolute world time)
@@ -109,73 +133,18 @@ attr(roundSec, "ex") <- function(){
     roundSec(testTimes, sec=5*60)
 }
 
-tmp.f <- function(){
+.tmp.f <- function(){
     now = Sys.time()
     seq(0,60*24-3, by=3)         # all three minutes intervals
     (roundSec( as.POSIXct("2014-10-15 15:10:00") ) - as.POSIXct("2014-10-15 15:10:00")) / 60
 }
 
 
-readCsvWintertime <- function(
-        ### Read a data loggger .dat file into a data-frame		
-        fName					##<< scalar string: file name
-        ,...					##<< further arguments to read.csv
-        ,colClasses = NA	##<< see \code{link{read.table}}
-        ,colsTimeStamp=1		##<< integer vector: colums with time stamp column (will be set to POSIXct
-        ,formatTS="%Y-%m-%d %H:%M:%S"	##<< format of the timestamp columns, see \code{\link{strptime}}, e.g. 
-        ,tz="CET"				##<< specify a time zone when converting to POSIXct, default: current local e.g CET, UTC
-        ,offsetUTC="+0100"	    ##<< String: Signed offset in hours and minutes from UTC
-            ##<<, so -0800 is 8 hours behind UTC. see \code{\link{strptime}} 
-
-){
-    ##details<< 
-    ## Assumes that there
-    setClass("POXIXctz", where=globalenv())
-    setAs("character","myDate", function(from) as.POSIXct(from, format=formatTS, tz=tz), where=globalenv() )
-    fileInfo <- readLines(fName, n=nRowsFileInfo )
-    colInfo <- read.table(fName, header=TRUE, skip=nRowsFileInfo, nrows=max(1,nRowsColInfo), sep=sep, na.strings=na.strings)
-    colClasses[colsTimeStamp] <- "myDate"
-    rawData <- read.table(fName, header=FALSE, skip=nRowsFileInfo+1+nRowsColInfo, sep=sep, na.strings=na.strings, ...
-            ,colClasses=colClasses)
-    colnames(rawData) <- colnames(colInfo)	
-    #plot( CO2_Avg ~ TIMESTAMP, data=rawData )
-    attr(rawData,"fileInfo") <- fileInfo
-    attr(rawData,"colInfo") <- colInfo
-    rawData
-}
-attr(readCsvWintertime,"ex") <- function(){
-    # see http://pitfalls-r-us.blogspot.de/2012/07/time-zones.html
-    tmpd<- c("2010-03-28 00:00:00"
-            ,"2010-03-28 01:00:00"
-            ,"2010-03-28 02:00:00"
-            ,"2010-03-28 03:00:00"
-            ,"2010-03-28 04:00:00"
-    )
-    # third value is not defined when swithing tu CEST
-    tmp.cetz <- as.POSIXct(tmp.lt <- strptime(paste0(tmpd," +0100"),'%Y-%m-%d %H:%M:%S  %z'), tz="CET")
-    tmp.lt$gmtoff
-    as.POSIXlt(tmp.cetz)$gmtoff
-    fName <- tempfile("readCsvWintertime.csv")
-    #fName <- "tmp/readCsvWintertime.csv"
-    tmp.cetz2 <- structure(tmp.cetz, tzone="UTC")
-    
-    write.csv(data.frame(timestamp=tmp.cetz), fName )
-    
-    
-    
-    ds <- read.csv( file="tmp/timestamps1.csv",as.is=TRUE)
-    ds$ts2 <- strptime( format="%d-%m-%Y %H:%M:%S %z",
-                    ds$timestamp, tz="UTC" )
-    fName <- system.file("genData/chamberLoggerEx1_short.dat", package = "RespChamberProc")
-    if( nzchar(fName) ){
-        ds <- readDat(fName)
-    }
-}
 
 as.POSIXctz <- function(
     ### convert to POSIXctz
-    x
-    ,...
+    x           ##<< object that can be coerced by \code{\link{as.POSIXct}}
+    ,...        ##<< further arguments to \code{\link{as.POSIXct}}
 ){
     ##details<< 
     ## calls \code{\link{as.POSIXct}} and prepends the "POSIXctz" attribute 
@@ -185,9 +154,12 @@ as.POSIXctz <- function(
 }
 
 setClass("POSIXctz")
-setAs("character","POSIXctz", function(from){
-            as.POSIXctz(from, format="%Y-%m-%d %H:%M:%S %z")
-        }  )
+setAs("character","POSIXctz", function(
+        ### convert character to POSIXctz
+        from    ##<< object passed to \code{\link{as.POSIXctz}}
+    ){
+        as.POSIXctz(from, format="%Y-%m-%d %H:%M:%S %z")
+    }  )
 
 
 format.POSIXctz <- function(

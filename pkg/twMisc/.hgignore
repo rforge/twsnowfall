@@ -6,3 +6,6 @@ syntax: glob
 .svn
 syntax: regexp
 ~$
+
+syntax: regexp
+^tmp$

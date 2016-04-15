@@ -8,9 +8,9 @@
 #plotting styles by different time series of experiments
 
 seqRange <- function(
-    ### Create a sequence based on a range c(min,max)
-    range   ##<< the range for the sequence
-    ,...    ##<< further arguments to seq, defaults to length.out=50
+        ### Create a sequence based on a range c(min,max)
+        range   ##<< the range for the sequence
+        ,...    ##<< further arguments to seq, defaults to length.out=50
 ){
     if( 0==length(list(...)))
         seq( range[1],range[2], length.out=50 )
@@ -18,60 +18,12 @@ seqRange <- function(
         seq( range[1],range[2], ...)
 }
 
-fColConv <- function(
-        ### color encoding to avoid symbol font, which gives problems in pdf-Output   
-    cols
-        ###  list of colors
-){
-    ###details<< applying fColConv causes problems in emf output
-    if( is.list(cols))
-        lapply( cols, function(cols){ rgb(t(col2rgb((cols)))/255, alpha=0.99)} )
-    else
-        rgb(t(col2rgb((cols)))/255, alpha=0.99)
-}
-
-### A list of colours corresponding to Excel, that are well distinguishable
-twXlscol <- fColConv( list( blue="#000080", red="#800000", green="#008000", violet="#660066", brown="#666600", turquise="#006666", blueviolet="#330099", redviolet="#990033", greenbrown="#339900", redbrown="#993300", blueturquise="#003399", greenturquise="#009933" ))
-
-### 10 Colours from Excel2007 are quite colour-blind safe
-twXlscol07 <- list( blue="#4572A7", red="#AA4643", green="#89A54E", violet="#71588F"
-    , seablue="#4198AF", orange="#DB843D", lightblue="#93A9CF", pink="#D19392"
-    , lightgreen="#B9CD96", lightviolet="#A99BBD" )
-#barplot(structure(rep(1,10),names=names(twXlscol07)),col=unlist(twXlscol07), horiz=TRUE, las=1 )
-#twBlindCol <- list(blue="#0072B2",orange="#D55E00",yellow="#F0E442",lightblue="#56B4E9",lightorange="#E69F00"
-    #,pink="#CC79A7",green="#2B9F78",black="#000000")
-#barplot(structure(rep(1,8),names=names(twBlindCol)),col=unlist(twBlindCol), horiz=TRUE, las=1 )
-
-### A list of line types, that are well distinguishable.
-twLtys <- c("22", "44", "13", "1343", "73", "2262", "12223242", "F282", "F4448444", "224282F2", "F1")
-    
-#http://geography.uoregon.edu/datagraphics/color_scales.htm
-### green to magenta colorblind safe continuos scale
-twContCols16 <- c(
-    rgb(0,80,0, maxColorValue=255)
-    , rgb(0,134,0, maxColorValue=255)
-    , rgb(0,187,0, maxColorValue=255)
-    , rgb(0,241,0, maxColorValue=255)
-    , rgb(80,255,80, maxColorValue=255)
-    , rgb(134,255,134, maxColorValue=255)
-    , rgb(187,255,187, maxColorValue=255)
-    , rgb(255,255,255, maxColorValue=255)
-    , rgb(255,241,255, maxColorValue=255)
-    , rgb(255,187,255, maxColorValue=255)
-    , rgb(255,134,255, maxColorValue=255)
-    , rgb(255,80,255, maxColorValue=255)
-    , rgb(241,0,241, maxColorValue=255)
-    , rgb(187,0,187, maxColorValue=255)
-    , rgb(134,0,134, maxColorValue=255)
-    , rgb(80,0,80, maxColorValue=255)
-)
-
 
 
 capitalize <- function(
         ### "Mixed Case" Capitalizing
-    x
-        ### The string to capitalize
+        x
+### The string to capitalize
 ){
     ##<<details 
     ## toupper( every first letter of a word )
@@ -105,9 +57,9 @@ if( !exists("within")){
 }
 
 evalCommandArgs <- function(
-    ### evaluate args passed to a batch script 
-    args = commandArgs(TRUE)            ##<< the commands to be evaluated 
-    ,envir = new.env(parent=baseenv())  ##<< the environment where args should be evaluated
+        ### evaluate args passed to a batch script 
+        args = commandArgs(TRUE)            ##<< the commands to be evaluated 
+        ,envir = new.env(parent=baseenv())  ##<< the environment where args should be evaluated
 ){
     ##<<details R CMD BATCH --vanilla '--args i=1 n=8' testCommandArgs.R testCommandArgs.Rout
     for(i in seq( along.with=args)){
@@ -120,8 +72,8 @@ attr(evalCommandArgs,"ex") <- function(){
     system('Rscript -e "str(commandArgs(TRUE))" i=1 n=8')
     as.list(evalCommandArgs(args=c("i=1","n=8")))
     if( FALSE ){
-      # do not run automatically, as it depends on twMisc installed
-      system('Rscript -e "library(twMisc); str(as.list(evalCommandArgs())); ls()" i=1 n=8')
+        # do not run automatically, as it depends on twMisc installed
+        system('Rscript -e "library(twMisc); str(as.list(evalCommandArgs())); ls()" i=1 n=8')
     }
 }
 
@@ -132,11 +84,11 @@ attr(evalCommandArgs,"ex") <- function(){
 
 
 twWhichColsEqual <- function(
-    ### compares each column of X to column of Z and returns indices of equal columns   
-    X,  ##<< matrix
-    Z=matrix(rep(z,ncol(X)),nrow=length(z)),    
-    ### Matrix with same numer of rows. 
-    z=NA
+        ### compares each column of X to column of Z and returns indices of equal columns   
+        X,  ##<< matrix
+        Z=matrix(rep(z,ncol(X)),nrow=length(z)),    
+        ### Matrix with same numer of rows. 
+        z=NA
 ### alternatively, specify only one vector, which each row of X is compared against
 ){
     
@@ -158,21 +110,33 @@ twWhichColsEqual <- function(
         integer(0)
 } 
 
+whichColsEqualSumHeuristics <- function(
+        ### compares each column of X to column of Z and returns indices of equal columns (determined by same sum column sum)    
+        X,  ##<< matrix
+        Z   ##<< Matrix with same numer of rows, or a vector representing a single column that is compared to each column of X 
+){
+    sumsX <- colSums(X, na.rm=TRUE)
+    sumsZ <- if( is.array(Z) ) colSums(Z, na.rm=TRUE) else sum(Z, na.rm=TRUE)
+    which( sumsX == sumsZ )
+} 
+
+
+
 twStripFileExt <- function(
-    ### Remove the all the file extension, i.e. the last dot and suceeding characters.
-    filenames
+        ### Remove the all the file extension, i.e. the last dot and suceeding characters.
+        filenames
 ){
     ##seealso<< code{\link{fileExt}}, \link{twMisc}
     sub("[.][^.]*$", "", filenames, perl=TRUE)
 }
 
 fileExt <- function(
-    ### Return the file extension
-    filenames
+        ### Return the file extension
+        filenames
 ){
     ifelse( regexpr("\\.",filenames) != -1,
-        sub("(^.*[.])([^.]*)$", "\\2", filenames, perl=TRUE)
-        ,"")
+            sub("(^.*[.])([^.]*)$", "\\2", filenames, perl=TRUE)
+            ,"")
 }
 attr(fileExt,"ex") <- function(){
     ##seealso<< code{\link{fileExt}}, \link{twMisc}
@@ -186,9 +150,9 @@ attr(fileExt,"ex") <- function(){
 
 
 twLastN1 <- function(
-    ### last n components of vector x
-    x       ##<< vector
-    ,n=1    ##<< number of components from the end
+        ### last n components of vector x
+        x       ##<< vector
+        ,n=1    ##<< number of components from the end
 ){
     if( !is.finite(n) || (n<=0) ) return( x[FALSE] )
     if( n>=length(x)) return(x)
@@ -196,9 +160,9 @@ twLastN1 <- function(
 }
 
 twLastN21 <- function(
-    ### last n rows of matrix x
-    x       ##<< matrix
-    ,n=1    ##<< number of components from the end
+        ### last n rows of matrix x
+        x       ##<< matrix
+        ,n=1    ##<< number of components from the end
 ){
     if( !is.finite(n) || (n<=0) ) return( x[FALSE,,drop=FALSE] )
     if( n>=nrow(x)) return(x)
@@ -206,9 +170,9 @@ twLastN21 <- function(
 }
 
 twLastN22 <- function(
-    ### last n columns of matrix x
-    x       ##<< matrix
-    ,n=1    ##<< number of components from the end
+        ### last n columns of matrix x
+        x       ##<< matrix
+        ,n=1    ##<< number of components from the end
 ){
     if( !is.finite(n) || (n<=0) ) return( x[,FALSE,drop=FALSE] )
     if( n>=ncol(x)) return(x)
@@ -216,10 +180,10 @@ twLastN22 <- function(
 }
 
 twLogSumExp <- function(
-    ### calculates the log(sum(exp(x))) in numerically safer way
-    x   ##<< vector to be summed
-    ,shiftUpperBound=FALSE ##<< use this if x has a clear upper bound
-    ,shiftLowerBound=FALSE ##<< use this if x has a clear lower bound
+        ### calculates the log(sum(exp(x))) in numerically safer way
+        x   ##<< vector to be summed
+        ,shiftUpperBound=FALSE ##<< use this if x has a clear upper bound
+        ,shiftLowerBound=FALSE ##<< use this if x has a clear lower bound
 ){
     #sum(e^xi) = sum(e^(xi+a-a)) = sum(e^(xi-a) e^a) ) = e^a sum(e^(xi-a))
     #twUtestF(twLogSumExp)
@@ -237,33 +201,33 @@ twLogSumExp <- function(
 }
 
 twLogMeanExp <- function(
-    ### calculates the log(mean(exp(x))) in numerically safer way
-    x   ##<< vector for whose mean is to be caluclated
-    ,...    ##<< futher arguments to twLogSumExp 
+        ### calculates the log(mean(exp(x))) in numerically safer way
+        x   ##<< vector for whose mean is to be caluclated
+        ,...    ##<< futher arguments to twLogSumExp 
 ){
     #log(sum / n)
     twLogSumExp(x,...) - log(length(x))
 }
 
 twCloseDevs <- function(
-    ### Closes all windows with a device number unless those specified with parameter omit.
-    omit=c()    ### list of Devices not to close.
+        ### Closes all windows with a device number unless those specified with parameter omit.
+        omit=c()    ### list of Devices not to close.
 ){
     for( dev in dev.list()[ !(dev.list() %in% omit)] ) 
         dev.off(dev)
 }
 cutQuantiles <- function (
-    ### Cut a Numeric Variable into Intervals of about same number of observations.
-    x           ##<< numeric vector to classify into intervals 
-    , cuts      ##<< cut points 
-    , m = 150   ##<< desired minimum number of observations in a group 
-    , g         ##<< number of quantile groups 
-    , levels.mean = FALSE   ##<< set to TRUE to make the new categorical vector have levels attribute that is the group means of x instead of interval endpoint labels 
-    , digits    ##<< number of significant digits to use in constructing levels. Default is 3 (5 if levels.mean=TRUE) 
-    , minmax = TRUE ##<< if cuts is specified but min(x)<min(cuts) or max(x)>max(cuts), augments cuts to include min and max x
-    , oneval = TRUE ##<< if an interval contains only one unique value, the interval will be labeled with the formatted version of that value instead of the interval endpoints, unless oneval=FALSE
-    , onlycuts = FALSE  ##<< set to TRUE to only return the vector of computed cuts. This consists of the interior values plus outer ranges. 
-    , onlymeans = FALSE ##<< set to TRUE to only return the means of x within each group 
+        ### Cut a Numeric Variable into Intervals of about same number of observations.
+        x           ##<< numeric vector to classify into intervals 
+        , cuts      ##<< cut points 
+        , m = 150   ##<< desired minimum number of observations in a group 
+        , g         ##<< number of quantile groups 
+        , levels.mean = FALSE   ##<< set to TRUE to make the new categorical vector have levels attribute that is the group means of x instead of interval endpoint labels 
+        , digits    ##<< number of significant digits to use in constructing levels. Default is 3 (5 if levels.mean=TRUE) 
+        , minmax = TRUE ##<< if cuts is specified but min(x)<min(cuts) or max(x)>max(cuts), augments cuts to include min and max x
+        , oneval = TRUE ##<< if an interval contains only one unique value, the interval will be labeled with the formatted version of that value instead of the interval endpoints, unless oneval=FALSE
+        , onlycuts = FALSE  ##<< set to TRUE to only return the vector of computed cuts. This consists of the interior values plus outer ranges. 
+        , onlymeans = FALSE ##<< set to TRUE to only return the means of x within each group 
 ){
     ##details<< 
     ## copied from Hmisc:cutQuantiles to reduce package dependencies.
@@ -277,8 +241,8 @@ cutQuantiles <- function (
     min.dif.factor <- 1
     if (missing(digits)) 
         digits <- if (levels.mean) 
-                5
-            else 3
+                    5
+                else 3
     oldopt <- options(digits = digits)
     on.exit(options(oldopt))
     xlab <- attr(x, "label")
@@ -297,7 +261,7 @@ cutQuantiles <- function (
         y <- as.integer(ifelse(is.na(x), NA, 1))
         labs <- character(g)
         cuts <- approx(cum, xx, xout = (1:g) * nnm/g, method = "constant", 
-            rule = 2, f = 1)$y
+                rule = 2, f = 1)$y
         cuts[length(cuts)] <- max(xx)
         lower <- xx[1]
         upper <- 1e+45
@@ -305,24 +269,24 @@ cutQuantiles <- function (
         i <- 0
         for (j in 1:g) {
             cj <- if (method == 1 || j == 1) 
-                    cuts[j]
-                else {
-                    if (i == 0) 
-                        stop("program logic error")
-                    s <- if (is.na(lower)) 
-                            FALSE
-                        else xx >= lower
-                    cum.used <- if (all(s)) 
-                            0
-                        else max(cum[!s])
-                    if (j == m) 
-                        max(xx)
-                    else if (sum(s) < 2) 
-                        max(xx)
-                    else approx(cum[s] - cum.used, xx[s], xout = (nnm - 
-                                    cum.used)/(g - j + 1), method = "constant", 
-                            rule = 2, f = 1)$y
-                }
+                        cuts[j]
+                    else {
+                        if (i == 0) 
+                            stop("program logic error")
+                        s <- if (is.na(lower)) 
+                                    FALSE
+                                else xx >= lower
+                        cum.used <- if (all(s)) 
+                                    0
+                                else max(cum[!s])
+                        if (j == m) 
+                            max(xx)
+                        else if (sum(s) < 2) 
+                            max(xx)
+                        else approx(cum[s] - cum.used, xx[s], xout = (nnm - 
+                                                cum.used)/(g - j + 1), method = "constant", 
+                                    rule = 2, f = 1)$y
+                    }
             if (cj == upper) 
                 next
             i <- i + 1
@@ -330,8 +294,8 @@ cutQuantiles <- function (
             y[x >= (lower - min.dif.factor * min.dif)] <- i
             low[i] <- lower
             lower <- if (j == g) 
-                    upper
-                else min(xx[xx > upper])
+                        upper
+                    else min(xx[xx > upper])
             if (is.na(lower)) 
                 lower <- upper
             up[i] <- lower
@@ -352,14 +316,14 @@ cutQuantiles <- function (
         fup <- format(up)
         bb <- c(rep(")", i - 1), "]")
         labs <- ifelse(low == up | (oneval & !variation), flow, 
-            paste("[", flow, ",", fup, bb, sep = ""))
+                paste("[", flow, ",", fup, bb, sep = ""))
         ss <- y == 0 & !is.na(y)
         if (any(ss)) 
             stop(paste("categorization error in cutQuantiles.  Values of x not appearing in any interval:\n", 
-                    paste(format(x[ss], digits = 12), collapse = " "), 
-                    "\nLower endpoints:", paste(format(low, digits = 12), 
-                        collapse = " "), "\nUpper endpoints:", paste(format(up, 
-                            digits = 12), collapse = " ")))
+                            paste(format(x[ss], digits = 12), collapse = " "), 
+                            "\nLower endpoints:", paste(format(low, digits = 12), 
+                                    collapse = " "), "\nUpper endpoints:", paste(format(up, 
+                                            digits = 12), collapse = " ")))
         y <- structure(y, class = "factor", levels = labs)
     }
     else {
@@ -379,13 +343,13 @@ cutQuantiles <- function (
             brack[l - 1] <- "]"
             fmt <- format(cuts)
             labs <- paste("[", fmt[1:(l - 1)], ",", fmt[2:l], 
-                brack, sep = "")
+                    brack, sep = "")
             if (oneval) {
                 nu <- table(cut(x.unique, k2))
                 if (length(nu) != length(levels(y))) 
                     stop("program logic error")
                 levels(y) <- ifelse(nu == 1, c(fmt[1:(l - 2)], 
-                        fmt[l]), labs)
+                                fmt[l]), labs)
             }
             else levels(y) <- labs
         }
@@ -413,12 +377,12 @@ attr(cutQuantiles,"ex") <- function(){
 .inside <- function (x, interval){  x >= interval[1] & x <= interval[2] }
 
 twRescale <- function (
-    ### Rescale numeric vector to have specified minimum and maximum. 
-    x               ##<< data to rescale
-    ,to = c(0, 1)   ##<< range to scale to
-    ,from =         ##<< range to scale from, defaults to range of data
-        range(x[is.finite(x)], na.rm = TRUE)    
-    ,clip = TRUE    ##<< should values be clipped to specified range?
+        ### Rescale numeric vector to have specified minimum and maximum. 
+        x               ##<< data to rescale
+        ,to = c(0, 1)   ##<< range to scale to
+        ,from =         ##<< range to scale from, defaults to range of data
+                range(x[is.finite(x)], na.rm = TRUE)    
+        ,clip = TRUE    ##<< should values be clipped to specified range?
 ){
     ##details<<
     ## adapted from package ggplot2 to avoid package redundancies
@@ -448,9 +412,9 @@ twRescale <- function (
 
 
 loadAssign <- function(
-    ### Load a RData file and return the value of the first entry
-    ... ##<< arguments to \code{\link{load}}
-    ##seealso<< \code{\link{seqRange}}, \link{twMisc}
+        ### Load a RData file and return the value of the first entry
+        ... ##<< arguments to \code{\link{load}}
+##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
     ##details<<
     ## The load function is evaluated in a local environment.
@@ -469,10 +433,10 @@ attr(loadAssign,"ex") <- function(){
 }
 
 reorderFactor <- function(
-    ### reorder the factor levels in a factor
-    x           ##<< factor to reorder
-    , newLevels ##<< character vector: levels in new order
-    ##seealso<< \code{\link{seqRange}}, \link{twMisc}
+        ### reorder the factor levels in a factor
+        x           ##<< factor to reorder
+        , newLevels ##<< character vector: levels in new order
+##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
     levelMap <- match(levels(x), as.factor(newLevels))
     factor( newLevels[levelMap[x]], levels=newLevels)   
@@ -491,14 +455,14 @@ attr(reorderFactor,"ex") <- function(){
 
 
 formatSig <- function(
-    ### format real values to significant number of digits
-    x, digits=3
-    ##seealso<< \code{\link{seqRange}}, \link{twMisc}
+        ### format real values to significant number of digits
+        x, digits=3
+##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
     #l10x <- log10(x)
     ifelse( x < 10^(digits-1) #l10x < digits-1
-        , formatC(x,digits=digits,format="fg",flag="#")
-        , as.character( signif(x,digits) ) 
+            , formatC(x,digits=digits,format="fg",flag="#")
+            , as.character( signif(x,digits) ) 
     )
     ### character vector with number rounded to significant digits and output including trailing zeros
 }
@@ -509,9 +473,9 @@ attr(formatSig,"ex") <- function(){
 }
 
 "vectorElements<-" <- function(
-    ### adds or replaces value in vector
-    vec         ##<< a named vector
-    ,value      ##<< a named vector of same mode as vec
+        ### adds or replaces value in vector
+        vec         ##<< a named vector
+        ,value      ##<< a named vector of same mode as vec
 ){
     ##seealso<< \code{\link{seqRange}}, \link{twMisc}
     
@@ -558,10 +522,10 @@ attributes(.tmp )$ex <- function(){
 
 
 dfcol <- function(
-    ### extract column from a data.frame and reassing names
-    x           ##<< the dataFrame
-    ,colName    ##<< the column name
-    ##seealso<< \code{\link{seqRange}}, \link{twMisc}
+        ### extract column from a data.frame and reassing names
+        x           ##<< the dataFrame
+        ,colName    ##<< the column name
+##seealso<< \code{\link{seqRange}}, \link{twMisc}
 ){
     structure( x[,colName], names=rownames(x) )
     ### \code{structure( x[,colName], names=rownames(x) )}
@@ -570,6 +534,50 @@ attr(dfcol,"ex") <- function(){
     data <- data.frame( a=1:4, b=2*(1:4) )
     rownames(data) <- LETTERS[1:4]
     dfcol(data,"b")
+}
+
+
+catNamedVector <- function(
+        ### print numeric vector in form name=value,name2=value2 
+        x           ##<< numeric vector
+        , digits=3  ##<< number of digits passed to \code{\link{signif}}
+){
+    paste(names(x),signif(x,digits=digits),sep="=",collapse=",")
+}
+attr(catNamedVector,"ex") <- function(){
+    x <- c(a=5, b=pi)
+    catNamedVector(x)
+}
+
+catHeadNamedVector <- function(
+        ### print first numeric vector in form name=value,name2=value2 
+        x
+        , digits=3
+        , nmax=4
+){
+    paste0("(",length(x),") ",catNamedVector(head(x,nmax)))
+}
+attr(catNamedVector,"ex") <- function(){
+    x <- c(a=5, b=pi)
+    catHeadNamedVector(rep(x,5))
+}
+
+asCharacterWithLeading <- function(
+        ### convert integer to string with fixed width by leading zeros (or spaces)
+        x                   ##<< integer vector: number to convert to string
+        , template="00"	    ##<< scalar string of intended output length with specifying the leading characters.
+){
+    result <- as.character(x)
+    zeros <- rep(template, length(x) )
+    nZero <- nchar(template)-nchar(result)
+    if( any(nZero < 0) ) stop("asCharacterWithLeading: input has too many digits. Maybe extend the template argument to more characters.")
+    result[ nZero != 0] <- paste( substr(zeros, 1, nZero), result, sep="")[nZero != 0]
+    result
+}
+attr(asCharacterWithLeading,"ex") <- function(){
+    x <- c(1,11,111)
+    asCharacterWithLeading(x,"000")
+    try( asCharacterWithLeading(x) )
 }
 
 

@@ -84,7 +84,7 @@ tw.fTestDummy <- function(
     a,b
 ){  a*b }
 
-tmp.f <- function(){
+.tmp.f <- function(){
     library(RUnit)
     currentPackage="twMisc"
     (res <- twUtest(tw.fTestDummy))
@@ -97,7 +97,7 @@ tmp.f <- function(){
     
 }
 
-tmp.f <- function(){
+.tmp.f <- function(){
     # deprecated: used svUnit, now using RUnit
     # creating unit-Test Files for a specific function
     #library(svUnit)
@@ -124,7 +124,7 @@ tmp.f <- function(){
     twUtest("twMisc",unitname=twUtest)
 }
 
-R.methodsS3::setMethodS3("as.data.frame", "RUnitTestData", function(
+setMethodS3("as.data.frame", "RUnitTestData", function(
         ### extract information from RUnit Testresult return value
         x, row.names, optional, ...
 ){
@@ -182,7 +182,7 @@ twUtestF <- function(
 #mtrace(twUtestF)
 #mtrace(twUtest)
 
-tmp.f <- function(){
+.tmp.f <- function(){
     #diverting output does not work, internally erorrs are sent to stdOuput
     #twUtestF(tw.fTestDummy, divertOutputFile=NULL)
     #twUtestF(tw.fTestDummy, divertOutputFile="tmp.txt", unlinkOutputFile=FALSE)
@@ -196,7 +196,7 @@ tmp.f <- function(){
     #not in TestCase because will fail of changed directory structure (missing inst) after installation
 }
 
-tmp.f <- function(){
+.tmp.f <- function(){
     currentPackage="twMisc"
     # executing a single testcase, good for debuggin 
     mtrace(tw.fTestDummy)

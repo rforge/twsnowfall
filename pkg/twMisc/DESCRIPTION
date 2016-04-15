@@ -1,11 +1,12 @@
 Package: twMisc
 Title: tw utility functions  
-Version: 0.5.54
-Date: 2013-01-22
+Version: 0.5.57
+Date: 2016-04-15
 Author: Thomas Wutzler
 Maintainer: Thomas Wutzler <twutz@bgc-jena.mpg.de>
-Description: utilities used across several other packages of tw
+Description: Provides utilities used across several other packages of tw.
+Depends: methods, parallel
 Imports: R.methodsS3, abind
-Suggests: inlinedocs,debug,RUnit
+Suggests: RUnit,testthat
 License: LGPL (>= 2.1)
 LazyLoad: yes

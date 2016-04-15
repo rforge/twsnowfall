@@ -24,7 +24,7 @@ test.empty <- function(){
 }
 
 test.ordinaryF <- function(){
-    res<-NULL; res <- twBinOptimize(fun,-15,interval=c(1,length(x)),showiter=TRUE)
+    res<-NULL; res <- twBinOptimizeFun(fun,-15,interval=c(1,length(x)),showiter=TRUE)
     checkEquals(15,res$where)
     
     res <- twBinOptimize(x,-14.8,interval=c(1,length(x)))
@@ -33,9 +33,9 @@ test.ordinaryF <- function(){
 
 test.boundaryF <- function(){
     #mtrace(twBinOptimize.function)
-    res <- twBinOptimize(fun,-15,interval=c(length(x),1))   # lower and upper are min and max
+    res <- twBinOptimizeFun(fun,-15,interval=c(length(x),1))   # lower and upper are min and max
     checkEquals(15,res$where)
     
-    res <- twBinOptimize(x,-14.8,upper=1,lower=length(x))
+    suppressWarnings(res <- twBinOptimize(x,-14.8,upper=1,lower=length(x)))
     checkEquals(as.integer(NA),res$where)
 }

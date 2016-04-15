@@ -1,6 +1,6 @@
 #twUtest(twBinOptimize)
 
-R.methodsS3::setMethodS3("twBinOptimize","numeric", function( 
+twBinOptimize <- function( 
     ### Finding the index of a sorted numeric vector whose element is closest to target. 
     x           ##<< numeric vector to be optimized. The term abs(x[i])-target) is minimized.
     ,target=0   ##<< Target value for \code{x}. Defaults to 0.
@@ -13,7 +13,7 @@ R.methodsS3::setMethodS3("twBinOptimize","numeric", function(
 ){
     #twBinOptimize.numeric
         
-    ##seealso<< \code{\link{twBinOptimize.function}}, \code{\link{twMisc}}
+    ##seealso<< \code{\link{twBinOptimizeFun}}, \code{\link{twMisc}}
     
     ##details<< 
     ## This function can be applied similar to \code{\link{optimize}} for cases, where the argument
@@ -152,8 +152,8 @@ R.methodsS3::setMethodS3("twBinOptimize","numeric", function(
     ### \item{where}{One or two values indicating where the search terminated.}
     ### \item{value}{Value of the \code{x} at the index of \code{where}.}
     ### If vector is empty or upper boundary is lower than lower boundary, \code{where} and \code{value} are NA
-})
-attr(twBinOptimize.numeric,"ex") <- function(){
+}
+attr(twBinOptimize,"ex") <- function(){
     # linear search is faster up with vectors to about 1e4 entries 
     x <- exp(seq(-10,100,length.out=1e4))
     # with longer vectors, the binary search is superior
@@ -170,7 +170,7 @@ attr(twBinOptimize.numeric,"ex") <- function(){
 
 
 
-R.methodsS3::setMethodS3("twBinOptimize","function", function( 
+twBinOptimizeFun <- function( 
         ### Optimizing a function where first argument is an index. 
         x           ##<< the monotonic vectorized function to be optimized. The term abs(x(i,...)-target) is minimized.
         ,target=0   ##<< Target value for \code{x}. Defaults to 0.
@@ -317,7 +317,7 @@ R.methodsS3::setMethodS3("twBinOptimize","function", function(
         ###     "Reached upper boundary."}
         ### \item{where}{One or two values indicating where the search terminated.}
         ### \item{value}{Value of the function \code{x} at the values of \code{where}.}
-    })
+    }
 
 
 
